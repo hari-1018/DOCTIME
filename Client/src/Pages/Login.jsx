@@ -34,7 +34,7 @@ const Login = () => {
               Sign Up with Google
             </button>
           </div>
-          <p className="text-sm mt-4 ml-40">New Here? Join us today by <a href="/login" className="text-blue-500 text-base font-semibold">Sign Up</a></p>
+          <p className="text-sm mt-4 ml-40">New Here? Join us today by <a href="/register" className="text-blue-500 text-base font-semibold">Sign Up</a></p>
           </div>
 
         {/* Right Section */}

@@ -2,7 +2,87 @@ import Logo from "../assets/Doctime.png";
 // import RegImage from "../assets/RegPage.webp";
 import Google from "../assets/Google.webp"
 import { UserIcon, MailIcon, PhoneIcon, LockClosedIcon } from '@heroicons/react/outline';
+import {useNavigate} from "react-router-dom";
+import {useFormik} from "formik";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+
 const Register = () => {
+  const navigate = useNavigate();
+
+  const validate = (values) => {
+    const errors = {};
+    const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    const regexMobile = /^[0-9]{10}$/;
+
+    if (!values.fullname) {
+      errors.fullname = "Name is required!";
+    }
+
+    if (!values.email) {
+      errors.email = "Email is required!";
+    } else if (!regexEmail.test(values.email)) {
+      errors.email = "This is not a valid email format!";
+    }
+
+    if (!values.mobile) {
+      errors.mobile = "Mobile is required!";
+    } else if (!regexMobile.test(values.mobile)) {
+      errors.mobile = "Mobile number must be 10 digits!";
+    }
+
+    if (!values.password) {
+      errors.password = "Password required";
+    } else if (values.password.length < 6) {
+      errors.password = "Password should contain at least 6 characters.";
+    } else if (values.password.length > 10) {
+      errors.password = "Password cannot exceed more than 10 characters";
+    }
+
+    return errors;
+  };
+
+  // Formik configuration
+  const formik = useFormik({
+    initialValues: {
+      fullname: "",
+      email: "",
+      password: "",
+      mobile: "", // mobile number is kept as a string here
+    },
+    validate,
+    onSubmit: async (values) => {
+      try {
+        const requestData = {
+          fullname: values.fullname,
+          email: values.email,
+          password: values.password,
+          mobile: values.mobile, // mobile number is passed as a string
+        };
+
+        // Use the axios instance to send data to the backend
+        // const response = await axiosInstance.post(
+        //   endPoints.AUTH.REGISTER,
+        //   requestData
+        // );
+
+        toast.success(
+          "🎉 Welcome to the family! You're officially registered."
+        );
+        console.log("Registration success:", response.data);
+        navigate("/login");
+      } catch (error) {
+        console.error("Error during registration:", error);
+
+        // Specific error message if available
+        const errorMessage =
+          error.response?.data?.message || "Error registering user.";
+        toast.error(errorMessage);
+      }
+    },
+  });
+
   return (
     <div className="min-h-screen bg-blue-200 flex justify-center items-center">
 
@@ -23,28 +103,78 @@ const Register = () => {
         {/* Right Section */}
         <div className="w-1/2 p-8 flex flex-col justify-center">
           <h2 className="text-3xl font-bold text-blue-default mb-6 text-center">Sign Up</h2>
-          <form className="space-y-4">
+          <form 
+            onSubmit={formik.handleSubmit}
+            className="space-y-4">
+
             <div className="flex items-center border-b border-gray-300 py-2">
               <UserIcon className="h-6 w-6 text-gray-700 mr-2" />
-              <input type="text" placeholder="Full Name" className="w-full text-gray-700 focus:outline-none" />
+              <input 
+              type="text" 
+              name="fullname"
+              placeholder="Full Name"
+              value={formik.values.fullname} 
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className="w-full text-gray-700 focus:outline-none" />
+
+            {formik.touched.fullname && formik.errors.fullname && (
+            <p className="text-red-500 text-sm mt-1">
+              {formik.errors.fullname}
+            </p>
+            )}
             </div>
 
             <div className="flex items-center border-b border-gray-300 py-2">
               <MailIcon className="h-6 w-6 text-gray-700 mr-2" />
-              <input type="email" placeholder="E-mail" className="w-full text-gray-700 focus:outline-none" />
+              <input 
+              type="email" 
+              name="email"
+              placeholder="E-mail"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className="w-full text-gray-700 focus:outline-none" />
+
+              {formik.touched.email && formik.errors.email && (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.email}</p>
+              )}
             </div>
 
             <div className="flex items-center border-b border-gray-300 py-2">
               <PhoneIcon className="h-6 w-6 text-gray-700 mr-2" />
-              <input type="text" placeholder="Mobile" className="w-full text-gray-700 focus:outline-none" />
+              <input 
+              type="text" 
+              name="mobile"
+              placeholder="Mobile Number"
+              value={formik.values.mobile}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur} 
+              className="w-full text-gray-700 focus:outline-none" />
+              {formik.touched.mobile && formik.errors.mobile && (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.mobile}</p>
+              )}
             </div>
 
             <div className="flex items-center border-b border-gray-300 py-2">
               <LockClosedIcon className="h-6 w-6 text-gray-700 mr-2" />
-              <input type="password" placeholder="Create Password" className="w-full text-gray-700 focus:outline-none" />
+              <input 
+              type="password" 
+              name="password"
+              placeholder="Create Password" 
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className="w-full text-gray-700 focus:outline-none" />
+              {formik.touched.password && formik.errors.password && (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.password}</p>
+              )}
             </div>
 
-            <button className="bg-blue-default hover:bg-blue-500 text-white rounded-full py-2 px-56 text-lg font-semibold">Sign Up</button>
+            <input 
+            type="submit"
+            value="Sign Up"
+            className="bg-blue-default hover:bg-blue-500 text-white rounded-full py-2 px-56 text-lg font-semibold" />
           </form>
           
           <div className="text-center mt-4">
