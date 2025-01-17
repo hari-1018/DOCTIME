@@ -2,7 +2,7 @@ import Logo from "../assets/Doctime.png";
 // import RegImage from "../assets/RegPage.webp";
 import Google from "../assets/Google.webp"
 import { UserIcon, MailIcon, PhoneIcon, LockClosedIcon } from '@heroicons/react/outline';
-import {useNavigate} from "react-router-dom";
+import {useNavigate, Link} from "react-router-dom";
 import {useFormik} from "formik";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -55,7 +55,7 @@ const Register = () => {
     onSubmit: async (values) => {
       try {
         const requestData = {
-          fullname: values.fullname,
+          name: values.fullname,
           email: values.email,
           password: values.password,
           mobile: values.mobile, // mobile number is passed as a string
@@ -171,10 +171,12 @@ const Register = () => {
               )}
             </div>
 
-            <input 
+          <Link to="/login">
+          <input 
             type="submit"
             value="Sign Up"
             className="bg-blue-default hover:bg-blue-500 text-white rounded-full py-2 px-56 text-lg font-semibold" />
+          </Link>
           </form>
           
           <div className="text-center mt-4">

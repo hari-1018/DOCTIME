@@ -11,7 +11,7 @@ export default {
           default: "#2BA3ED",
           regBg:"#B5CBE8",
         }
-      }
+      },
     },
   },
   plugins: [],
