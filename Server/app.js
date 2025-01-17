@@ -1,0 +1,22 @@
+const express = require('express');
+const app = express();
+const cors = require('cors');
+const authRoutes = require('./routes/authRoutes');
+const errorHandler = require('./middlewares/errorHandler');
+
+app.use(cors({
+    origin: 'http://localhost:5173'
+  }));
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
+
+app.use("/api/auth", authRoutes);
+
+app.all("*", (req,res,next)=>{
+    const error = new CustomError("Error Not Found", 404);
+    next(error);
+})
+
+app.use(errorHandler);
+
+module.exports = app;
