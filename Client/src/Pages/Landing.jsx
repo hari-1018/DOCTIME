@@ -1,7 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
-import NavLogo from "../assets/Doctime_Logo.png"
-import { RxDashboard } from "react-icons/rx";
-import Image from "../assets/ImageHero.png"
+import Navbar from "../components/Navbar";
+import Image from "../assets/ImageHero.png";
 import { BsFacebook, BsFillTelephoneFill, BsInstagram, BsTwitterX, BsWhatsapp } from "react-icons/bs";
 import { MdEmail, MdLocationOn} from "react-icons/md";
 import { FaThumbsUp } from "react-icons/fa";
@@ -33,35 +32,36 @@ const Landing = () => {
 
     return (
         <>
-            {/* Navbar */}
+        <Navbar />
+            {/* Navbar
             <nav className="fixed top-0 left-0 w-full h-[90px] z-50 bg-white text-white p-2 flex justify-between items-center ">
-                {/* Logo */}
+                Logo
                 <div className="flex items-center gap-2.5">
                     <img className="w-56 h-[90px]" src={NavLogo} alt="Doctime Logo" />
                 </div>
 
-                {/* Menu */}
+                Menu
                 <ul className="items-center gap-10 font-bold hidden md:flex">
-                    <li className="cursor-pointer text-base text-blue-default hover:border-b-2 border-blue-default"><Link to="/">HOME</Link></li>
+                    <li className="cursor-pointer text-base text-blue-default hover:border-b-2 border-blue-default"><a href="#home">HOME</a></li>
                     <li className="cursor-pointer text-base text-blue-default hover:border-b-2 border-blue-default"><Link to="/register">DOCTORS</Link></li>
                     <li className="cursor-pointer text-base text-blue-default hover:border-b-2 border-blue-default"><Link to="/register">APPOINTMENTS</Link></li>
-                    <li className="cursor-pointer text-base text-blue-default hover:border-b-2 border-blue-default"><Link to="#">ABOUT US</Link></li>
-                    <li className="cursor-pointer text-base text-blue-default hover:border-b-2 border-blue-default"><Link to="/#">CONTACT US</Link></li>
+                    <li className="cursor-pointer text-base text-blue-default hover:border-b-2 border-blue-default"><a href="#join">ABOUT US</a></li>
+                    <li className="cursor-pointer text-base text-blue-default hover:border-b-2 border-blue-default"><a href="#contact">CONTACT US</a></li>
                 </ul>
 
-                {/* Dashboard Button */}
+                Dashboard Button
                 <button className="w-10 h-10 text-blue-default text-2xl -mr-64">
                     <RxDashboard />
                 </button>
 
-                {/* SignUp Button */}
+                SignUp Button
                 <button className="w-[100px] h-10 bg-blue-default rounded-[20px] font-bold">
                     SignUp
                 </button>
-            </nav>
+            </nav> */}
 
             {/* Hero Section */}
-            <div className="w-full min-h-screen bg-blue-default flex items-center justify-center">
+            <div id="home" className="w-full min-h-screen bg-blue-default flex items-center justify-center">
                 <div className="flex items-center justify-between ">
                     <div className="text-white p-2 ml-16 mt-24">
                         <h1 className="text-4xl font-bold mb-4 text-center">
@@ -114,7 +114,7 @@ const Landing = () => {
             </section>
 
             {/* Join Us */}
-            <div className='w-full h-[450px]'>
+            <div id="join" className='w-full h-[450px]'>
                 <div className='w-[1335px] h-[400px] mx-auto bg-blue-default rounded-[30px] border-none flex flex-col items-center justify-center p-4'>
                         <h1 className="text-center text-white text-4xl mb-8 font-bold">Join Our Community Today</h1>
                         <p className="text-center text-white text-lg mb-4 font-extralight">
@@ -130,7 +130,7 @@ const Landing = () => {
 
 
             {/* Footer */}
-            <div className='flex w-full h-[575px]'>
+            <div id="contact" className='flex w-full h-[575px]'>
                 <div className='w-[700px] bg-blue-default flex flex-col items-center justify-center text-white p-4'>
                     <h1 className='text-3xl font-bold mb-4'>Stay Connect With Us!</h1>
                     <p className='text-lg text-center mb-8'>Feel free to reach out us. We&apos;re here to assist you with any questions and concerns.</p>

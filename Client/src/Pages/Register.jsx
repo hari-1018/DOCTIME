@@ -175,7 +175,7 @@ const Register = () => {
           <input 
             type="submit"
             value="Sign Up"
-            className="bg-blue-default hover:bg-blue-500 text-white rounded-full py-2 px-56 text-lg font-semibold" />
+            className="bg-blue-default hover:bg-blue-500 text-white rounded-full py-2 px-56 text-lg font-semibold mt-5" />
           </Link>
           </form>
           
