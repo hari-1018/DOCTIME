@@ -5,3 +5,8 @@
 body{
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
 }
+.bg-image{
+    background: url("./assets/Doctors_Home.jpg");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
