@@ -2,6 +2,7 @@ const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const {generateToken} = require("../utils/jwt");
 const CustomError = require("../utils/customError");
+const { OAuth2Client } = require('google-auth-library');
 
 //Register User
 const Register = async(data) =>{
@@ -47,4 +48,53 @@ const Login = async(data) =>{
     }
 };
 
-module.exports = {Register, Login};
+const GoogleAuth = async (data) => {
+    const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+    const { credential } = data;
+
+    if (!credential) {
+        throw new CustomError("No Google credentials provided!", 400);
+    }
+
+    // Verify Google token
+    const ticket = await client.verifyIdToken({
+        idToken: credential,
+        audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    // Get payload from verified token
+    const payload = ticket.getPayload();
+    const { email, name } = payload;
+    console.log(payload.name)
+
+    // Check if user exists in the database
+    let user = await User.findOne({ email });
+
+    // If user doesn't exist, create a new user
+    if (!user) {
+        user = new User({
+            name,
+            email,
+            password: '', // No password as the user is logging in via Google
+            role: 'user', // Default role, change as needed
+        });
+        await user.save();
+    }
+
+    // Generate token for the user
+    const token = generateToken(user._id, user.role);
+
+    return {
+        message: "Successfully logged in with Google",
+        user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+        },
+        token,
+    };
+};
+
+
+module.exports = {Register, Login, GoogleAuth};
