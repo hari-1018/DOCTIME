@@ -1,11 +1,13 @@
 import Logo from "../assets/Doctime.png";
 // import RegImage from "../assets/RegPage.webp";
-import Google from "../assets/Google.webp"
+// import Google from "../assets/Google.webp"
 import { UserIcon, MailIcon, PhoneIcon, LockClosedIcon } from '@heroicons/react/outline';
 import {useNavigate, Link} from "react-router-dom";
 import {useFormik} from "formik";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { GoogleLogin } from "@react-oauth/google";
+import axios from "axios"
 
 
 const Register = () => {
@@ -175,17 +177,28 @@ const Register = () => {
           <input 
             type="submit"
             value="Sign Up"
-            className="bg-blue-default hover:bg-blue-500 text-white rounded-full py-2 px-56 text-lg font-semibold mt-5" />
+            className="bg-blue-default hover:bg-blue-500 text-white rounded-full py-2 px-56 text-lg font-semibold mt-5 ml-2" />
           </Link>
           </form>
           
           <div className="text-center mt-4">
             <p className="text-sm">Already have an account? <a href="/login" className="text-blue-500 text-base font-semibold">Login</a></p>
             <p className="text-sm my-2">- OR -</p>
-            <button className="bg-white text-gray-600 hover:bg-gray-200 font-semibold rounded-full py-2 px-[165px] border border-gray-300 flex items-center justify-center">
+            {/* <button className="bg-white text-gray-600 hover:bg-gray-200 font-semibold rounded-full py-2 px-[165px] border border-gray-300 flex items-center justify-center">
               <img src={Google} alt="Google Icon" className="w-6 h-6 mr-3"/>
               Sign Up with Google
-            </button>
+            </button> */}
+            <div>
+              <GoogleLogin
+              onSuccess={async(credentialResponse) => {
+              const post = await axios.post('http://localhost:5555/api/auth/reg', credentialResponse)
+              console.log(post)
+              }}
+              onError={() => {
+              console.log("Login Failed");
+              }}
+              />
+          </div>
           </div>
           <p className="text-center text-gray-500 text-sm mt-6">Your Health, Your Schedule, One Click Away</p>
         </div>
