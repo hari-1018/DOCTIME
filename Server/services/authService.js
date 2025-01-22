@@ -36,13 +36,13 @@ const Login = async(data) =>{
 
     const token = generateToken(user._id, user.role);
     return {
-        message: "Logged In Successfully",
         user: {
             id: user._id,
             name: user.name,
             email: user.email,
             mobile: user.mobile,
-            role: user.role
+            role: user.role,
+            isBlocked: user.isBlocked,
         },
         token,
     }
@@ -65,7 +65,6 @@ const GoogleAuth = async (data) => {
     // Get payload from verified token
     const payload = ticket.getPayload();
     const { email, name } = payload;
-    console.log(payload.name)
 
     // Check if user exists in the database
     let user = await User.findOne({ email });
@@ -85,12 +84,12 @@ const GoogleAuth = async (data) => {
     const token = generateToken(user._id, user.role);
 
     return {
-        message: "Successfully logged in with Google",
         user: {
             id: user._id,
             name: user.name,
             email: user.email,
             role: user.role,
+            isBlocked: user.isBlocked,
         },
         token,
     };

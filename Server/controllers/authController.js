@@ -10,24 +10,23 @@ const register = asyncErrorResolver(async(req,res)=>{
     if(error) throw new CustomError(error.message, 400)
 
     const response = await Register(req.body);
-    res.status(200).json({status: "success", message: "User registered successfully", response});
+    res.status(200).json({status: "success", response});
 });
 
 //Login
 const login = asyncErrorResolver(async(req,res)=>{
     const {error} = validateLogin(req.body);
     if(error) throw new CustomError(error.message, 400);
-
+    console.log("response", req.body)
     const response = await Login(req.body);
-    res.status(200).json({status: "success", message: "User logged in successfully", response});
+    console.log("login response", response)
+    res.status(200).json({status: "success", message: "Logged In Successfully", data:response});
 });
 
 const googleAuth = asyncErrorResolver(async (req, res) => {
-
-
     const response = await GoogleAuth(req.body);
     console.log(response)
-    res.status(200).json({ status: "success", message: "Successfully logged in with Google", response });
+    res.status(200).json({ status: "success", message: "Successfully logged in with Google", data:response });
 });
 
 module.exports = {register, login, googleAuth};
