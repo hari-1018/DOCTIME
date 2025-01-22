@@ -4,6 +4,9 @@ import cardiology from "../assets/Cardiology.jpeg";
 import neurology from "../assets/Neurology.jpg";
 import gynecology from "../assets/Gynecology.jpg";
 import dermatology from "../assets/Dermatology.jpg";
+import Doctor1 from "../assets/Doctor1.jpg";
+import Doctor2 from "../assets/Doctor2.jpg";
+import Doctor3 from "../assets/Doctor3.jpg";
 
 const Home = () => {
 
@@ -74,9 +77,50 @@ const Home = () => {
         <Link to={`/departments/${item.id}`} className="bg-white text-blue-default font-bold py-2 px-4 rounded-full">Book Now</Link>
       </div>
     ))}
-  </div>
- 
+  </div> 
 </section>
+
+<div className="bg-blue-default py-6 px-6">
+  <div className="text-center mb-12">
+    <h2 className="text-3xl font-bold text-white mb-4">Our Best Doctors</h2>
+    <p className="text-lg text-white">
+      Experience unparalleled medical expertise with our team of best-in-class doctors.
+    </p>
+  </div>
+
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <img src={Doctor1} alt="Dr. Jonathan" className="w-full h-72 object-contain"/>
+      <div className="p-6 text-center bg-blue-500">
+        <h3 className="text-lg font-bold text-white">Dr. Jonathan (MD, PhD, MBBS)</h3>
+        <p className="text-white text-sm">Neurology</p>
+      </div>
+    </div>
+
+    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <img src={Doctor2} alt="Dr. Ashok Seth" className="w-full h-72 object-contain"/>
+      <div className="p-6 text-center bg-blue-500">
+        <h3 className="text-lg font-bold text-white">Dr. Ashok Seth (MD, MBBS)</h3>
+        <p className="text-white text-sm">Cardiology</p>
+      </div>
+    </div>
+
+    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <img src={Doctor3} alt="Dr. Sophie Devine" className="w-full h-72 object-contain"/>
+      <div className="p-6 text-center bg-blue-500">
+        <h3 className="text-lg font-bold text-white">Dr. Sophie Devine (MD, MBBS)</h3>
+        <p className="text-white text-sm">Pediatrician</p>
+      </div>
+    </div>
+  </div>
+
+  <div className="flex justify-center mt-8">
+    <button className="bg-white text-blue-default font-bold py-3 px-6 rounded-full hover:bg-gray-300 transition">
+      View All
+    </button>
+  </div>
+</div>
+
 
 
 </>

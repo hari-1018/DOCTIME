@@ -1,18 +1,19 @@
 import Logo from "../assets/Doctime.png";
-// import RegImage from "../assets/RegPage.webp";
 import Google from "../assets/Google.webp"
 import { MailIcon, LockClosedIcon } from '@heroicons/react/outline';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useFormik } from "formik";
+import axiosInstance from "../api/axiosInstance";
+import endPoints from "../api/endPoints";
+import Modal from "../components/Modal";
 
 const Login = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [modalMessage, setModalMessage] = useState(null);
 
   const togglePasswordView = () => {
     setShowPassword(!showPassword);
@@ -25,74 +26,56 @@ const Login = () => {
       password: "",
     },
     onSubmit: async (values) => {
-      setError(""); // Reset any existing errors
+      setError(""); 
       try {
-        const response = await axiosInstance.post(endPoints.AUTH.LOGIN, {
+        const response = await axiosInstance.post(
+          endPoints.AUTH.LOGIN, 
+        {
           email: values.email,
           password: values.password,
-        });
+        });      
 
-        const user = response.data;
-        const { role } = response.data;
-
-        // Handle the response from your backend
-        if (user) {
-          if (user.isBlocked) {
-            setError("Your account is temporarily blocked. Try again later.");
+        if (response.data) {
+          const user = response.data.data;
+          // console.log("user", user)
+          if (user.user.isBlocked) {
+            setModalMessage({ message: "Your account is temporarily blocked. Try again later.", type: "error" });
             return;
           }
+          console.log("user role", user.user.role)
 
-          // localStorage.setItem("loggedInUser", JSON.stringify(user));
-          // localStorage.setItem("cart", JSON.stringify(user.cart || []));
-          // localStorage.setItem("wishlist", JSON.stringify(user.wishlist || []));
-          // window.dispatchEvent(new Event("loginChange"));
 
-          if (role === "admin") {
-            toast.success(
-              <div
-                style={{
-                  backgroundColor: "#ffe5b4",
-                  border: "1px solid #ffcc00",
-                  borderRadius: "8px",
-                  padding: "10px",
-                }}
-              >
-                <span style={{ fontWeight: "bold", color: "black" }}>
-                  Welcome Back Admin! Ready to manage things? 🛠️✨
-                </span>
-              </div>
-            );
-            navigate("/admin/dashboard");
-          } else {
-            toast.success(
-              <div
-                style={{
-                  backgroundColor: "#ffe5b4",
-                  border: "1px solid #ffcc00",
-                  borderRadius: "8px",
-                  padding: "10px",
-                }}
-              >
-                <span style={{ fontWeight: "bold", color: "black" }}>
-                  You&apos;re in! Time to explore all baby things! ✨🎉
-                </span>
-              </div>
-            );
-            navigate("/");
-          }
+
+          localStorage.setItem("loggedInUser", JSON.stringify(user));
+          localStorage.setItem("secretToken", JSON.stringify(user.token));
+          window.dispatchEvent(new Event("loginChange"));
+
+
+          setModalMessage({ message: "Sign in Successful!", type: "success"});
+          
+          setTimeout(() => {
+            navigate(user.user.role === "admin" ? "/admin/dashboard" : "/home");
+          }, 1000);
         } else {
-          setError("Incorrect Email or Password. Please Try Again.");
+          setModalMessage({ message: "Incorrect Email or Password. Please Try Again.", type: "error" });
         }
       } catch (err) {
-        // Check if the error is related to incorrect credentials
-        if (err.response && err.response.status === 401) {
-          setError("Incorrect Email or Password. Please Try Again.");
-        } else {
-          setError("An error occurred while logging in. Please try again.");
-        }
+        const errorMsg = err.response && err.response.status === 401 
+          ? "Incorrect Email or Password. Please Try Again." 
+          : "An error occurred while logging in. Please try again.";
+        setModalMessage({ message: errorMsg, type: "error" });
       }
     },
   });
+
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    if (loggedInUser) {
+      const user = JSON.parse(loggedInUser);
+      formik.setValues({ email: user.email, password: user.password });
+    }
+  }, []);
+
 
 
   return (
@@ -102,8 +85,8 @@ const Login = () => {
       <div className="w-[1180px] h-[625px] bg-white rounded-2xl flex overflow-hidden">
         {/* Left Section */}
         <div className="w-1/2 p-8 flex flex-col justify-center bg-white">
-          <h2 className="text-3xl font-bold text-blue-default mb-6 text-center">Log In</h2>
-          <form className="space-y-4">
+          <h2 className="text-3xl font-bold text-blue-default mb-6 text-center">Sign In</h2>
+          <form onSubmit={formik.handleSubmit} className="space-y-4">
             <div className="flex items-center border-b border-gray-300 py-2 bg-white">
               <MailIcon className="h-6 w-6 text-gray-700 mr-2" />
               <input 
@@ -135,13 +118,11 @@ const Login = () => {
             </div>
             <p><a href="/login" className="text-base">Forgot Password ?</a></p>
 
-            <Link to="/home">
+
             <input
             type="submit"
-            value="Log In"
-            disabled={!formik.isValid} 
+            value="Sign In" 
             className="bg-blue-default hover:bg-blue-500 text-white rounded-full py-2 px-56 ml-2 text-lg font-semibold mt-5" />
-            </Link>
           </form>
           
           <div className="text-center mt-4">
@@ -170,6 +151,7 @@ const Login = () => {
 
 
       </div>
+      {modalMessage && <Modal message={modalMessage.message} type={modalMessage.type} onClose={() => setModalMessage("")} />}
     </div>
   );
 };
