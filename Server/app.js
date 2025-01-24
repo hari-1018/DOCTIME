@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
+const adminRoutes = require('./routes/adminRoutes')
 const errorHandler = require('./middlewares/errorHandler');
 
 app.use(cors({
@@ -11,6 +12,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.all("*", (req,res,next)=>{
     const error = new CustomError("Error Not Found", 404);

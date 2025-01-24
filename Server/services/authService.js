@@ -1,4 +1,6 @@
 const User = require("../models/userModel");
+const Doctor = require("../models/doctorModel");
+const Admin = require("../models/adminModel");
 const bcrypt = require("bcryptjs");
 const {generateToken} = require("../utils/jwt");
 const CustomError = require("../utils/customError");
@@ -22,7 +24,17 @@ const Register = async(data) =>{
 //Login User
 const Login = async(data) =>{
     const {email, password} = data;
-    const user = await User.findOne({email});
+    let user = await User.findOne({email});
+    let role = "User";
+
+    if(!user){
+        user = await Doctor.findOne({email});
+        role = "Doctor";
+    }
+    if (!user) {
+        user = await Admin.findOne({email});
+        role = "Admin";
+    }
     if(!user){
         throw new CustomError("User Not Found", 404)
     }
@@ -34,15 +46,15 @@ const Login = async(data) =>{
 
     if(!isMatch) throw new CustomError("Incorrect Email or Password", 401)
 
-    const token = generateToken(user._id, user.role);
+    const token = generateToken(user._id, role);
     return {
         user: {
             id: user._id,
             name: user.name,
             email: user.email,
             mobile: user.mobile,
-            role: user.role,
             isBlocked: user.isBlocked,
+            role
         },
         token,
     }
