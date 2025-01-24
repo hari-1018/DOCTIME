@@ -7,6 +7,8 @@ import dermatology from "../assets/Dermatology.jpg";
 import Doctor1 from "../assets/Doctor1.jpg";
 import Doctor2 from "../assets/Doctor2.jpg";
 import Doctor3 from "../assets/Doctor3.jpg";
+import { Ri24HoursLine } from "react-icons/ri";
+import { FaSuitcaseMedical, FaUserDoctor, FaHeartPulse } from "react-icons/fa6";
 
 const Home = () => {
 
@@ -42,7 +44,7 @@ const Home = () => {
   return (
 <>
   <Navbar />
-  <div className="w-full h-[750px] text-center py-24 px-4">
+  <div id="home1" className="w-full h-[750px] text-center py-24 px-4">
     <h2 className="text-xl text-blue-default uppercase font-bold mb-4">Welcome to DOCTIME</h2>
     <h1 className="text-3xl font-bold text-blue-home mb-4">A Great Place to Receive Care</h1>
     <p className="text-lg text-blue-500">
@@ -80,11 +82,11 @@ const Home = () => {
   </div> 
 </section>
 
-<div className="bg-blue-default py-6 px-6">
+<div className="bg-blue-400 py-6 px-6">
   <div className="text-center mb-12">
     <h2 className="text-3xl font-bold text-white mb-4">Our Best Doctors</h2>
     <p className="text-lg text-white">
-      Experience unparalleled medical expertise with our team of best-in-class doctors.
+      Experience unparalleled medical expertise with our team of best-in-className doctors.
     </p>
   </div>
 
@@ -120,6 +122,84 @@ const Home = () => {
     </button>
   </div>
 </div>
+
+<div id="about" className="bg-white py-6 px-6">
+  <div className="max-w-8xl mx-auto">
+    <div className="flex flex-col lg:flex-row items-center  h-[500px]">
+      <div className="relative flex-shrink-0 w-full lg:w-1/2 mb-10 lg:mb-0">
+        <div className="relative w-96 h-96 mx-auto bg-blue-default text-white rounded-full flex flex-col justify-center items-center text-center shadow-lg mt-8">
+          <h3 className="text-2xl font-bold">Your Health,<br/> Our Priority</h3>
+          <p className="mt-2 text-sm px-6">
+            Your Trusted Destination for Comprehensive Healthcare and Compassionate Service.
+          </p>
+          <button className="mt-4 text-blue-default font-bold py-2 px-4 rounded-full bg-white hover:bg-gray-300">
+            Book Now
+          </button>
+        </div>
+        <div className="absolute inset-0 w-[450px] h-[450px] rounded-full border-dashed border-2 border-blue-default mx-auto"></div>
+      </div>
+
+      <div className="flex-1 lg:pl-16 text-center lg:text-left px-16">
+        <h2 className="text-3xl font-bold text-blue-default mb-2 text-center -mt-16">What We Offer?</h2>
+        <p className="text-blue-default mb-8 text-center">
+          We strive to ensure you feel cared for every step of the way.
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
+          <div className="flex items-start">
+            <div className="flex-shrink-0 w-12 h-12 text-blue-500 rounded-full flex justify-center items-center">
+              <Ri24HoursLine className="w-10 h-10"/>
+            </div>
+            <div className="ml-4">
+              <h4 className="text-lg font-bold text-blue-500">24 Hours Service</h4>
+              <p className="text-sm text-blue-default">
+                Available at 24/7 to provide you with continuous care and support whenever you need it.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start">
+            <div className="flex-shrink-0 w-12 h-12 text-blue-500 rounded-full flex justify-center items-center">
+            <FaSuitcaseMedical className="w-10 h-10" />
+            </div>
+            <div className="ml-4">
+              <h4 className="text-lg font-bold text-blue-500">Modern Equipment</h4>
+              <p className="text-sm text-blue-default">
+                Equipped with the latest medical technology to ensure precise diagnostics and effective treatments in healthcare.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start">
+            <div className="flex-shrink-0 w-12 h-12 text-blue-500 rounded-full flex justify-center items-center">
+            <FaUserDoctor className="w-10 h-10"/>
+
+            </div>
+            <div className="ml-4">
+              <h4 className="text-lg font-bold text-blue-500">Quality Doctors</h4>
+              <p className="text-sm text-blue-default">
+                Experienced, skilled, and compassionate doctors dedicated to delivering the highest standard of care.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start">
+            <div className="flex-shrink-0 w-12 h-12 text-blue-500 rounded-full flex justify-center items-center">
+            <FaHeartPulse className="w-10 h-10"/>
+            </div>
+            <div className="ml-4">
+              <h4 className="text-lg font-bold text-blue-500">Comprehensive Care</h4>
+              <p className="text-sm text-blue-default">
+                Offering a wide range of services, from preventive care to advanced treatments, all under one roof.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 

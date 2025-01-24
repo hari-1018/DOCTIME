@@ -4,6 +4,12 @@ const endPoints = {
       REGISTER: "/auth/register",
       GOOGLE_AUTH: "/auth/google"
     },
+    ADMIN:{
+      GET_TOTAL_USERS: "/admin/dashboard/total-users",
+      GET_TOTAL_DOCTORS: "/admin/dashboard/total-doctors",
+
+
+    },
 }
 
 export default endPoints;

@@ -1,14 +1,14 @@
-import Logo from "../assets/Doctime.png";
+import Logo from "../../assets/Doctime.png";
 import { UserIcon, MailIcon, PhoneIcon, LockClosedIcon } from "@heroicons/react/outline";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import axiosInstance from "../api/axiosInstance";
-import endPoints from "../api/endPoints";
+import axiosInstance from "../../api/axiosInstance";
+import endPoints from "../../api/endPoints";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import Modal from "../components/Modal"
+import Modal from "../../components/Modal"
 
 const Register = () => {
   const navigate = useNavigate();

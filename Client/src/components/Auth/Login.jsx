@@ -1,13 +1,14 @@
-import Logo from "../assets/Doctime.png";
-import Google from "../assets/Google.webp"
+import Logo from "../../assets/Doctime.png";
+import { GoogleLogin } from "@react-oauth/google";
+import axios from "axios";
 import { MailIcon, LockClosedIcon } from '@heroicons/react/outline';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useFormik } from "formik";
-import axiosInstance from "../api/axiosInstance";
-import endPoints from "../api/endPoints";
-import Modal from "../components/Modal";
+import axiosInstance from "../../api/axiosInstance";
+import endPoints from "../../api/endPoints";
+import Modal from "../../components/Modal";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const Login = () => {
 
         if (response.data) {
           const user = response.data.data;
-          // console.log("user", user)
+          console.log("user", user)
           if (user.user.isBlocked) {
             setModalMessage({ message: "Your account is temporarily blocked. Try again later.", type: "error" });
             return;
@@ -48,14 +49,22 @@ const Login = () => {
 
           localStorage.setItem("loggedInUser", JSON.stringify(user));
           localStorage.setItem("secretToken", JSON.stringify(user.token));
+          localStorage.setItem("role", user.user.role);
           window.dispatchEvent(new Event("loginChange"));
 
 
           setModalMessage({ message: "Sign in Successful!", type: "success"});
           
           setTimeout(() => {
-            navigate(user.user.role === "admin" ? "/admin/dashboard" : "/home");
-          }, 1000);
+            if (user.user.role === "Admin") {
+              navigate("/admin/dashboard");
+            } else if (user.user.role === "Doctor") {
+              navigate("/doctor/dashboard");
+            } else if (user.user.role === "User") {
+              navigate("/home");
+            }
+          }, 1500);
+          
         } else {
           setModalMessage({ message: "Incorrect Email or Password. Please Try Again.", type: "error" });
         }
@@ -72,7 +81,7 @@ const Login = () => {
     const loggedInUser = localStorage.getItem("loggedInUser");
     if (loggedInUser) {
       const user = JSON.parse(loggedInUser);
-      formik.setValues({ email: user.email, password: user.password });
+      formik.setValues({ email: user.email || "", password: user.password || "" });
     }
   }, []);
 
@@ -127,10 +136,22 @@ const Login = () => {
           
           <div className="text-center mt-4">
             <p className="text-sm my-2 mb-4">- OR -</p>
-            <button className="bg-white text-gray-600 hover:bg-gray-200 font-semibold rounded-full py-2 px-[165px] border border-gray-300 flex items-center justify-center">
-              <img src={Google} alt="Google Icon" className="w-6 h-6 mr-3"/>
-              Sign Up with Google
-            </button>
+            <div>
+              <GoogleLogin
+                onSuccess={async (credentialResponse) => {
+                  const post = await axios.post("http://localhost:5555/api/auth/google", credentialResponse);
+
+                  const user = post.data.data;
+                  console.log("post user",user);
+                  localStorage.setItem("loggedInUser", JSON.stringify(user));
+                  localStorage.setItem("secretToken", JSON.stringify(user.token));
+                  navigate("/home");
+                }}
+                onError={() => {
+                  console.log("Login Failed");
+                }}
+              />
+            </div>
           </div>
           <p className="text-sm mt-4 ml-40">New Here? Join us today by <a href="/register" className="text-blue-500 text-base font-semibold">Sign Up</a></p>
           </div>

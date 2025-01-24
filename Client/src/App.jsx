@@ -1,21 +1,39 @@
 import './App.css';
 import {Routes, Route} from 'react-router-dom';
-import Landing from './Pages/Landing';
-import Register from './Pages/Register';
-import Login from './Pages/Login';
-import Home from './Pages/Home';
+import Landing from './pages/Landing';
+import Register from './components/Auth/Register';
+import Login from './components/Auth/Login';
+import Home from './pages/Home'
+import Sidebar from './components/Admin/Sidebar';
+import Dashboard from './components/Admin/Dashboard';
+import Patients from './components/Admin/Patients';
+import AdminRoutes from './routes/AdminRoutes';
+import UserRoutes from './routes/UserRoutes';
 
 function App() {
 
   return (
     <>
-    <Routes>
-      <Route exact path="/" element={<Landing />} />
-      <Route exact path="/register" element={<Register />} />
-      <Route exact path="/login" element={<Login />} />
-      <Route exact path="/home" element={<Home />} />
+<Routes>
+  <Route path="/" element={<Landing />} />
+  <Route path="/register" element={<Register />} />
+  <Route path="/login" element={<Login />} />
 
-    </Routes>
+  {/* User Routes */}
+  <Route element={<UserRoutes/>}>
+    <Route path="/home" element={<Home />} />
+  </Route>
+
+  {/* Admin Routes */}
+  <Route element={<AdminRoutes />}>
+  <Route exact path="/admin" element={<Sidebar />}>
+    <Route index element={<Dashboard />} />
+    <Route path="dashboard" element={<Dashboard />} />
+    <Route path="all-patients" element={<Patients />} />
+  </Route>
+  </Route>
+</Routes>
+
 
     </>
   )

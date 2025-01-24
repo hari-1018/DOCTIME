@@ -15,6 +15,7 @@ const Navbar = () => {
   const handleSignOut = () => {
     localStorage.removeItem("loggedInUser");
     localStorage.removeItem("secretToken");
+    localStorage.removeItem("role");
     setIsLoggedIn(false);
     navigate("/login");
   };
@@ -31,7 +32,7 @@ const Navbar = () => {
         {/* Menu */}
         <ul className="items-center gap-10 font-bold hidden md:flex">
           <li className="cursor-pointer text-base text-blue-default hover:border-b-2 border-blue-default">
-            <a href="#home">HOME</a>
+            <a href={isLoggedIn ? "#home1" : "#home"}>HOME</a>
           </li>
           <li className="cursor-pointer text-base text-blue-default hover:border-b-2 border-blue-default">
             <Link to={isLoggedIn ? "/doctors" : "/register"}>DOCTORS</Link>
@@ -40,7 +41,7 @@ const Navbar = () => {
             <Link to={isLoggedIn ? "/appointments" : "/register"}>APPOINTMENTS</Link>
           </li>
           <li className="cursor-pointer text-base text-blue-default hover:border-b-2 border-blue-default">
-            <a href="#join">ABOUT US</a>
+            <a href={isLoggedIn ? "#about" : "#join"}>ABOUT US</a>
           </li>
           <li className="cursor-pointer text-base text-blue-default hover:border-b-2 border-blue-default">
             <a href="#contact">CONTACT US</a>
