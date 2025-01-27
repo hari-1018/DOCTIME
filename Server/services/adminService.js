@@ -1,6 +1,8 @@
 const User = require("../models/userModel");
 const Doctor = require("../models/doctorModel");
 const bcrypt = require("bcryptjs");
+const CustomError = require("../utils/customError");
+
 
 const AddDoctor = async(data) =>{
     const {name, email, image, qualifications, specialization, experience, fees, availability} = data;
@@ -46,7 +48,39 @@ const TotalDoctors = async () => {
           totalDoctors 
         };
     };
-  
+
+const GetAllUsers = async () => {
+        const users = await User.find(); 
+        return {
+            message: "All users fetched successfully",
+            users,
+        };
+    };
+
+const GetAllDoctors = async () => {
+    const doctors = await Doctor.find(); 
+    return {
+        message: "All doctorss fetched successfully",
+        doctors,
+    };
+};
+
+// const BlockUser = async () => {
+//     const user = await User.findById(userID);
+//     if(!user){
+//         throw new CustomError(`No User Found with ID: ${userID}`, 404);
+//     }
+
+//     if(user.isBlocked){
+//         throw new CustomError("User is already blocked", 400);
+//     }
+
+//    user.isBlocked = true;
+//    await user.save();
+//    return { message: `User with ID ${userID} has been successfully blocked.` };
+//  }
+
+
   
 
-module.exports = { AddDoctor, TotalUsers, TotalDoctors }
+module.exports = { AddDoctor, TotalUsers, TotalDoctors, GetAllUsers, GetAllDoctors }

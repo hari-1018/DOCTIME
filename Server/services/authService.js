@@ -35,6 +35,7 @@ const Login = async(data) =>{
         user = await Admin.findOne({email});
         role = "Admin";
     }
+
     if(!user){
         throw new CustomError("User Not Found", 404)
     }
@@ -87,7 +88,7 @@ const GoogleAuth = async (data) => {
             name,
             email,
             password: '', // No password as the user is logging in via Google
-            role: 'user', // Default role, change as needed
+            role: 'User', // Default role, change as needed
         });
         await user.save();
     }
