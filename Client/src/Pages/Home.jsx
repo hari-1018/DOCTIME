@@ -111,7 +111,7 @@ const Home = () => {
       <img src={Doctor3} alt="Dr. Sophie Devine" className="w-full h-72 object-contain"/>
       <div className="p-6 text-center bg-blue-500">
         <h3 className="text-lg font-bold text-white">Dr. Sophie Devine (MD, MBBS)</h3>
-        <p className="text-white text-sm">Pediatrician</p>
+        <p className="text-white text-sm">Pediatricians</p>
       </div>
     </div>
   </div>
