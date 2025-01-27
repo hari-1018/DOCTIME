@@ -47,20 +47,20 @@ const Home = () => {
   <div id="home1" className="w-full h-[750px] text-center py-24 px-4">
     <h2 className="text-xl text-blue-default uppercase font-bold mb-4">Welcome to DOCTIME</h2>
     <h1 className="text-3xl font-bold text-blue-home mb-4">A Great Place to Receive Care</h1>
-    <p className="text-lg text-blue-500">
+    <p className="text-lg text-blue-500 mb-2">
       We&apos;re here for you around the clock, ready to assist with any urgent medical needs. Committed to providing the highest quality care 24/7.
     </p>
 
     <div className="relative w-full h-[525px] flex justify-center items-center bg-image">
-    <div className="absolute top-8">
-      <Link to="/doctors" className="px-4 py-4 rounded-full font-semibold text-white bg-blue-500 hover:bg-blue-700">
+    <div className="absolute top-1 md:top-10">
+      <Link to="/doctors" className="px-4 py-3 rounded-full font-semibold text-white bg-blue-500 hover:bg-blue-700">
         Make Appointment
       </Link>
     </div>
   </div>
 </div>
 
-<section className="bg-white py-4">
+<section className="bg-white py-2 -mt-64 md:mt-0">
   <div className="container mx-auto w-full">
   <h2 className="text-3xl font-bold text-center text-blue-default mb-4">Services of Specialists</h2>
   <p className="text-lg text-center text-blue-default mb-16">
@@ -71,7 +71,7 @@ const Home = () => {
   <div className="px-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-4">
     {dept.map((item) => (
       <div key={item.id} className="bg-blue-dept hover:bg-blue-default rounded-lg p-4 text-center">
-        <div className="w-28 h-28 mx-auto mb-2 -mt-16">
+        <div className="w-28 h-28 mx-auto mb-2 md:-mt-16">
           <img src={item.image} alt={item.name} className="rounded-[100%]"/>
         </div>
         <h3 className="text-xl font-bold text-white mb-3">{item.name}</h3>
@@ -127,7 +127,7 @@ const Home = () => {
   <div className="max-w-8xl mx-auto">
     <div className="flex flex-col lg:flex-row items-center  h-[500px]">
       <div className="relative flex-shrink-0 w-full lg:w-1/2 mb-10 lg:mb-0">
-        <div className="relative w-96 h-96 mx-auto bg-blue-default text-white rounded-full flex flex-col justify-center items-center text-center shadow-lg mt-8">
+        <div className="relative -ml-4 md:mx-auto w-96 h-96 bg-blue-default text-white rounded-full flex flex-col justify-center items-center text-center shadow-lg md:mt-8">
           <h3 className="text-2xl font-bold">Your Health,<br/> Our Priority</h3>
           <p className="mt-2 text-sm px-6">
             Your Trusted Destination for Comprehensive Healthcare and Compassionate Service.
@@ -136,11 +136,11 @@ const Home = () => {
             Book Now
           </button>
         </div>
-        <div className="absolute inset-0 w-[450px] h-[450px] rounded-full border-dashed border-2 border-blue-default mx-auto"></div>
+        <div className="hidden sm:block absolute inset-0 w-[450px] h-[450px] rounded-full border-dashed border-2 border-blue-default mx-auto"></div>
       </div>
 
-      <div className="flex-1 lg:pl-16 text-center lg:text-left px-16">
-        <h2 className="text-3xl font-bold text-blue-default mb-2 text-center -mt-16">What We Offer?</h2>
+      <div className="flex-1 -ml-6 lg:pl-8 text-center lg:text-left px-16">
+        <h2 className="text-3xl font-bold text-blue-default mb-2 text-center">What We Offer?</h2>
         <p className="text-blue-default mb-8 text-center">
           We strive to ensure you feel cared for every step of the way.
         </p>
@@ -151,8 +151,8 @@ const Home = () => {
               <Ri24HoursLine className="w-10 h-10"/>
             </div>
             <div className="ml-4">
-              <h4 className="text-lg font-bold text-blue-500">24 Hours Service</h4>
-              <p className="text-sm text-blue-default">
+              <h4 className="text-lg -ml-2 font-bold text-blue-500">24 Hours Service</h4>
+              <p className="text-sm -ml-2 text-blue-default">
                 Available at 24/7 to provide you with continuous care and support whenever you need it.
               </p>
             </div>
@@ -163,8 +163,8 @@ const Home = () => {
             <FaSuitcaseMedical className="w-10 h-10" />
             </div>
             <div className="ml-4">
-              <h4 className="text-lg font-bold text-blue-500">Modern Equipment</h4>
-              <p className="text-sm text-blue-default">
+              <h4 className="text-lg -ml-2 font-bold text-blue-500">Modern Equipment</h4>
+              <p className="text-sm -ml-2 text-blue-default">
                 Equipped with the latest medical technology to ensure precise diagnostics and effective treatments in healthcare.
               </p>
             </div>
@@ -176,8 +176,8 @@ const Home = () => {
 
             </div>
             <div className="ml-4">
-              <h4 className="text-lg font-bold text-blue-500">Quality Doctors</h4>
-              <p className="text-sm text-blue-default">
+              <h4 className="text-lg font-bold -ml-2 text-blue-500">Quality Doctors</h4>
+              <p className="text-sm -ml-2 text-blue-default">
                 Experienced, skilled, and compassionate doctors dedicated to delivering the highest standard of care.
               </p>
             </div>
@@ -188,8 +188,8 @@ const Home = () => {
             <FaHeartPulse className="w-10 h-10"/>
             </div>
             <div className="ml-4">
-              <h4 className="text-lg font-bold text-blue-500">Comprehensive Care</h4>
-              <p className="text-sm text-blue-default">
+              <h4 className="text-lg font-bold -ml-2 text-blue-500">Comprehensive Care</h4>
+              <p className="text-sm -ml-2 text-blue-default">
                 Offering a wide range of services, from preventive care to advanced treatments, all under one roof.
               </p>
             </div>

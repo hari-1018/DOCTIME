@@ -9,6 +9,7 @@ import Dashboard from './components/Admin/Dashboard';
 import Patients from './components/Admin/Patients';
 import AdminRoutes from './routes/AdminRoutes';
 import UserRoutes from './routes/UserRoutes';
+import AllDoctors from './components/Admin/Doctors';
 
 function App() {
 
@@ -30,6 +31,7 @@ function App() {
     <Route index element={<Dashboard />} />
     <Route path="dashboard" element={<Dashboard />} />
     <Route path="all-patients" element={<Patients />} />
+    <Route path="all-doctors" element={<AllDoctors />} />
   </Route>
   </Route>
 </Routes>

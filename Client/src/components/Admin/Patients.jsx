@@ -1,26 +1,27 @@
-import { useEffect, useState } from 'react';
-import axiosInstance from '../../api/axiosInstance';
-import endPoints from '../../api/endPoints';
+import { useEffect, useState } from "react";
+import axiosInstance from "../../config/axiosInstance";
+import endPoints from "../../config/endPoints";
 
 function AllCustomers() {
   const [customers, setCustomers] = useState([]);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
-  const [actionType, setActionType] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [actionType, setActionType] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const fetchCustomers = async () => {
     try {
       const response = await axiosInstance.get(endPoints.ADMIN.GET_ALL_USERS);
-      setCustomers(response.data.data);
+      console.log("fetchallusers", response.data.result.users);
+      setCustomers(response.data.result.users);
     } catch (error) {
-      console.error('Error fetching customers:', error);
+      console.error("Error fetching customers:", error);
     }
   };
 
   const handleBlockUnblock = (customerId, isBlocked) => {
     setSelectedCustomer(customerId);
-    setActionType(isBlocked ? 'unblock' : 'block');
+    setActionType(isBlocked ? "unblock" : "block");
     setShowConfirmModal(true);
   };
 
@@ -28,14 +29,14 @@ function AllCustomers() {
     if (selectedCustomer) {
       try {
         const endpoint =
-          actionType === 'block'
+          actionType === "block"
             ? endPoints.ADMIN.BLOCK_USER(selectedCustomer)
             : endPoints.ADMIN.UNBLOCK_USER(selectedCustomer);
         await axiosInstance.patch(endpoint);
         fetchCustomers();
         setShowConfirmModal(false);
       } catch (error) {
-        console.error('Error updating customer status:', error);
+        console.error("Error updating customer status:", error);
       }
     }
   };
@@ -47,22 +48,26 @@ function AllCustomers() {
   const filteredCustomers = customers.filter((customer) => {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
     return (
-      (customer.username?.toLowerCase().includes(lowerCaseSearchTerm) || false)
+      (customer.name?.toLowerCase().includes(lowerCaseSearchTerm) || false) ||
+      (customer.email?.toLowerCase().includes(lowerCaseSearchTerm) || false) ||
+      (customer.mobile?.toString().includes(lowerCaseSearchTerm) || false)
     );
   });
 
   return (
-    <div className="p-8 bg-gray-100">
-      <h1 className="text-3xl font-bold text-center text-pink-500 mt-1 mb-4">All Customers</h1>
+    <div className="p-2">
+      <h1 className="text-3xl font-bold text-center text-blue-default mt-1 mb-4">
+        All Patients
+      </h1>
 
       {/* Search Bar */}
       <div className="flex flex-col sm:flex-row sm:justify-center mb-4">
         <input
           type="text"
-          placeholder="Search customers..."
+          placeholder="Search Patient..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="search-bar text-gray-800 w-full sm:w-64 mb-4 sm:mb-0 border-2 border-pink-400 rounded-full px-3 py-1 focus:outline-pink-400"
+          className="search-bar text-gray-800 w-full sm:w-64 mb-4 sm:mb-0 border-2 border-blue-400 rounded-full px-3 py-1 focus:outline-blue-400"
         />
       </div>
 
@@ -71,7 +76,7 @@ function AllCustomers() {
           <thead>
             <tr className="bg-gray-200">
               <th className="py-2 px-4 border w-20">ID</th>
-              <th className="py-2 px-4 border w-40">Name</th>
+              <th className="py-2 px-4 border w-40">Patient Name</th>
               <th className="py-2 px-4 border w-40">Email</th>
               <th className="py-2 px-4 border w-32">Mobile No.</th>
               <th className="py-2 px-4 border w-20">Status</th>
@@ -82,22 +87,41 @@ function AllCustomers() {
             {filteredCustomers.length > 0 ? (
               filteredCustomers.map((customer) => (
                 <tr key={customer._id} className="hover:bg-gray-100">
-                  <td className="py-2 px-2 border text-gray-600">{customer._id}</td>
-                  <td className="py-2 px-2 border text-gray-600 font-bold">{customer.username || 'N/A'}</td>
-                  <td className="py-2 px-2 border text-gray-600">{customer.email || 'N/A'}</td>
-                  <td className="py-2 px-2 border text-gray-600">{customer.mobilenumber || 'N/A'}</td>
+                  <td className="py-2 px-2 border text-gray-600">
+                    {customer._id}
+                  </td>
+                  <td className="py-2 px-2 border text-gray-600 font-bold">
+                    {customer.name || "N/A"}
+                  </td>
+                  <td className="py-2 px-2 border text-gray-600">
+                    {customer.email || "N/A"}
+                  </td>
+                  <td className="py-2 px-2 border text-gray-600">
+                    {customer.mobile || "N/A"}
+                  </td>
                   <td className="py-2 px-2 border">
-                    <span className={`font-bold ${customer.isBlocked ? 'text-red-500' : 'text-green-500'}`}>
-                      {customer.isBlocked ? 'Blocked' : 'Active'}
+                    <span
+                      className={`font-bold ${
+                        customer.isBlocked
+                          ? "text-red-500"
+                          : "text-green-500"
+                      }`}
+                    >
+                      {customer.isBlocked ? "Blocked" : "Active"}
                     </span>
                   </td>
-
                   <td className="py-2 px-2 border">
                     <button
-                      onClick={() => handleBlockUnblock(customer._id, customer.isBlocked)}
-                      className={`border-2 p-2 rounded ${customer.isBlocked ? 'bg-green-500 text-white hover:bg-green-600' : 'bg-red-500 text-white hover:bg-red-600'}`}
+                      onClick={() =>
+                        handleBlockUnblock(customer._id, customer.isBlocked)
+                      }
+                      className={`border-2 p-2 rounded ${
+                        customer.isBlocked
+                          ? "bg-green-500 text-white hover:bg-green-600"
+                          : "bg-red-500 text-white hover:bg-red-600"
+                      }`}
                     >
-                      {customer.isBlocked ? 'Unblock' : 'Block'}
+                      {customer.isBlocked ? "Unblock" : "Block"}
                     </button>
                   </td>
                 </tr>

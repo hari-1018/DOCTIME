@@ -14,14 +14,17 @@ import { Bar, Pie, Line } from "react-chartjs-2";
 import { MdGroups } from "react-icons/md";
 import { FaUserDoctor } from "react-icons/fa6";
 import { useState, useEffect } from "react";
-import axiosInstance from "../../api/axiosInstance";
-import endPoints from "../../api/endPoints";
+import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../config/axiosInstance";
+import endPoints from "../../config/endPoints";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, ArcElement, Legend, LineElement, PointElement);
 
 const Dashboard = () => {
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalDoctors, setTotalDoctors] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   const fetchTotalUsers = async () => {
     try {
@@ -47,6 +50,14 @@ const Dashboard = () => {
     fetchTotalUsers();
     fetchTotalDoctors();
   }, []);
+
+  const handleSignOut = () => {
+    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("secretToken");
+    localStorage.removeItem("role");
+    setIsLoggedIn(false);
+    navigate("/login");
+  };
 
 
   const barChartData = {
@@ -116,7 +127,7 @@ const Dashboard = () => {
         <div className="bg-white px-6 py-2 rounded-full shadow-md border border-gray-100 ml-[450px]">
           <h2 className="text-xl font-bold text-blue-default">Welcome Mr.Admin</h2>
         </div>
-        <button className="bg-blue-default rounded-full px-4 py-2 text-white font-bold">
+        <button onClick={handleSignOut} className="bg-blue-default rounded-full px-4 py-2 text-white font-bold">
           Sign Out
         </button>
       </header>
