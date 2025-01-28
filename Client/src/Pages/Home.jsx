@@ -1,4 +1,6 @@
-import Navbar from "../components/Navbar"
+import Navbar from "../components/Navbar/Navbar"
+import Contact from "../components/Contact/Contact"
+import Footer from "../components/Footer/Footer";
 import {Link} from 'react-router-dom';
 import cardiology from "../assets/Cardiology.jpeg";
 import neurology from "../assets/Neurology.jpg";
@@ -11,6 +13,8 @@ import { Ri24HoursLine } from "react-icons/ri";
 import { FaSuitcaseMedical, FaUserDoctor, FaHeartPulse } from "react-icons/fa6";
 
 const Home = () => {
+
+  
 
   const dept = [
     {
@@ -111,7 +115,7 @@ const Home = () => {
       <img src={Doctor3} alt="Dr. Sophie Devine" className="w-full h-72 object-contain"/>
       <div className="p-6 text-center bg-blue-500">
         <h3 className="text-lg font-bold text-white">Dr. Sophie Devine (MD, MBBS)</h3>
-        <p className="text-white text-sm">Pediatricians</p>
+        <p className="text-white text-sm">Pediatrician</p>
       </div>
     </div>
   </div>
@@ -148,11 +152,11 @@ const Home = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
           <div className="flex items-start">
             <div className="flex-shrink-0 w-12 h-12 text-blue-500 rounded-full flex justify-center items-center">
-              <Ri24HoursLine className="w-10 h-10"/>
+              <Ri24HoursLine className="w-10 h-10 -mt-5 md:-mt-0"/>
             </div>
             <div className="ml-4">
-              <h4 className="text-lg -ml-2 font-bold text-blue-500">24 Hours Service</h4>
-              <p className="text-sm -ml-2 text-blue-default">
+              <h4 className="text-lg -ml-12 md:-ml-2 font-bold text-blue-500">24 Hours Service</h4>
+              <p className="text-sm -ml-8 md:-ml-2 text-blue-default">
                 Available at 24/7 to provide you with continuous care and support whenever you need it.
               </p>
             </div>
@@ -160,11 +164,11 @@ const Home = () => {
 
           <div className="flex items-start">
             <div className="flex-shrink-0 w-12 h-12 text-blue-500 rounded-full flex justify-center items-center">
-            <FaSuitcaseMedical className="w-10 h-10" />
+            <FaSuitcaseMedical className="w-10 h-10 -mt-5 md:-mt-0" />
             </div>
             <div className="ml-4">
-              <h4 className="text-lg -ml-2 font-bold text-blue-500">Modern Equipment</h4>
-              <p className="text-sm -ml-2 text-blue-default">
+              <h4 className="text-lg -ml-12 md:-ml-2 font-bold text-blue-500">Modern Equipment</h4>
+              <p className="text-sm -ml-8 md:-ml-2 text-blue-default">
                 Equipped with the latest medical technology to ensure precise diagnostics and effective treatments in healthcare.
               </p>
             </div>
@@ -172,12 +176,12 @@ const Home = () => {
 
           <div className="flex items-start">
             <div className="flex-shrink-0 w-12 h-12 text-blue-500 rounded-full flex justify-center items-center">
-            <FaUserDoctor className="w-10 h-10"/>
+            <FaUserDoctor className="w-10 h-10 -mt-5 md:-mt-0"/>
 
             </div>
             <div className="ml-4">
-              <h4 className="text-lg font-bold -ml-2 text-blue-500">Quality Doctors</h4>
-              <p className="text-sm -ml-2 text-blue-default">
+              <h4 className="text-lg font-bold -ml-16 md:-ml-2 text-blue-500">Quality Doctors</h4>
+              <p className="text-sm -ml-12 md:-ml-2 text-blue-default">
                 Experienced, skilled, and compassionate doctors dedicated to delivering the highest standard of care.
               </p>
             </div>
@@ -185,11 +189,11 @@ const Home = () => {
 
           <div className="flex items-start">
             <div className="flex-shrink-0 w-12 h-12 text-blue-500 rounded-full flex justify-center items-center">
-            <FaHeartPulse className="w-10 h-10"/>
+            <FaHeartPulse className="w-10 h-10 -mt-4 md:-mt-0"/>
             </div>
             <div className="ml-4">
-              <h4 className="text-lg font-bold -ml-2 text-blue-500">Comprehensive Care</h4>
-              <p className="text-sm -ml-2 text-blue-default">
+              <h4 className="text-lg font-bold -ml-10 md:-ml-2 text-blue-500">Comprehensive Care</h4>
+              <p className="text-sm -ml-8 md:-ml-2 text-blue-default">
                 Offering a wide range of services, from preventive care to advanced treatments, all under one roof.
               </p>
             </div>
@@ -199,6 +203,11 @@ const Home = () => {
     </div>
   </div>
 </div>
+
+<Contact/>
+<Footer/>
+
+
 
 
 

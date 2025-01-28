@@ -3,7 +3,8 @@ import {Routes, Route} from 'react-router-dom';
 import Landing from './pages/Landing';
 import Register from './components/Auth/Register';
 import Login from './components/Auth/Login';
-import Home from './pages/Home'
+import Home from './pages/Home';
+import DoctorsListing from "./components/Doctors/DoctorsListing"
 import Sidebar from './components/Admin/Sidebar';
 import Dashboard from './components/Admin/Dashboard';
 import Patients from './components/Admin/Patients';
@@ -23,6 +24,7 @@ function App() {
   {/* User Routes */}
   <Route element={<UserRoutes/>}>
     <Route path="/home" element={<Home />} />
+    <Route path="/doctors" element={<DoctorsListing />} />
   </Route>
 
   {/* Admin Routes */}

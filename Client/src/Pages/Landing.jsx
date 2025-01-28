@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar/Navbar";
 import Image from "../assets/ImageHero.png";
 import { BsFacebook, BsFillTelephoneFill, BsInstagram, BsTwitterX, BsWhatsapp } from "react-icons/bs";
 import { MdEmail, MdLocationOn} from "react-icons/md";
