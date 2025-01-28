@@ -7,11 +7,11 @@ import axiosInstance from "../../config/axiosInstance";
 import endPoints from "../../config/endPoints";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import Modal from "../../components/Modal"
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
   const navigate = useNavigate();
-  const [modalMessage, setModalMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordView = () => {
@@ -71,15 +71,13 @@ const Register = () => {
         );
         console.log("Registration success:", response);
 
-        setModalMessage({ message: "You're officially registered, Login to Continue🎉", type:"success"});
+        toast.success("You're officially registered, Login to Continue🎉");
         console.log("Registration success:", response.data);
-        setTimeout(() => {
-          navigate("/login");
-        }, 2500);
+        navigate("/login");
       } catch (error) {
         console.error("Error during registration:", error);
-        const errorMessage = error.response?.data?.message || "Error registering user.";
-        setModalMessage({message:errorMessage, type:"error"});
+        const errorMessage = error.response?.data?.message || "Error registering user";
+        toast.error(errorMessage);
       }
     },
   });
@@ -216,13 +214,6 @@ const Register = () => {
       </p>
     </div>
   </div>
-  {modalMessage && (
-    <Modal
-      message={modalMessage.message}
-      type={modalMessage.type}
-      onClose={() => setModalMessage("")}
-    />
-  )}
   <Link to="/">
   <button className="mt-4 px-6 py-3 bg-blue-default font-bold rounded-full text-white">Back</button>
   </Link>

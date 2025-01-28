@@ -12,7 +12,7 @@ import {
 } from "chart.js";
 import { Bar, Pie, Line } from "react-chartjs-2";
 import { MdGroups } from "react-icons/md";
-import { FaUserDoctor } from "react-icons/fa6";
+import { FaCalendarDays, FaUserDoctor } from "react-icons/fa6";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../config/axiosInstance";
@@ -23,6 +23,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, ArcElem
 const Dashboard = () => {
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalDoctors, setTotalDoctors] = useState(0);
+  const [totalAppointments, setTotalAppointments] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
@@ -46,9 +47,20 @@ const Dashboard = () => {
     }
   };
 
+  const fetchTotalAppointments = async () => {
+    try {
+      const response = await axiosInstance.get(endPoints.ADMIN.GET_TOTAL_APPOINTMENTS);
+      console.log('dashappo', response.data.result);
+      setTotalAppointments(response.data.result.totalAppoinments);
+    } catch (error) {
+      console.error('Error fetching doctors:', error);
+    }
+  };
+
   useEffect(() => {
     fetchTotalUsers();
     fetchTotalDoctors();
+    fetchTotalAppointments();
   }, []);
 
   const handleSignOut = () => {
@@ -136,7 +148,7 @@ const Dashboard = () => {
         {[
           { title: "Total Patients", value: totalUsers, icon: <MdGroups /> },
           { title: "Total Doctors", value: totalDoctors, icon: <FaUserDoctor /> },
-          { title: "Appointments", value: 1000 },
+          { title: "Appointments", value: totalAppointments, icon: <FaCalendarDays/> },
           { title: "Pending", value: 25 },
           { title: "Total Revenue", value: 10000 },
         ].map((item, index) => (

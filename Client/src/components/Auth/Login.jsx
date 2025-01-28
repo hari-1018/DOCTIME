@@ -8,14 +8,13 @@ import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import axiosInstance from "../../config/axiosInstance";
 import endPoints from "../../config/endPoints";
-import Modal from "../../components/Modal";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
-  const [modalMessage, setModalMessage] = useState(null);
-  const [showMenu, setShowMenu] = useState(false);
 
   const togglePasswordView = () => {
     setShowPassword(!showPassword);
@@ -38,10 +37,7 @@ const Login = () => {
           const user = response.data.data;
           console.log("user", user);
           if (user.user.isBlocked) {
-            setModalMessage({
-              message: "Your account is temporarily blocked. Try again later.",
-              type: "error",
-            });
+            toast.error("Your account is temporarily blocked. Try again later.");
             return;
           }
           console.log("user role", user.user.role);
@@ -51,9 +47,7 @@ const Login = () => {
           localStorage.setItem("role", user.user.role);
           window.dispatchEvent(new Event("loginChange"));
 
-          setModalMessage({ message: "Sign in Successful!", type: "success" });
-
-          setTimeout(() => {
+          toast.success("Welcome back! You're successfully signed in!");
             if (user.user.role === "Admin") {
               navigate("/admin/dashboard");
             } else if (user.user.role === "Doctor") {
@@ -61,19 +55,15 @@ const Login = () => {
             } else if (user.user.role === "User") {
               navigate("/home");
             }
-          }, 1000);
         } else {
-          setModalMessage({
-            message: "Incorrect Email or Password. Please Try Again.",
-            type: "error",
-          });
+          toast.error("Incorrect Email or Password. Please Try Again");
         }
       } catch (err) {
         const errorMsg =
           err.response && err.response.status === 401
             ? "Incorrect Email or Password. Please Try Again."
             : "An error occurred while logging in. Please try again.";
-        setModalMessage({ message: errorMsg, type: "error" });
+        toast.error(errorMsg);
       }
     },
   });
@@ -193,14 +183,6 @@ const Login = () => {
           </p>
         </div>
       </div>
-
-      {modalMessage && (
-        <Modal
-          message={modalMessage.message}
-          type={modalMessage.type}
-          onClose={() => setModalMessage("")}
-        />
-      )}
       <Link to="/">
       <button className="mt-4 px-6 py-3 bg-blue-default font-bold rounded-full text-white">Back</button>
       </Link>
