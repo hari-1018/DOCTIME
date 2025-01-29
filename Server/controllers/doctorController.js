@@ -1,5 +1,5 @@
 const asyncErrorResolver = require("../utils/asyncErrorResolver");
-const { FetchDoctors } = require("../services/doctorService")
+const { FetchDoctors, FetchDoctorById } = require("../services/doctorService")
 
 //Fetch Doctors
 const fetchDoctors = asyncErrorResolver(async (req, res) => {
@@ -8,4 +8,12 @@ const fetchDoctors = asyncErrorResolver(async (req, res) => {
     res.status(200).json({ status: "success", result });
 });
 
-module.exports = { fetchDoctors };
+//Fetch Doctor By ID
+const fetchDoctorById = asyncErrorResolver(async (req, res) => {
+    const result = await FetchDoctorById(req.params.id);
+    if (!result) return res.status(404).json({ status: "error", message: "Doctor not found" });
+    console.log("get doctor by id", result);
+    res.status(200).json({ status: "success", result });
+});
+
+module.exports = { fetchDoctors, fetchDoctorById };

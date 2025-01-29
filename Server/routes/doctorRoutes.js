@@ -1,7 +1,8 @@
 const express = require('express');
 const doctorRouter = express.Router();
-const { fetchDoctors } = require("../controllers/doctorController");
+const { fetchDoctors, fetchDoctorById } = require("../controllers/doctorController");
 
 doctorRouter.get('/', fetchDoctors);
+doctorRouter.get('/:id', fetchDoctorById);
 
 module.exports = doctorRouter;

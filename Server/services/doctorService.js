@@ -9,5 +9,18 @@ const FetchDoctors = async () => {
     };
 };
 
+//Fetch doctor by id
+const FetchDoctorById = async (doctorId) => {
+    const doctor = await Doctor.findById(doctorId);
+    if (!doctor) {
+        throw new Error("Doctor not found");
+    }
 
-module.exports = { FetchDoctors };
+    return {
+        message: "Doctor fetched successfully",
+        doctor,
+    };
+};
+
+
+module.exports = { FetchDoctors, FetchDoctorById };
