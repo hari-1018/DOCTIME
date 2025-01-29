@@ -4,7 +4,7 @@ import { useNavigate,Link } from "react-router-dom";
 import { useFormik } from "formik";
 import { GoogleLogin } from "@react-oauth/google";
 import axiosInstance from "../../config/axiosInstance";
-import endPoints from "../../config/endPoints";
+import userEndPoints from "../../config/users/userApi";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -61,7 +61,7 @@ const Register = () => {
     onSubmit: async (values) => {
       try {
         const response = await axiosInstance.post(
-          endPoints.AUTH.REGISTER,
+          userEndPoints.USER.REGISTER,
           {
             name: values.fullname,
             email: values.email,

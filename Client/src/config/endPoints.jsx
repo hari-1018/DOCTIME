@@ -1,10 +1,4 @@
 const endPoints = {
-    AUTH: {
-      LOGIN: "/auth/login",
-      REGISTER: "/auth/register",
-      GOOGLE_AUTH: "/auth/google",
-      GET_DOCTORS: "auth/doctors"
-    },
     ADMIN:{
       GET_ALL_USERS: "/admin/patients",
       GET_ALL_DOCTORS: "/admin/doctors",

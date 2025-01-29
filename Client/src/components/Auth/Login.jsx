@@ -4,10 +4,10 @@ import axios from "axios";
 import { MailIcon, LockClosedIcon } from "@heroicons/react/outline";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useFormik } from "formik";
 import axiosInstance from "../../config/axiosInstance";
-import endPoints from "../../config/endPoints";
+import userEndPoints from "../../config/users/userApi";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
@@ -31,7 +31,7 @@ const Login = () => {
     onSubmit: async (values) => {
       setError("");
       try {
-        const response = await axiosInstance.post(endPoints.AUTH.LOGIN, {
+        const response = await axiosInstance.post(userEndPoints.USER.LOGIN, {
           email: values.email,
           password: values.password,
         });
