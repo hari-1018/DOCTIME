@@ -112,14 +112,6 @@ const GoogleAuth = async (data) => {
     };
 };
 
-//Fetch all doctors
-const FetchDoctors = async () => {
-    const doctors = await Doctor.find(); 
-    return {
-        message: "All doctors fetched successfully",
-        doctors,
-    };
-};
 
 //Book an Appointment
 const BookAppointment = async ({ patientId, doctorId, slotDate, slotTime }) => {
@@ -164,4 +156,4 @@ const BookAppointment = async ({ patientId, doctorId, slotDate, slotTime }) => {
     };
 };
 
-module.exports = {Register, Login, GoogleAuth, FetchDoctors, BookAppointment };
+module.exports = {Register, Login, GoogleAuth, BookAppointment };

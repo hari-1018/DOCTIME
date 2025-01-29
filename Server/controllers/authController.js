@@ -1,5 +1,5 @@
 const {validateRegister, validateLogin} = require("../validations/authValidation");
-const {Register, Login, GoogleAuth, FetchDoctors, BookAppointment} = require("../services/authService");
+const {Register, Login, GoogleAuth, BookAppointment} = require("../services/authService");
 const CustomError = require("../utils/customError");
 const asyncErrorResolver = require("../utils/asyncErrorResolver");
 const { OAuth2Client } = require("google-auth-library");
@@ -30,13 +30,6 @@ const googleAuth = asyncErrorResolver(async (req, res) => {
     res.status(200).json({ status: "success", message: "Successfully logged in with Google", data:response });
 });
 
-//Fetch Doctors
-const fetchDoctors = asyncErrorResolver(async (req, res) => {
-    const result = await FetchDoctors();
-    console.log("get all doctors", result);
-    res.status(200).json({ status: "success", result });
-});
-
 //Book Appointment
 const bookAppointment = asyncErrorResolver(async (req, res) => {
     const { patientId, doctorId, slotDate, slotTime } = req.body;
@@ -46,4 +39,4 @@ const bookAppointment = asyncErrorResolver(async (req, res) => {
     res.status(200).json({status: "success", message: "Appointment booked successfully", result });
 });
 
-module.exports = { register, login, googleAuth, fetchDoctors, bookAppointment };
+module.exports = { register, login, googleAuth, bookAppointment };
