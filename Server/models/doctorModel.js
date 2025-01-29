@@ -10,15 +10,16 @@ const doctorModel = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    fees: {
-        type: Number,
-    },
     password: {
         type: String,
         required: true,
     },
     image: {
         type: String,
+    },
+    about:{
+        type: String,
+        required: true,
     },
     qualifications: {
         type: [String],
@@ -36,7 +37,15 @@ const doctorModel = new mongoose.Schema({
         type: Boolean,
         default: true,
     },
-}, { timestamps: true });
+    fees: {
+        type: Number,
+    },
+    slotsBooked: {
+        type: Map,
+        of: [String], 
+        default: {},
+    },
+},{ timestamps: true });
 
 
 module.exports = mongoose.model('Doctors', doctorModel);

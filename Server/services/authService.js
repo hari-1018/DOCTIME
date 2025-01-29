@@ -1,10 +1,13 @@
 const User = require("../models/userModel");
 const Doctor = require("../models/doctorModel");
 const Admin = require("../models/adminModel");
+const Appointment = require("../models/appointmentModel");
 const bcrypt = require("bcryptjs");
 const {generateToken} = require("../utils/jwt");
 const CustomError = require("../utils/customError");
 const { OAuth2Client } = require('google-auth-library');
+const mongoose = require('mongoose');
+
 
 //Register User
 const Register = async(data) =>{
@@ -61,6 +64,7 @@ const Login = async(data) =>{
     }
 };
 
+//By Google
 const GoogleAuth = async (data) => {
     const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
     const { credential } = data;
@@ -108,5 +112,56 @@ const GoogleAuth = async (data) => {
     };
 };
 
+//Fetch all doctors
+const FetchDoctors = async () => {
+    const doctors = await Doctor.find(); 
+    return {
+        message: "All doctors fetched successfully",
+        doctors,
+    };
+};
 
-module.exports = {Register, Login, GoogleAuth};
+//Book an Appointment
+const BookAppointment = async ({ patientId, doctorId, slotDate, slotTime }) => {
+    // Find the doctor without using a session (no transaction)
+    const doctorData = await Doctor.findById(doctorId).select('-password');
+    if (!doctorData || !doctorData.availability) {
+        throw new CustomError("Doctor is not available at this time", 400);
+    }
+    console.log("doctorData", doctorData);
+
+    const slotsBooked = doctorData.slotsBooked || new Map();
+    const dateSlots = slotsBooked.get(slotDate) || [];
+
+    // Check if the slot is already booked
+    if (dateSlots.includes(slotTime)) {
+        throw new CustomError("Slot already booked", 400);
+    }
+    // Book the slot by adding it to the doctor's slotsBooked
+    dateSlots.push(slotTime);
+    slotsBooked.set(slotDate, dateSlots);
+
+    const appointmentData = {
+        patientId,
+        doctorId,
+        slotDate,
+        slotTime,
+        fees: doctorData.fees,
+    };
+
+    // Create the new appointment
+    const newAppointment = new Appointment(appointmentData);
+    await newAppointment.save();
+
+    // Update Doctor's slotsBooked
+    await Doctor.findByIdAndUpdate(doctorId, { slotsBooked });
+
+    return {
+        appointmentId: newAppointment._id,
+        slotDate,
+        slotTime,
+        fees: doctorData.fees,
+    };
+};
+
+module.exports = {Register, Login, GoogleAuth, FetchDoctors, BookAppointment };

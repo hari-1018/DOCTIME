@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const Doctor = require("../models/doctorModel");
+const Appointment = require("../models/appointmentModel");
 const bcrypt = require("bcryptjs");
 const CustomError = require("../utils/customError");
 
@@ -14,7 +15,7 @@ const AddDoctor = async(data) =>{
     const password = await bcrypt.hash('password', salt);
 
     const newDoctor = new Doctor({
-        name, email, password,image, qualifications, specialization, experience, fees, availability});
+        name, email, password, image, qualifications, specialization, experience, fees, availability});
     await newDoctor.save();
     return { 
         message: "Doctor Added Successfully",         
@@ -28,6 +29,7 @@ const AddDoctor = async(data) =>{
         experience: newDoctor.experience,
         fees: newDoctor.fees,
         availability: newDoctor.availability,
+        password: newDoctor.password
 
     }
 }
@@ -49,6 +51,14 @@ const TotalDoctors = async () => {
         };
     };
 
+    const TotalAppointments = async () => {
+        const totalAppointments = await Appointment.countDocuments(); 
+        return { 
+          message: "Total appointments fetched successfully", 
+          totalAppointments
+        };
+    };
+
 const GetAllUsers = async () => {
         const users = await User.find(); 
         return {
@@ -60,7 +70,15 @@ const GetAllUsers = async () => {
 const GetAllDoctors = async () => {
     const doctors = await Doctor.find(); 
     return {
-        message: "All doctorss fetched successfully",
+        message: "All doctors fetched successfully",
+        doctors,
+    };
+};
+
+const GetAllAppointments = async () => {
+    const doctors = await Appointment.find(); 
+    return {
+        message: "All appointments fetched successfully",
         doctors,
     };
 };
@@ -83,4 +101,4 @@ const GetAllDoctors = async () => {
 
   
 
-module.exports = { AddDoctor, TotalUsers, TotalDoctors, GetAllUsers, GetAllDoctors }
+module.exports = { AddDoctor, TotalUsers, TotalDoctors, TotalAppointments, GetAllUsers, GetAllDoctors, GetAllAppointments }

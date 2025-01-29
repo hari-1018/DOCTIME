@@ -1,4 +1,4 @@
-const { AddDoctor, TotalUsers, TotalDoctors, GetAllUsers, GetAllDoctors } = require("../services/adminService");
+const { AddDoctor, TotalUsers, TotalDoctors, TotalAppointments, GetAllUsers, GetAllDoctors, GetAllAppointments } = require("../services/adminService");
 const CustomError = require("../utils/customError");
 const asyncErrorResolver = require("../utils/asyncErrorResolver");
 
@@ -20,6 +20,11 @@ const fetchTotalDoctors = asyncErrorResolver(async (req, res) => {
     res.status(200).json({status: "success", result});
 });
 
+const fetchTotalAppointments = asyncErrorResolver(async (req, res) => {
+    const result = await TotalAppointments();
+    res.status(200).json({status: "success", result});
+});
+
 const fetchAllUsers = asyncErrorResolver(async (req, res) => {
     const result = await GetAllUsers();
     console.log("get all users", result);
@@ -32,6 +37,11 @@ const fetchAllDoctors = asyncErrorResolver(async (req, res) => {
     res.status(200).json({ status: "success", result });
 });
 
+const fetchAllAppointments = asyncErrorResolver(async (req, res) => {
+    const result = await GetAllAppointments();
+    console.log("get all appointments", result);
+    res.status(200).json({ status: "success", result });
+});
 // const blockUser = asyncErrorResolver(async (req, res) => {
 //         const userID = req.params.id; // 
 //         const result = await blockUser(userID); 
@@ -39,4 +49,4 @@ const fetchAllDoctors = asyncErrorResolver(async (req, res) => {
 
 // });
 
-module.exports = { addNewDoctor, fetchTotalUsers, fetchTotalDoctors, fetchAllUsers, fetchAllDoctors };
+module.exports = { addNewDoctor, fetchTotalUsers, fetchTotalDoctors, fetchTotalAppointments, fetchAllUsers, fetchAllDoctors, fetchAllAppointments };
