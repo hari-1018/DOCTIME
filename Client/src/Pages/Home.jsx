@@ -48,7 +48,7 @@ const Home = () => {
   return (
 <>
   <Navbar />
-  <div id="home1" className="w-full h-[750px] text-center py-24 px-4">
+  <div id="home" className="w-full h-[750px] text-center py-24 px-4">
     <h2 className="text-xl text-blue-default uppercase font-bold mb-4">Welcome to DOCTIME</h2>
     <h1 className="text-3xl font-bold text-blue-home mb-4">A Great Place to Receive Care</h1>
     <p className="text-lg text-blue-500 mb-2">
@@ -64,7 +64,7 @@ const Home = () => {
   </div>
 </div>
 
-<section className="bg-white py-2 -mt-64 md:mt-0">
+<section className="bg-white py-2 -mt-64 md:mt-4">
   <div className="container mx-auto w-full">
   <h2 className="text-3xl font-bold text-center text-blue-default mb-4">Services of Specialists</h2>
   <p className="text-lg text-center text-blue-default mb-16">
@@ -127,9 +127,9 @@ const Home = () => {
   </div>
 </div>
 
-<div id="about" className="bg-white py-6 px-6">
+<section id="about" className="bg-white py-6 px-6">
   <div className="max-w-8xl mx-auto">
-    <div className="flex flex-col lg:flex-row items-center  h-[500px]">
+    <div className="flex flex-col lg:flex-row items-center h-[500px] md:mt-8">
       <div className="relative flex-shrink-0 w-full lg:w-1/2 mb-10 lg:mb-0">
         <div className="relative -ml-4 md:mx-auto w-96 h-96 bg-blue-default text-white rounded-full flex flex-col justify-center items-center text-center shadow-lg md:mt-8">
           <h3 className="text-2xl font-bold">Your Health,<br/> Our Priority</h3>
@@ -144,8 +144,8 @@ const Home = () => {
       </div>
 
       <div className="flex-1 -ml-6 lg:pl-8 text-center lg:text-left px-16">
-        <h2 className="text-3xl font-bold text-blue-default mb-2 text-center">What We Offer?</h2>
-        <p className="text-blue-default mb-8 text-center">
+        <h2 className="text-3xl font-bold text-blue-default mb-2 text-center ml-3 md:ml-0">What We Offer?</h2>
+        <p className="text-blue-default mb-8 text-center ml-3 md:ml-0">
           We strive to ensure you feel cared for every step of the way.
         </p>
 
@@ -202,7 +202,7 @@ const Home = () => {
       </div>
     </div>
   </div>
-</div>
+</section>
 
 <Contact/>
 <Footer/>

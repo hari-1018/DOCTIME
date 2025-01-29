@@ -14,9 +14,6 @@ const endPoints = {
       GET_TOTAL_USERS: "/admin/dashboard/total-users",
       GET_TOTAL_DOCTORS: "/admin/dashboard/total-doctors",
       GET_TOTAL_APPOINTMENTS: "/admin/dashboard/total-appointments",
-      
-
-
     },
 }
 

@@ -3,7 +3,7 @@ import { BsTwitterX } from "react-icons/bs";
 const Footer = () => {
   return (
     <>
-    <footer className="bg-blue-default py-10">
+    <footer className="bg-blue-default py-8">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-5 gap-10 px-4">
         <div>
           <h2 className="text-lg text-blue-800 font-bold mb-4 text-center">DOCTIME</h2>

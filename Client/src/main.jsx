@@ -5,6 +5,8 @@ import App from './App.jsx';
 import { BrowserRouter } from 'react-router-dom';
 import {GoogleOAuthProvider} from '@react-oauth/google';
 import { ToastContainer } from 'react-toastify';
+import { Provider } from 'react-redux';
+import store from './app/store.jsx';
 
 
 const CLIENTID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
@@ -12,6 +14,7 @@ const CLIENTID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
+    <Provider store={store}>
     <GoogleOAuthProvider clientId={CLIENTID}>
       <App />
       <ToastContainer
@@ -32,6 +35,7 @@ createRoot(document.getElementById('root')).render(
           backgroundColor: '#ffcc00',
         }}/>
     </GoogleOAuthProvider>
+    </Provider>
     </BrowserRouter>
   </StrictMode>,
 )

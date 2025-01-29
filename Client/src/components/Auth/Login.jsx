@@ -10,9 +10,12 @@ import axiosInstance from "../../config/axiosInstance";
 import endPoints from "../../config/endPoints";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
+import { SignIn } from "../../redux/authSlice";
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
@@ -42,12 +45,10 @@ const Login = () => {
           }
           console.log("user role", user.user.role);
 
-          localStorage.setItem("loggedInUser", JSON.stringify(user));
-          localStorage.setItem("secretToken", JSON.stringify(user.token));
-          localStorage.setItem("role", user.user.role);
+          dispatch(SignIn(user));
           window.dispatchEvent(new Event("loginChange"));
-
           toast.success("Welcome back! You're successfully signed in!");
+
             if (user.user.role === "Admin") {
               navigate("/admin/dashboard");
             } else if (user.user.role === "Doctor") {
@@ -68,13 +69,13 @@ const Login = () => {
     },
   });
 
-  useEffect(() => {
-    const loggedInUser = localStorage.getItem("loggedInUser");
-    if (loggedInUser) {
-      const user = JSON.parse(loggedInUser);
-      formik.setValues({ email: user.email || "", password: user.password || "" });
-    }
-  }, []);
+  // useEffect(() => {
+  //   const loggedInUser = localStorage.getItem("loggedInUser");
+  //   if (loggedInUser) {
+  //     const user = JSON.parse(loggedInUser);
+  //     formik.setValues({ email: user.email || "", password: user.password || "" });
+  //   }
+  // }, []);
 
   return (
     <div className="min-h-screen bg-blue-200 flex flex-col justify-center items-center px-4 sm:px-8 lg:px-0">

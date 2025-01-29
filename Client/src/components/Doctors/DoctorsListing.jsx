@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Navbar from "../Navbar/Navbar";
 import axiosInstance from "../../config/axiosInstance";
 import endPoints from "../../config/endPoints";
+import { Link } from "react-router-dom";
 
 const DoctorListing = () => {
   const [selectedSpecialization, setSelectedSpecialization] = useState("All");
@@ -71,7 +72,7 @@ const DoctorListing = () => {
                     className={`w-full text-left py-2 px-4 rounded-lg ${
                       selectedSpecialization === "All"
                         ? "bg-blue-600 text-white"
-                        : "bg-blue-200 text-blue-800 hover:bg-blue-300"
+                        : "text-blue-default hover:bg-blue-300 hover:text-white"
                     }`}
                   >
                     All
@@ -88,7 +89,7 @@ const DoctorListing = () => {
                         className={`w-full text-left py-2 px-4 rounded-lg ${
                           selectedSpecialization === spec
                             ? "bg-blue-600 text-white"
-                            : "bg-blue-200 text-blue-800 hover:bg-blue-300"
+                            : " text-blue-default hover:bg-blue-300 hover:text-white"
                         }`}
                       >
                         {spec}
@@ -110,7 +111,7 @@ const DoctorListing = () => {
               <>
                 <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-evenly md:ml-8">
                   {currentDoctors.map((doctor) => (
-                    <div key={doctor.email} className="bg-white rounded-lg shadow-md p-3">
+                    <Link key={doctor.email} to='/doctor' className="bg-white rounded-lg shadow-md p-3">
                       <img
                         src={doctor.image}
                         alt={doctor.name}
@@ -139,7 +140,7 @@ const DoctorListing = () => {
                       >
                         {doctor.availability ? "Available" : "Not Available"}
                       </p>
-                    </div>
+                    </Link>
                   ))}
                 </div>
 

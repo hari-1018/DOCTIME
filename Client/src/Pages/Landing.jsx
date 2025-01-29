@@ -59,7 +59,7 @@ const Landing = () => {
         <Navbar />
 
             {/* Hero Section */}
-            <div id="home" className="w-full min-h-screen bg-blue-default flex items-center justify-center">
+            <div id="landinghome" className="w-full min-h-screen bg-blue-default flex items-center justify-center">
                 <div className="flex flex-col-reverse md:flex-row items-center justify-between">
                     <div className="text-white p-4 mt-16 md:ml-16">
                         <h1 className="text-4xl font-bold mb-4 text-center">
