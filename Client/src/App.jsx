@@ -27,7 +27,7 @@ function App() {
   <Route element={<UserRoutes/>}>
     <Route path="/home" element={<Home />} />
     <Route path="/doctors" element={<DoctorsListing />} />
-    <Route path="/doctor" element={<DoctorDetails />} />
+    <Route path="/doctors/:id" element={<DoctorDetails />} />
   </Route>
 
   {/* Admin Routes */}

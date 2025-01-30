@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Navbar from "../Navbar/Navbar";
 import axiosInstance from "../../config/axiosInstance";
-import endPoints from "../../config/endPoints";
+import doctorEndPoints from "../../config/doctors/doctorApi";
 import { Link } from "react-router-dom";
 
 const DoctorListing = () => {
@@ -13,7 +13,7 @@ const DoctorListing = () => {
 
   const userFetchDoctors = async () => {
     try {
-      const response = await axiosInstance.get(endPoints.ADMIN.GET_ALL_DOCTORS);
+      const response = await axiosInstance.get(doctorEndPoints.DOCTOR.GET_DOCTORS);
       console.log("fetchalldoctors", response.data.result.doctors);
       setDoctors(response.data.result.doctors);
     } catch (error) {
@@ -111,7 +111,7 @@ const DoctorListing = () => {
               <>
                 <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-evenly md:ml-8">
                   {currentDoctors.map((doctor) => (
-                    <Link key={doctor.email} to='/doctor' className="bg-white rounded-lg shadow-md p-3">
+                    <Link key={doctor.email} to={`/doctors/${doctor._id}`} className="bg-white rounded-lg shadow-md p-3">
                       <img
                         src={doctor.image}
                         alt={doctor.name}
