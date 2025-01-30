@@ -156,4 +156,4 @@ const BookAppointment = async ({ patientId, doctorId, slotDate, slotTime }) => {
     };
 };
 
-module.exports = {Register, Login, GoogleAuth, BookAppointment };
+module.exports = {Register, Login, GoogleAuth };

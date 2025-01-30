@@ -1,5 +1,5 @@
 const {validateRegister, validateLogin} = require("../validations/authValidation");
-const {Register, Login, GoogleAuth, BookAppointment} = require("../services/authService");
+const {Register, Login, GoogleAuth} = require("../services/authService");
 const CustomError = require("../utils/customError");
 const asyncErrorResolver = require("../utils/asyncErrorResolver");
 const { OAuth2Client } = require("google-auth-library");
@@ -39,4 +39,4 @@ const bookAppointment = asyncErrorResolver(async (req, res) => {
     res.status(200).json({status: "success", message: "Appointment booked successfully", result });
 });
 
-module.exports = { register, login, googleAuth, bookAppointment };
+module.exports = { register, login, googleAuth };
