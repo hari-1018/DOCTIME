@@ -44,18 +44,18 @@ const Appointments = () => {
 
             {/* Appointment Details */}
             <div className="flex-1">
-              <h3 className="text-lg font-bold text-gray-800">
+              <h3 className="text-lg font-bold text-blue-default">
                 {appointment.doctorId.name}
               </h3>
               <p className="text-sm text-gray-600">{appointment.doctorId.specialization}</p>
 
-              <p className="text-sm text-gray-700 mt-2">
+              <p className="text-sm text-red-500 mt-3">
                 <span className="font-semibold">Date:</span> {appointment.slotDate}
               </p>
-              <p className="text-sm text-gray-700 mt-1">
+              <p className="text-sm text-red-500 mt-1">
                 <span className="font-semibold">Time:</span> {appointment.slotTime}
               </p>
-              <p className="text-sm text-gray-700 mt-1">
+              <p className="text-sm text-blue-600 mt-1">
                 <span className="font-semibold">Consultation Fees:</span> {appointment.fees} /-
               </p>
             </div>
@@ -66,10 +66,10 @@ const Appointments = () => {
                 <button className="py-2 px-4 rounded-lg bg-green-500 text-white font-semibold border">
                   Pay Online
                 </button>
-                <button className="py-2 px-4 rounded-lg bg-blue-default text-white border">
+                <button className="py-2 px-4 rounded-lg bg-blue-default text-white font-semibold border">
                   Reschedule
                 </button>
-                <button className="py-2 px-4 rounded-lg border bg-red-400 text-white">
+                <button className="py-2 px-4 rounded-lg bg-red-400 text-white font-semibold border">
                   Cancel
                 </button>
               </div>
