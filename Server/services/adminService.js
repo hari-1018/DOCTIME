@@ -76,10 +76,12 @@ const GetAllDoctors = async () => {
 };
 
 const GetAllAppointments = async () => {
-    const doctors = await Appointment.find(); 
+    const appointments = await Appointment.find()
+        .populate("doctorId", "name specialization")
+        .populate("patientId", "name");
     return {
         message: "All appointments fetched successfully",
-        doctors,
+        appointments,
     };
 };
 

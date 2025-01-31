@@ -36,13 +36,35 @@ const BookAppointment = async ({ patientId, doctorId, slotDate, slotTime }) => {
     // Update Doctor's slotsBooked
     await Doctor.findByIdAndUpdate(doctorId, { slotsBooked });
 
+    const appointmentDetails = await Appointment.findById(newAppointment._id)
+       .populate("patientId", "name")
+       .populate("doctorId", "name image");
+
     return {
         appointmentId: newAppointment._id,
         slotDate,
         slotTime,
         fees: doctorData.fees,
+        patientName: appointmentDetails.patientId.name,
+        doctorName: appointmentDetails.doctorId.name,
+        doctorImage: appointmentDetails.doctorId.image,
     };
 };
 
+//User view their appointments 
+const UserViewAppointments = async(patientId) =>{
+    if(!patientId){
+        throw new CustomError("Invalid patient ID", 400);
+    }
+    const appointments = await Appointment.find({ patientId: patientId })
+        .populate("doctorId", "name image specialization")
+        .populate("patientId", "name");
 
-module.exports = { BookAppointment };
+    if(!appointments || appointments.length === 0){
+        throw new CustomError("No appointments found", 404);
+    }
+    return appointments;
+}
+
+
+module.exports = { BookAppointment, UserViewAppointments };
