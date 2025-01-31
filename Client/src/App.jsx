@@ -6,6 +6,7 @@ import Login from './components/Auth/Login';
 import Home from './pages/Home';
 import DoctorsListing from "./components/Doctors/DoctorsListing";
 import DoctorDetails from './components/Doctors/DoctorDetails';
+import Appointments from './components/Appointments/Appointments';
 import Sidebar from './components/Admin/Sidebar';
 import Dashboard from './components/Admin/Dashboard';
 import Patients from './components/Admin/Patients';
@@ -28,6 +29,8 @@ function App() {
     <Route path="/home" element={<Home />} />
     <Route path="/doctors" element={<DoctorsListing />} />
     <Route path="/doctors/:id" element={<DoctorDetails />} />
+    <Route path="/appointments/:id" element={<Appointments />} />
+
   </Route>
 
   {/* Admin Routes */}

@@ -8,13 +8,18 @@ import { MdLogout } from "react-icons/md";
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("user");
-    setIsLoggedIn(!!loggedInUser);
+    if(loggedInUser){
+      const user = JSON.parse(loggedInUser);
+      setIsLoggedIn(true);
+      setUserId(user.id);
+    }
   }, []);
-
+  
   const handleSignOut = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
@@ -56,7 +61,7 @@ const Navbar = () => {
             <Link to={isLoggedIn ? "/doctors" : "/register"}>DOCTORS</Link>
           </li>
           <li className="cursor-pointer text-base text-blue-default hover:border-b-2 border-blue-default">
-            <Link to={isLoggedIn ? "/appointments" : "/register"}>APPOINTMENTS</Link>
+            <Link to={isLoggedIn ? `/appointments/${userId}` : "/register"}>APPOINTMENTS</Link>
           </li>
           <li className="cursor-pointer text-base text-blue-default hover:border-b-2 border-blue-default">
             <a href={isLoggedIn ? "#about" : "#join"}>ABOUT US</a>
