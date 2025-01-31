@@ -3,25 +3,31 @@ import axiosInstance from "../../config/axiosInstance";
 import endPoints from "../../config/endPoints";
 
 function AllDoctors() {
-  const [customers, setCustomers] = useState([]);
+  const [doctors, setDoctors] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const DOCTORS_PER_PAGE = 10;
 
+  // Fetch all doctors
   const fetchDoctors = async () => {
     try {
       const response = await axiosInstance.get(endPoints.ADMIN.GET_ALL_DOCTORS);
       console.log("fetchalldoctors", response.data.result.doctors);
-      setCustomers(response.data.result.doctors);
+      const sortedDoctors = response.data.result.doctors.sort(
+        (a, b) => b.experience - a.experience
+      );
+      setDoctors(sortedDoctors);
     } catch (error) {
-      console.error("Error fetching customers:", error);
+      console.error("Error fetching doctors:", error);
     }
   };
-
 
   useEffect(() => {
     fetchDoctors();
   }, []);
 
-  const filteredCustomers = customers.filter((doctor) => {
+  // Filter doctors based on search term
+  const filteredDoctors = doctors.filter((doctor) => {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
     return (
       (doctor.name?.toLowerCase().includes(lowerCaseSearchTerm) || false) ||
@@ -29,6 +35,25 @@ function AllDoctors() {
       (doctor.mobile?.toString().includes(lowerCaseSearchTerm) || false)
     );
   });
+
+  // Calculate paginated data
+  const indexOfLastDoctor = currentPage * DOCTORS_PER_PAGE;
+  const indexOfFirstDoctor = indexOfLastDoctor - DOCTORS_PER_PAGE;
+  const currentDoctors = filteredDoctors.slice(
+    indexOfFirstDoctor,
+    indexOfLastDoctor
+  );
+
+  // Handle page change
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) =>
+      Math.min(prevPage + 1, Math.ceil(filteredDoctors.length / DOCTORS_PER_PAGE))
+    );
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
 
   return (
     <div className="p-2">
@@ -54,14 +79,14 @@ function AllDoctors() {
               <th className="py-2 px-4 border w-30">Name</th>
               <th className="py-2 px-4 border w-30">Email</th>
               <th className="py-2 px-4 border w-30">Specialization</th>
-              <th className="py-2 px-4 border w-32">Qualifications</th>
-              <th className="py-2 px-4 border w-24">Experience</th>
-              <th className="py-2 px-4 border w-24">Fees</th>
+              <th className="py-2 px-4 border w-28">Qualifications</th>
+              <th className="py-2 px-4 border w-28">Years of Experience</th>
+              <th className="py-2 px-4 border w-20">Fees</th>
             </tr>
           </thead>
           <tbody>
-            {filteredCustomers.length > 0 ? (
-              filteredCustomers.map((doctor) => (
+            {currentDoctors.length > 0 ? (
+              currentDoctors.map((doctor) => (
                 <tr key={doctor._id} className="hover:bg-gray-100">
                   <td className="py-2 px-2 border text-gray-600">
                     {doctor.name}
@@ -73,15 +98,14 @@ function AllDoctors() {
                     {doctor.specialization || "N/A"}
                   </td>
                   <td className="py-2 px-2 border text-gray-600">
-                    {doctor.qualifications || "N/A"}
+                    {doctor.qualifications.join(", ") || "N/A"}
                   </td>
                   <td className="py-2 px-2 border text-gray-600">
                     {doctor.experience || "N/A"}
                   </td>
                   <td className="py-2 px-2 border text-gray-600">
-                    {doctor.fees || "N/A"}
+                    {doctor.fees || "N/A"}/-
                   </td>
-
                 </tr>
               ))
             ) : (
@@ -93,6 +117,36 @@ function AllDoctors() {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center mt-4 space-x-4">
+        <button
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+          className={`px-4 py-2 rounded ${
+            currentPage === 1
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-blue-default text-white hover:bg-blue-600"
+          }`}
+        >
+          Previous
+        </button>
+        <span className="text-gray-600 mt-2">
+          Page {currentPage} of{" "}
+          {Math.ceil(filteredDoctors.length / DOCTORS_PER_PAGE)}
+        </span>
+        <button
+          onClick={handleNextPage}
+          disabled={currentPage === Math.ceil(filteredDoctors.length / DOCTORS_PER_PAGE)}
+          className={`px-4 py-2 rounded ${
+            currentPage === Math.ceil(filteredDoctors.length / DOCTORS_PER_PAGE)
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-blue-500 text-white hover:bg-blue-600"
+          }`}
+        >
+          Next
+        </button>
       </div>
     </div>
   );
