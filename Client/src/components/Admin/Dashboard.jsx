@@ -50,8 +50,8 @@ const Dashboard = () => {
   const fetchTotalAppointments = async () => {
     try {
       const response = await axiosInstance.get(endPoints.ADMIN.GET_TOTAL_APPOINTMENTS);
-      console.log('dashappo', response.data.result);
-      setTotalAppointments(response.data.result.totalAppoinments);
+      console.log('dashappo', response.data.result.totalAppointments);
+      setTotalAppointments(response.data.result.totalAppointments);
     } catch (error) {
       console.error('Error fetching doctors:', error);
     }

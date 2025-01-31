@@ -9,10 +9,12 @@ import DoctorDetails from './components/Doctors/DoctorDetails';
 import Appointments from './components/Appointments/Appointments';
 import Sidebar from './components/Admin/Sidebar';
 import Dashboard from './components/Admin/Dashboard';
+import AllDoctors from './components/Admin/Doctors';
 import Patients from './components/Admin/Patients';
+import AllAppointments from './components/Admin/Appointments';
 import AdminRoutes from './routes/AdminRoutes';
 import UserRoutes from './routes/UserRoutes';
-import AllDoctors from './components/Admin/Doctors';
+
 
 
 function App() {
@@ -40,6 +42,8 @@ function App() {
     <Route path="dashboard" element={<Dashboard />} />
     <Route path="all-patients" element={<Patients />} />
     <Route path="all-doctors" element={<AllDoctors />} />
+    <Route path="all-appointments" element={<AllAppointments />} />
+
   </Route>
   </Route>
 </Routes>
