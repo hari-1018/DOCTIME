@@ -1,4 +1,4 @@
-import DoctorLogin from "../../assets/freepik__upload__30235.png";
+import DoctorLogin from "../../assets/DoctorLogin.png";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { MailIcon, LockClosedIcon } from "@heroicons/react/outline";
