@@ -3,7 +3,6 @@ require('dotenv').config();
 const app = require('./app');
 const connectDB = require('./config/dbconnect');
 
-require('./utils/cronJobs');
 connectDB();
 const PORT = process.env.PORT || 5600;
 

@@ -1,0 +1,1 @@
+// export const RESPONSE = {success:"success", failure:"failure"}

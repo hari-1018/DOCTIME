@@ -28,16 +28,16 @@ const Register = async(data) =>{
 const Login = async(data) =>{
     const {email, password} = data;
     let user = await User.findOne({email});
-    let role = "User";
+    let role = "user";
 
-    if(!user){
-        user = await Doctor.findOne({email});
-        role = "Doctor";
-    }
-    if (!user) {
-        user = await Admin.findOne({email});
-        role = "Admin";
-    }
+    // if(!user){
+    //     user = await Doctor.findOne({email});
+    //     role = "Doctor";
+    // }
+    // if (!user) {
+    //     user = await Admin.findOne({email});
+    //     role = "Admin";
+    // }
 
     if(!user){
         throw new CustomError("User Not Found", 404)
@@ -58,6 +58,36 @@ const Login = async(data) =>{
             email: user.email,
             mobile: user.mobile,
             isBlocked: user.isBlocked,
+            role
+        },
+        token,
+    }
+};
+
+//Login Doctor
+const DoctorLogin = async(data) =>{
+    const {email, password} = data;
+    let doctor = await Doctor.findOne({email});
+    let role = "doctor";
+
+    if(!doctor){
+        throw new CustomError("Doctor Not Found", 404)
+    }
+    console.log("Password", password);
+    console.log("Hashed password", doctor.password);
+
+    const isMatch = await bcrypt.compare(password, doctor.password);
+    console.log("Password match", isMatch);
+
+    if(!isMatch) throw new CustomError("Incorrect Email or Password", 401)
+
+    const token = generateToken(doctor._id, role);
+    return {
+        user: {
+            id: doctor._id,
+            name: doctor.name,
+            email: doctor.email,
+            mobile: doctor.mobile,
             role
         },
         token,
@@ -113,47 +143,5 @@ const GoogleAuth = async (data) => {
 };
 
 
-//Book an Appointment
-const BookAppointment = async ({ patientId, doctorId, slotDate, slotTime }) => {
-    // Find the doctor without using a session (no transaction)
-    const doctorData = await Doctor.findById(doctorId).select('-password');
-    if (!doctorData || !doctorData.availability) {
-        throw new CustomError("Doctor is not available at this time", 400);
-    }
-    console.log("doctorData", doctorData);
 
-    const slotsBooked = doctorData.slotsBooked || new Map();
-    const dateSlots = slotsBooked.get(slotDate) || [];
-
-    // Check if the slot is already booked
-    if (dateSlots.includes(slotTime)) {
-        throw new CustomError("Slot already booked", 400);
-    }
-    // Book the slot by adding it to the doctor's slotsBooked
-    dateSlots.push(slotTime);
-    slotsBooked.set(slotDate, dateSlots);
-
-    const appointmentData = {
-        patientId,
-        doctorId,
-        slotDate,
-        slotTime,
-        fees: doctorData.fees,
-    };
-
-    // Create the new appointment
-    const newAppointment = new Appointment(appointmentData);
-    await newAppointment.save();
-
-    // Update Doctor's slotsBooked
-    await Doctor.findByIdAndUpdate(doctorId, { slotsBooked });
-
-    return {
-        appointmentId: newAppointment._id,
-        slotDate,
-        slotTime,
-        fees: doctorData.fees,
-    };
-};
-
-module.exports = {Register, Login, GoogleAuth };
+module.exports = {Register, Login, GoogleAuth, DoctorLogin };

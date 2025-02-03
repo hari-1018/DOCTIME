@@ -1,5 +1,5 @@
 const {validateRegister, validateLogin} = require("../validations/authValidation");
-const {Register, Login, GoogleAuth} = require("../services/authService");
+const {Register, Login, DoctorLogin, GoogleAuth} = require("../services/authService");
 const CustomError = require("../utils/customError");
 const asyncErrorResolver = require("../utils/asyncErrorResolver");
 const { OAuth2Client } = require("google-auth-library");
@@ -20,23 +20,25 @@ const login = asyncErrorResolver(async(req,res)=>{
     console.log("response", req.body)
     const response = await Login(req.body);
     console.log("login response", response)
-    res.status(200).json({status: "success", message: "Logged In Successfully", data:response});
+    res.status(200).json({status: "success", message: "Logged In Successfully", data: response});
+});
+
+//Doctor Login
+const doctorLogin = asyncErrorResolver(async(req,res)=>{
+    const {error} = validateLogin(req.body);
+    if(error) throw new CustomError(error.message, 400);
+    console.log("login response1", req.body)
+    const response = await DoctorLogin(req.body);
+    console.log("doctor login response", response)
+    res.status(200).json({status: "success", message: "Doctor Logged In Successfully", data: response});
 });
 
 //Google Authenticaton
 const googleAuth = asyncErrorResolver(async (req, res) => {
     const response = await GoogleAuth(req.body);
     console.log(response)
-    res.status(200).json({ status: "success", message: "Successfully logged in with Google", data:response });
+    res.status(200).json({ status: "success", message: "Successfully logged in with Google", data: response });
 });
 
-//Book Appointment
-const bookAppointment = asyncErrorResolver(async (req, res) => {
-    const { patientId, doctorId, slotDate, slotTime } = req.body;
 
-    const result = await BookAppointment({ patientId, doctorId, slotDate, slotTime });
-
-    res.status(200).json({status: "success", message: "Appointment booked successfully", result });
-});
-
-module.exports = { register, login, googleAuth };
+module.exports = { register, login, doctorLogin, googleAuth };

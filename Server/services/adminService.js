@@ -52,11 +52,11 @@ const TotalDoctors = async () => {
     };
 
     const TotalAppointments = async () => {
-        const totalAppointments = await Appointment.countDocuments(); 
-        return { 
-          message: "Total appointments fetched successfully", 
-          totalAppointments
-        };
+        return await Appointment.countDocuments(); 
+        // return { 
+        //   message: "Total appointments fetched successfully", 
+        //   totalAppointments
+        // };
     };
 
 const GetAllUsers = async () => {
