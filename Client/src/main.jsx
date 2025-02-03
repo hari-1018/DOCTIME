@@ -18,21 +18,20 @@ createRoot(document.getElementById('root')).render(
     <GoogleOAuthProvider clientId={CLIENTID}>
       <App />
       <ToastContainer
-        position="top-center"
-        autoClose={5000}
+        autoClose={3000}
         hideProgressBar={false}
         closeOnClick
         pauseOnHover
         draggable
         style={{ 
           width: '400px',
-          padding: '20px',
+          padding: '10px',
           borderRadius: '8px',
           fontSize: '16px',
           zIndex: 9999
         }}
         progressStyle={{
-          backgroundColor: '#ffcc00',
+          backgroundColor: '#00ced1',
         }}/>
     </GoogleOAuthProvider>
     </Provider>

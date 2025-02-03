@@ -75,7 +75,7 @@ function AllDoctors() {
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-300">
           <thead>
-            <tr className="bg-gray-200">
+            <tr className="bg-blue-default text-white">
               <th className="py-2 px-4 border w-30">Name</th>
               <th className="py-2 px-4 border w-30">Email</th>
               <th className="py-2 px-4 border w-30">Specialization</th>
@@ -87,7 +87,7 @@ function AllDoctors() {
           <tbody>
             {currentDoctors.length > 0 ? (
               currentDoctors.map((doctor) => (
-                <tr key={doctor._id} className="hover:bg-gray-100">
+                <tr key={doctor._id} className="hover:bg-blue-200 text-center">
                   <td className="py-2 px-2 border text-gray-600">
                     {doctor.name}
                   </td>
@@ -142,7 +142,7 @@ function AllDoctors() {
           className={`px-4 py-2 rounded ${
             currentPage === Math.ceil(filteredDoctors.length / DOCTORS_PER_PAGE)
               ? "bg-gray-300 cursor-not-allowed"
-              : "bg-blue-500 text-white hover:bg-blue-600"
+              : "bg-blue-default text-white hover:bg-blue-600"
           }`}
         >
           Next

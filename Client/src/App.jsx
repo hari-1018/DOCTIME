@@ -3,6 +3,7 @@ import {Routes, Route} from 'react-router-dom';
 import Landing from './pages/Landing';
 import Register from './components/Auth/Register';
 import Login from './components/Auth/Login';
+import DoctorLogin from './components/Auth/DoctorLogin';
 import Home from './pages/Home';
 import DoctorsListing from "./components/Doctors/DoctorsListing";
 import DoctorDetails from './components/Doctors/DoctorDetails';
@@ -14,6 +15,7 @@ import Patients from './components/Admin/Patients';
 import AllAppointments from './components/Admin/Appointments';
 import AdminRoutes from './routes/AdminRoutes';
 import UserRoutes from './routes/UserRoutes';
+import Selection from './components/Auth/Selection';
 
 
 
@@ -24,7 +26,9 @@ function App() {
 <Routes>
   <Route path="/" element={<Landing />} />
   <Route path="/register" element={<Register />} />
+  <Route path="/select" element={<Selection />} />
   <Route path="/login" element={<Login />} />
+  <Route path='/doctor-login' element={<DoctorLogin/>}/>
 
   {/* User Routes */}
   <Route element={<UserRoutes/>}>

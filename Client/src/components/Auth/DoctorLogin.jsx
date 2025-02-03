@@ -1,4 +1,4 @@
-import Logo from "../../assets/Doctime.png";
+import DoctorLogin from "../../assets/freepik__upload__30235.png";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { MailIcon, LockClosedIcon } from "@heroicons/react/outline";
@@ -7,7 +7,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import { useFormik } from "formik";
 import axiosInstance from "../../config/axiosInstance";
-import userEndPoints from "../../config/users/userApi";
+import doctorEndPoints from "../../config/doctors/doctorApi";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
@@ -31,28 +31,22 @@ const Login = () => {
     onSubmit: async (values) => {
       setError("");
       try {
-        const response = await axiosInstance.post(userEndPoints.USER.LOGIN, {
+        const response = await axiosInstance.post(doctorEndPoints.DOCTOR.LOGIN, {
           email: values.email,
           password: values.password,
         });
 
         if (response.data) {
           const user = response.data.data;
-          console.log("user", user);
-          if (user.user.isBlocked) {
-            toast.error("Your account is temporarily blocked. Try again later.");
-            return;
-          }
+          console.log("doctor", user);
           console.log("user role", user.user.role);
 
           dispatch(SignIn(user));
           window.dispatchEvent(new Event("loginChange"));
           toast.success("Welcome back! You're successfully signed in!");
 
-            if (user.user.role === "admin") {
-              navigate("/admin/dashboard");
-            } else if (user.user.role === "user") {
-              navigate("/home");
+            if (user.user.role === "doctor") {
+              navigate("/doctor/dashboard");
             }
         } else {
           toast.error("Incorrect Email or Password. Please Try Again");
@@ -76,13 +70,16 @@ const Login = () => {
   // }, []);
 
   return (
-    <div className="min-h-screen bg-blue-200 flex flex-col justify-center items-center px-4 sm:px-8 lg:px-0">
+    <div className="min-h-screen bg-blue-regBg flex flex-col justify-center items-center px-4 sm:px-8 lg:px-0">
       {/* Registration Form */}
       <div className="w-full max-w-[1150px] h-auto sm:h-[575px] bg-white rounded-2xl flex flex-col sm:flex-row overflow-hidden">
+                <div className="hidden sm:flex w-1/2 flex-col justify-center items-center">
+          <img src={DoctorLogin} alt="Doctime Logo" className="sm:w-96 sm:h-96" />
+        </div>
         {/* Left Section */}
         <div className="w-full sm:w-1/2 p-8 flex flex-col justify-center bg-white">
           <h2 className="text-2xl sm:text-3xl font-bold text-blue-default mb-6 text-center">
-            Sign In
+            Sign In As Doctor
           </h2>
 
           <form onSubmit={formik.handleSubmit} className="space-y-4">
@@ -165,26 +162,9 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Right Section */}
-        <div className="hidden sm:flex w-1/2 bg-blue-default flex-col justify-center items-center text-white p-8">
-          <img src={Logo} alt="Doctime Logo" className="w-32 h-20 sm:w-44 sm:h-28" />
-          <h1 className="text-2xl sm:text-4xl font-bold mb-4 text-center">
-            Good to see you again..!
-          </h1>
-          <p className="text-sm sm:text-lg font-semibold mb-4">Welcome!</p>
-          <p className="text-sm text-center">
-            We&apos;re here to care for your health and well-being.
-          </p>
-          <p className="text-sm mb-4 text-center">
-            Schedule your appointment today for a healthier tomorrow.
-          </p>
-          <p className="text-sm sm:text-lg font-semibold mb-4 text-center">
-            Login now!
-          </p>
-        </div>
       </div>
       <Link to="/">
-      <button className="mt-4 px-6 py-3 bg-blue-default font-bold rounded-full text-white">Back</button>
+      <button className="mt-4 px-4 py-3 bg-blue-default font-bold rounded-full text-white">Back To Home 🏠︎ </button>
       </Link>
     </div>
   );

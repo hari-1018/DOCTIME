@@ -74,7 +74,7 @@ function AllCustomers() {
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-300">
           <thead>
-            <tr className="bg-gray-200">
+            <tr className="bg-blue-default text-white">
               <th className="py-2 px-4 border w-20">ID</th>
               <th className="py-2 px-4 border w-40">Patient Name</th>
               <th className="py-2 px-4 border w-40">Email</th>
@@ -86,17 +86,17 @@ function AllCustomers() {
           <tbody>
             {filteredCustomers.length > 0 ? (
               filteredCustomers.map((customer) => (
-                <tr key={customer._id} className="hover:bg-gray-100">
-                  <td className="py-2 px-2 border text-gray-600">
+                <tr key={customer._id} className="hover:bg-blue-200 text-center">
+                  <td className="py-2 px-2 border text-gray-800">
                     {customer._id}
                   </td>
-                  <td className="py-2 px-2 border text-gray-600 font-bold">
+                  <td className="py-2 px-2 border text-gray-800">
                     {customer.name || "N/A"}
                   </td>
-                  <td className="py-2 px-2 border text-gray-600">
+                  <td className="py-2 px-2 border text-gray-800">
                     {customer.email || "N/A"}
                   </td>
-                  <td className="py-2 px-2 border text-gray-600">
+                  <td className="py-2 px-2 border text-gray-800">
                     {customer.mobile || "N/A"}
                   </td>
                   <td className="py-2 px-2 border">

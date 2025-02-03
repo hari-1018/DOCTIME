@@ -186,7 +186,7 @@ const Register = () => {
       <div className="text-center mt-4">
         <p className="text-sm">
           Already have an account?{" "}
-          <a href="/login" className="text-blue-500 text-base font-semibold">
+          <a href="/select" className="text-blue-500 text-base font-semibold">
             Sign in
           </a>
         </p>

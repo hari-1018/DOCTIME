@@ -80,7 +80,7 @@ function AllAppointments() {
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-300">
           <thead>
-            <tr className="bg-gray-200">
+            <tr className="bg-blue-default text-white">
               <th className="py-2 px-4 border w-30">Appointment ID</th>
               <th className="py-2 px-4 border w-30">Patient Name</th>
               <th className="py-2 px-4 border w-30">Doctor Name</th>
@@ -93,7 +93,7 @@ function AllAppointments() {
           <tbody>
             {currentAppointments.length > 0 ? (
               currentAppointments.map((appointment) => (
-                <tr key={appointment._id} className="hover:bg-gray-100">
+                <tr key={appointment._id} className="hover:bg-blue-200 text-center">
                   <td className="py-2 px-2 border text-gray-600">{appointment._id.slice(0,12)}</td>
                   <td className="py-2 px-2 border text-gray-600">{appointment.patientId?.name || "N/A"}</td>
                   <td className="py-2 px-2 border text-gray-600">{appointment.doctorId?.name || "N/A"}</td>
