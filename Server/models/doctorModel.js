@@ -45,6 +45,12 @@ const doctorModel = new mongoose.Schema({
         of: [String], 
         default: {},
     },
+    resetTokenPassword: {
+        type: String
+    },
+    resetTokenExpiration: {
+        type:Date
+    },
 },{ timestamps: true });
 
 

@@ -1,5 +1,5 @@
 const asyncErrorResolver = require("../utils/asyncErrorResolver");
-const { FetchDoctors, FetchDoctorById, ChangeAppointmentStatus } = require("../services/doctorService")
+const { FetchDoctors, FetchDoctorById, ChangeAppointmentStatus, DoctorForgotPassword } = require("../services/doctorService")
 
 //Fetch Doctors
 const fetchDoctors = asyncErrorResolver(async (req, res) => {
@@ -27,4 +27,13 @@ const changeAppointmentStatus = asyncErrorResolver(async (req, res) => {
     res.status(200).json({ status: "success", message: 'Appointment marked as completed successfully', data: updatedAppointment });
 });
 
-module.exports = { fetchDoctors, fetchDoctorById, changeAppointmentStatus };
+//Forgot Password
+const doctorForgotPassword = asyncErrorResolver(async (req, res) =>{
+    console.log("forgot password", req.body);
+    const data =  await DoctorForgotPassword(req.body);
+    res.status(200).json({ status: "success", data: data})
+  })
+
+
+
+module.exports = { fetchDoctors, fetchDoctorById, changeAppointmentStatus, doctorForgotPassword };

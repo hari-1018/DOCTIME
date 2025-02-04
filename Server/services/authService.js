@@ -1,7 +1,5 @@
 const User = require("../models/userModel");
 const Doctor = require("../models/doctorModel");
-const Admin = require("../models/adminModel");
-const Appointment = require("../models/appointmentModel");
 const bcrypt = require("bcryptjs");
 const {generateToken} = require("../utils/jwt");
 const CustomError = require("../utils/customError");
@@ -36,7 +34,7 @@ const Login = async(data) =>{
     // }
     // if (!user) {
     //     user = await Admin.findOne({email});
-    //     role = "Admin";
+    //     role = "admin";
     // }
 
     if(!user){
@@ -122,7 +120,7 @@ const GoogleAuth = async (data) => {
             name,
             email,
             password: '', // No password as the user is logging in via Google
-            role: 'User', // Default role, change as needed
+            role: 'user', // Default role, change as needed
         });
         await user.save();
     }
@@ -141,6 +139,7 @@ const GoogleAuth = async (data) => {
         token,
     };
 };
+
 
 
 

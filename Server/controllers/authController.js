@@ -1,5 +1,5 @@
 const {validateRegister, validateLogin} = require("../validations/authValidation");
-const {Register, Login, DoctorLogin, GoogleAuth} = require("../services/authService");
+const {Register, Login, DoctorLogin, GoogleAuth } = require("../services/authService");
 const CustomError = require("../utils/customError");
 const asyncErrorResolver = require("../utils/asyncErrorResolver");
 const { OAuth2Client } = require("google-auth-library");
