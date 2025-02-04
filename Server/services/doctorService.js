@@ -1,4 +1,6 @@
 const Doctor = require("../models/doctorModel");
+const Appointment = require("../models/appointmentModel");
+const CustomError = require("../utils/customError");
 
 //Fetch all doctors
 const FetchDoctors = async () => {
@@ -13,7 +15,7 @@ const FetchDoctors = async () => {
 const FetchDoctorById = async (doctorId) => {
     const doctor = await Doctor.findById(doctorId);
     if (!doctor) {
-        throw new Error("Doctor not found");
+        throw new CustomError("Doctor not found");
     }
 
     return {
@@ -22,5 +24,18 @@ const FetchDoctorById = async (doctorId) => {
     };
 };
 
+//Changing Appointment Status
+const ChangeAppointmentStatus = async (appointmentId) => {
+    const appointment = await Appointment.findByIdAndUpdate(
+        appointmentId, {isCompleted : true}, { new: true }
+    );
+    if (!appointment) {
+        throw new CustomError("Appointment not found", 404);
+    }
 
-module.exports = { FetchDoctors, FetchDoctorById };
+    return {
+        appointment,
+    };
+};
+
+module.exports = { FetchDoctors, FetchDoctorById, ChangeAppointmentStatus};
