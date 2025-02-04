@@ -1,28 +1,40 @@
 import Navbar from "../Navbar/Navbar";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../config/axiosInstance";
 import userEndPoints from "../../config/users/userApi";
 
+const fetchUserAppointments = async(id) =>{
+  const response = await axiosInstance.get(
+    userEndPoints.USER.VIEW_USER_APPOINTMENT.replace(":id", id)
+  )
+  return response.data.appointments;
+}
+
 const Appointments = () => {
   const { id } = useParams();
-  const [appointments, setAppointments] = useState([]);
+  const { data: appointments=[], isLoading, isError, error } = useQuery({
+    queryKey: ["appointments", id],
+    queryFn:()=> fetchUserAppointments(id),
+    enabled: !!id,
+  });
 
-  useEffect(() => {
-    const fetchUserAppointments = async () => {
-      try {
-        const response = await axiosInstance.get(
-          userEndPoints.USER.VIEW_USER_APPOINTMENT.replace(":id", id)
-        );
-        console.log("bookings", response.data.appointments);
-        setAppointments(response.data.appointments);
-      } catch (error) {
-        console.error(error);
-        // toast.error("Failed to fetch appointments");
-      }
-    };
-    fetchUserAppointments();
-  }, [id]);
+  if (isLoading) {
+    return (
+      <div className="text-center text-gray-500 min-h-screen flex items-center justify-center">
+        Loading appointments...
+      </div>
+    );
+  }
+
+
+  if (isError) {
+    return (
+      <div className="text-center text-red-500 min-h-screen flex items-center justify-center">
+        Failed to fetch appointments: {error.message}
+      </div>
+    );
+  }
 
   return (
     <>

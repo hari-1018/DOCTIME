@@ -8,6 +8,9 @@ function AllDoctors() {
   const [currentPage, setCurrentPage] = useState(1);
   const DOCTORS_PER_PAGE = 10;
 
+  // State to store the debounced search term
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+
   // Fetch all doctors
   const fetchDoctors = async () => {
     try {
@@ -26,9 +29,18 @@ function AllDoctors() {
     fetchDoctors();
   }, []);
 
-  // Filter doctors based on search term
+  // Debounce logic: Update debouncedSearchTerm after a delay
+  useEffect(() => {
+    const debounceTimer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300); // 300ms delay
+
+    return () => clearTimeout(debounceTimer); // Cleanup the timer on unmount or new input
+  }, [searchTerm]);
+
+  // Filter doctors based on debounced search term
   const filteredDoctors = doctors.filter((doctor) => {
-    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+    const lowerCaseSearchTerm = debouncedSearchTerm.toLowerCase();
     return (
       (doctor.name?.toLowerCase().includes(lowerCaseSearchTerm) || false) ||
       (doctor.email?.toLowerCase().includes(lowerCaseSearchTerm) || false) ||
@@ -60,7 +72,6 @@ function AllDoctors() {
       <h1 className="text-3xl font-bold text-center text-blue-default mt-1 mb-4">
         All Doctors
       </h1>
-
       {/* Search Bar */}
       <div className="flex flex-col sm:flex-row sm:justify-center mb-4">
         <input
@@ -71,7 +82,6 @@ function AllDoctors() {
           className="search-bar text-gray-800 w-full sm:w-64 mb-4 sm:mb-0 border-2 border-blue-400 rounded-full px-3 py-1 focus:outline-blue-400"
         />
       </div>
-
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-300">
           <thead>
@@ -118,7 +128,6 @@ function AllDoctors() {
           </tbody>
         </table>
       </div>
-
       {/* Pagination Controls */}
       <div className="flex justify-center mt-4 space-x-4">
         <button
@@ -138,7 +147,9 @@ function AllDoctors() {
         </span>
         <button
           onClick={handleNextPage}
-          disabled={currentPage === Math.ceil(filteredDoctors.length / DOCTORS_PER_PAGE)}
+          disabled={
+            currentPage === Math.ceil(filteredDoctors.length / DOCTORS_PER_PAGE)
+          }
           className={`px-4 py-2 rounded ${
             currentPage === Math.ceil(filteredDoctors.length / DOCTORS_PER_PAGE)
               ? "bg-gray-300 cursor-not-allowed"

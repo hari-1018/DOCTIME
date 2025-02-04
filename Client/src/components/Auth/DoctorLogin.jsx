@@ -43,7 +43,7 @@ const Login = () => {
 
           dispatch(SignIn(user));
           window.dispatchEvent(new Event("loginChange"));
-          toast.success("Welcome back! You're successfully signed in!");
+          toast.success("Great to see you again, Doctor! ");
 
             if (user.user.role === "doctor") {
               navigate("/doctor/dashboard");
@@ -116,8 +116,8 @@ const Login = () => {
               </button>
             </div>
             <p>
-              <a href="/login" className="text-base">
-                Forgot Password?
+              <a href="/forgot-password" className="text-base">
+                Reset Password?
               </a>
             </p>
 

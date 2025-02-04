@@ -38,22 +38,21 @@ const Login = () => {
 
         if (response.data) {
           const user = response.data.data;
-          console.log("user", user);
           if (user.user.isBlocked) {
             toast.error("Your account is temporarily blocked. Try again later.");
             return;
           }
-          console.log("user role", user.user.role);
 
           dispatch(SignIn(user));
           window.dispatchEvent(new Event("loginChange"));
           toast.success("Welcome back! You're successfully signed in!");
 
-            if (user.user.role === "admin") {
-              navigate("/admin/dashboard");
-            } else if (user.user.role === "user") {
-              navigate("/home");
-            }
+          if (user.user.role === "admin") {
+            navigate("/admin/dashboard");
+          } 
+          if (user.user.role === "user") {
+            navigate("/home");
+          }
         } else {
           toast.error("Incorrect Email or Password. Please Try Again");
         }
@@ -184,7 +183,7 @@ const Login = () => {
         </div>
       </div>
       <Link to="/">
-      <button className="mt-4 px-6 py-3 bg-blue-default font-bold rounded-full text-white">Back</button>
+        <button className="mt-4 px-6 py-3 bg-blue-default font-bold rounded-full text-white">Back To Home 🏠︎</button>
       </Link>
     </div>
   );

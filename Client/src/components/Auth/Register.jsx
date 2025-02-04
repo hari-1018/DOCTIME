@@ -179,7 +179,7 @@ const Register = () => {
         <input
           type="submit"
           value="Sign Up"
-          className="bg-blue-default hover:bg-blue-500 text-white rounded-full py-2 sm:py-2 px-8 sm:px-56 text-lg font-semibold mt-5 ml-2 w-full"
+          className="bg-blue-default hover:bg-[#13D4F6] text-white rounded-full py-2 sm:py-2 px-8 sm:px-56 text-lg font-semibold mt-5 ml-2 w-full"
         />
       </form>
 
@@ -215,7 +215,7 @@ const Register = () => {
     </div>
   </div>
   <Link to="/">
-  <button className="mt-4 px-6 py-3 bg-blue-default font-bold rounded-full text-white">Back</button>
+  <button className="mt-4 px-6 py-3 bg-blue-default font-bold rounded-full text-white">Back To Home 🏠︎</button>
   </Link>
 </div>
 
