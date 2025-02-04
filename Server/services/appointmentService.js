@@ -66,5 +66,19 @@ const UserViewAppointments = async(patientId) =>{
     return appointments;
 }
 
+//Fetch appointments of a doctor
+const DoctorViewAppointments = async (doctorId) => {
+    if(!doctorId){
+        throw new CustomError("Invalid doctor ID", 400);
+    }
+    const appointments = await Appointment.find({ doctorId: doctorId })
+       .populate("patientId", "name")
+       .populate("doctorId", "name specialization");
 
-module.exports = { BookAppointment, UserViewAppointments };
+    if(!appointments || appointments.length === 0){
+        throw new CustomError("No appointments found", 404);
+    }
+    return appointments;
+}
+
+module.exports = { BookAppointment, UserViewAppointments, DoctorViewAppointments };

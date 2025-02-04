@@ -1,5 +1,5 @@
 const asyncErrorResolver = require("../utils/asyncErrorResolver");
-const { BookAppointment, UserViewAppointments } = require("../services/appointmentService");
+const { BookAppointment, UserViewAppointments, DoctorViewAppointments } = require("../services/appointmentService");
 
 //Book Appointment
 const bookAppointment = asyncErrorResolver(async (req, res) => {
@@ -19,5 +19,16 @@ const userViewAppointments = asyncErrorResolver(async (req, res) => {
     res.status(200).json({ status: "success", appointments });
 });
 
+//Doctor view their appointments 
+const doctorViewAppointments = asyncErrorResolver(async (req, res) => {
+    const doctorId = req.params.id;
+    console.log('doctoId', doctorId)
+    if (!doctorId) return res.status(400).json({ status: "error", message: "Invalid doctor ID" });
+    console.log("user view appointments", doctorId);
+    const appointments = await DoctorViewAppointments(doctorId);
+    console.log("view appointments", appointments);
+    res.status(200).json({ status: "success", message: "Doctor appointments fetched successfully", data: appointments });
+});
 
-module.exports = { bookAppointment, userViewAppointments };
+
+module.exports = { bookAppointment, userViewAppointments, doctorViewAppointments };
