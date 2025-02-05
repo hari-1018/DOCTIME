@@ -16,7 +16,7 @@ import { FaCalendarDays, FaUserDoctor } from "react-icons/fa6";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../config/axiosInstance";
-import endPoints from "../../config/endPoints";
+import adminEndPoints from "../../config/admin/endPoints";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, ArcElement, Legend, LineElement, PointElement);
 
@@ -29,7 +29,7 @@ const Dashboard = () => {
 
   const fetchTotalUsers = async () => {
     try {
-      const response = await axiosInstance.get(endPoints.ADMIN.GET_TOTAL_USERS);
+      const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_TOTAL_USERS);
       console.log('dash', response.data.result.totalUsers);
       setTotalUsers(response.data.result.totalUsers);
     } catch (error) {
@@ -39,7 +39,7 @@ const Dashboard = () => {
 
   const fetchTotalDoctors = async () => {
     try {
-      const response = await axiosInstance.get(endPoints.ADMIN.GET_TOTAL_DOCTORS);
+      const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_TOTAL_DOCTORS);
       console.log('dashdoc', response.data.result.totalDoctors);
       setTotalDoctors(response.data.result.totalDoctors);
     } catch (error) {
@@ -49,7 +49,7 @@ const Dashboard = () => {
 
   const fetchTotalAppointments = async () => {
     try {
-      const response = await axiosInstance.get(endPoints.ADMIN.GET_TOTAL_APPOINTMENTS);
+      const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_TOTAL_APPOINTMENTS);
       console.log('dashappo', response.data.result.totalAppointments);
       setTotalAppointments(response.data.result.totalAppointments);
     } catch (error) {

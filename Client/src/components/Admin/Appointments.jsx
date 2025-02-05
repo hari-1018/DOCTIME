@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../config/axiosInstance";
-import endPoints from "../../config/endPoints";
+import adminEndPoints from "../../config/admin/endPoints";
 
 function AllAppointments() {
   const [appointments, setAppointments] = useState([]);
@@ -11,7 +11,7 @@ function AllAppointments() {
   // Fetch all appointments
   const fetchAppointments = async () => {
     try {
-      const response = await axiosInstance.get(endPoints.ADMIN.GET_ALL_APPOINTMENTS);
+      const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_ALL_APPOINTMENTS);
       console.log("fetchallappointments", response.data.result.appointments);
 
       // Sort appointments by slotDate (most recent first)

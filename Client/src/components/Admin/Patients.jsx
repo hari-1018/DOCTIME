@@ -1,56 +1,56 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../config/axiosInstance";
-import endPoints from "../../config/endPoints";
+import adminEndPoints from "../../config/admin/endPoints";
 
-function AllCustomers() {
-  const [customers, setCustomers] = useState([]);
+function AllPatients() {
+  const [patients, setPatients] = useState([]);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [selectedPatient, setSelectedPatient] = useState(null);
   const [actionType, setActionType] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const fetchCustomers = async () => {
+  const fetchPatients = async () => {
     try {
-      const response = await axiosInstance.get(endPoints.ADMIN.GET_ALL_USERS);
+      const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_ALL_USERS);
       console.log("fetchallusers", response.data.result.users);
-      setCustomers(response.data.result.users);
+      setPatients(response.data.result.users);
     } catch (error) {
-      console.error("Error fetching customers:", error);
+      console.error("Error fetching Patients:", error);
     }
   };
 
   const handleBlockUnblock = (customerId, isBlocked) => {
-    setSelectedCustomer(customerId);
+    setSelectedPatient(customerId);
     setActionType(isBlocked ? "unblock" : "block");
     setShowConfirmModal(true);
   };
 
   const confirmBlockUnblock = async () => {
-    if (selectedCustomer) {
+    if (selectedPatient) {
       try {
         const endpoint =
           actionType === "block"
-            ? endPoints.ADMIN.BLOCK_USER(selectedCustomer)
-            : endPoints.ADMIN.UNBLOCK_USER(selectedCustomer);
+            ? endPoints.ADMIN.BLOCK_USER(selectedPatient)
+            : endPoints.ADMIN.UNBLOCK_USER(selectedPatient);
         await axiosInstance.patch(endpoint);
-        fetchCustomers();
+        fetchPatients();
         setShowConfirmModal(false);
       } catch (error) {
-        console.error("Error updating customer status:", error);
+        console.error("Error updating Patient status:", error);
       }
     }
   };
 
   useEffect(() => {
-    fetchCustomers();
+    fetchPatients();
   }, []);
 
-  const filteredCustomers = customers.filter((customer) => {
+  const filteredPatients = patients.filter((patient) => {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
     return (
-      (customer.name?.toLowerCase().includes(lowerCaseSearchTerm) || false) ||
-      (customer.email?.toLowerCase().includes(lowerCaseSearchTerm) || false) ||
-      (customer.mobile?.toString().includes(lowerCaseSearchTerm) || false)
+      (patient.name?.toLowerCase().includes(lowerCaseSearchTerm) || false) ||
+      (patient.email?.toLowerCase().includes(lowerCaseSearchTerm) || false) ||
+      (patient.mobile?.toString().includes(lowerCaseSearchTerm) || false)
     );
   });
 
@@ -84,44 +84,44 @@ function AllCustomers() {
             </tr>
           </thead>
           <tbody>
-            {filteredCustomers.length > 0 ? (
-              filteredCustomers.map((customer) => (
-                <tr key={customer._id} className="hover:bg-blue-200 text-center">
+            {filteredPatients.length > 0 ? (
+              filteredPatients.map((patient) => (
+                <tr key={patient._id} className="hover:bg-blue-200 text-center">
                   <td className="py-2 px-2 border text-gray-800">
-                    {customer._id}
+                    {patient._id}
                   </td>
                   <td className="py-2 px-2 border text-gray-800">
-                    {customer.name || "N/A"}
+                    {patient.name || "N/A"}
                   </td>
                   <td className="py-2 px-2 border text-gray-800">
-                    {customer.email || "N/A"}
+                    {patient.email || "N/A"}
                   </td>
                   <td className="py-2 px-2 border text-gray-800">
-                    {customer.mobile || "N/A"}
+                    {patient.mobile || "N/A"}
                   </td>
                   <td className="py-2 px-2 border">
                     <span
                       className={`font-bold ${
-                        customer.isBlocked
+                        patient.isBlocked
                           ? "text-red-500"
                           : "text-green-500"
                       }`}
                     >
-                      {customer.isBlocked ? "Blocked" : "Active"}
+                      {patient.isBlocked ? "Blocked" : "Active"}
                     </span>
                   </td>
                   <td className="py-2 px-2 border">
                     <button
                       onClick={() =>
-                        handleBlockUnblock(customer._id, customer.isBlocked)
+                        handleBlockUnblock(patient._id, patient.isBlocked)
                       }
                       className={`border-2 p-2 rounded ${
-                        customer.isBlocked
+                        patient.isBlocked
                           ? "bg-green-500 text-white hover:bg-green-600"
                           : "bg-red-500 text-white hover:bg-red-600"
                       }`}
                     >
-                      {customer.isBlocked ? "Unblock" : "Block"}
+                      {patient.isBlocked ? "Unblock" : "Block"}
                     </button>
                   </td>
                 </tr>
@@ -129,7 +129,7 @@ function AllCustomers() {
             ) : (
               <tr>
                 <td colSpan="7" className="text-center py-4 text-gray-500">
-                  No customers found.
+                  No Patients found.
                 </td>
               </tr>
             )}
@@ -141,13 +141,13 @@ function AllCustomers() {
       {showConfirmModal && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-80 ml-64">
-            <h2 className="text-lg font-bold mb-4 text-pink-400 text-center">
-              Are you sure you want to {actionType} this customer?
+            <h2 className="text-lg font-bold mb-4 text-blue-default text-center">
+              Are you sure you want to {actionType} this Patient?
             </h2>
             <div className="flex justify-between">
               <button
                 onClick={() => setShowConfirmModal(false)}
-                className="bg-green-300 text-gray-700 py-2 px-4 rounded hover:bg-green-400"
+                className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
               >
                 Cancel
               </button>
@@ -165,4 +165,4 @@ function AllCustomers() {
   );
 }
 
-export default AllCustomers;
+export default AllPatients;

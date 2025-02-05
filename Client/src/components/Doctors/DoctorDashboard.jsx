@@ -16,8 +16,8 @@ import {
   import { useState, useEffect } from "react";
   import { useNavigate } from "react-router-dom";
   import axiosInstance from "../../config/axiosInstance";
-  import endPoints from "../../config/endPoints";
-import { FaRegClock } from "react-icons/fa";
+  import adminEndPoints from "../../config/admin/endPoints";
+  import { FaRegClock } from "react-icons/fa";
   
   ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, ArcElement, Legend, LineElement, PointElement);
   
@@ -30,7 +30,7 @@ import { FaRegClock } from "react-icons/fa";
   
     const fetchTotalUsers = async () => {
       try {
-        const response = await axiosInstance.get(endPoints.ADMIN.GET_TOTAL_USERS);
+        const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_TOTAL_USERS);
         console.log('dash', response.data.result.totalUsers);
         setTotalUsers(response.data.result.totalUsers);
       } catch (error) {
@@ -40,7 +40,7 @@ import { FaRegClock } from "react-icons/fa";
   
     const fetchTotalDoctors = async () => {
       try {
-        const response = await axiosInstance.get(endPoints.ADMIN.GET_TOTAL_DOCTORS);
+        const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_TOTAL_DOCTORS);
         console.log('dashdoc', response.data.result.totalDoctors);
         setTotalDoctors(response.data.result.totalDoctors);
       } catch (error) {
@@ -50,7 +50,7 @@ import { FaRegClock } from "react-icons/fa";
   
     const fetchTotalAppointments = async () => {
       try {
-        const response = await axiosInstance.get(endPoints.ADMIN.GET_TOTAL_APPOINTMENTS);
+        const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_TOTAL_APPOINTMENTS);
         console.log('dashappo', response.data.result.totalAppointments);
         setTotalAppointments(response.data.result.totalAppointments);
       } catch (error) {

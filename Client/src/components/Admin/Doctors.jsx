@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../config/axiosInstance";
-import endPoints from "../../config/endPoints";
-
+import adminEndPoints from "../../config/admin/endPoints";
 function AllDoctors() {
   const [doctors, setDoctors] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -14,7 +13,7 @@ function AllDoctors() {
   // Fetch all doctors
   const fetchDoctors = async () => {
     try {
-      const response = await axiosInstance.get(endPoints.ADMIN.GET_ALL_DOCTORS);
+      const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_ALL_DOCTORS);
       console.log("fetchalldoctors", response.data.result.doctors);
       const sortedDoctors = response.data.result.doctors.sort(
         (a, b) => b.experience - a.experience
