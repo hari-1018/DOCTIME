@@ -1,4 +1,4 @@
-const { AddDoctor, TotalUsers, TotalDoctors, TotalAppointments, GetAllUsers, GetAllDoctors, GetAllAppointments, BlockUser, UnblockUser } = require("../services/adminService");
+const { AddDoctor, EditDoctor, TotalUsers, TotalDoctors, TotalAppointments, GetAllUsers, GetAllDoctors, GetAllAppointments, BlockUser, UnblockUser } = require("../services/adminService");
 const CustomError = require("../utils/customError");
 const asyncErrorResolver = require("../utils/asyncErrorResolver");
 
@@ -8,6 +8,16 @@ const addNewDoctor = asyncErrorResolver(async (req, res) => {
     console.log("dr", response)
     console.log("req.body", req.body)
     res.status(201).json({status: "success", response});
+});
+
+//Edit Doctor
+const editDoctor = asyncErrorResolver(async (req, res) => {
+    const {id} = req.params;
+    console.log("testing id", id)
+    const response = await EditDoctor(id, req.body);
+    console.log("req.body", req.body)
+    console.log("editdr", response)
+    res.status(201).json({status: "success", message: "Doctor updated successfully",  data:response});
 });
 
 //Fetch total users count
@@ -64,4 +74,4 @@ const unblockUser = asyncErrorResolver(async (req, res) => {
         res.status(200).json({ success: "success", message: "User has been successfully unblocked", data: result });
 });
 
-module.exports = { addNewDoctor, fetchTotalUsers, fetchTotalDoctors, fetchTotalAppointments, fetchAllUsers, fetchAllDoctors, fetchAllAppointments, blockUser, unblockUser };
+module.exports = { addNewDoctor, editDoctor, fetchTotalUsers, fetchTotalDoctors, fetchTotalAppointments, fetchAllUsers, fetchAllDoctors, fetchAllAppointments, blockUser, unblockUser };

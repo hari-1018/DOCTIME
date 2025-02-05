@@ -35,6 +35,18 @@ const AddDoctor = async(data) =>{
 }
 };
 
+//Edit Doctor
+const EditDoctor = async(id, data) =>{
+    const {name, email, image, about, qualifications, specialization, experience, fees, availability} = data;
+    const doctor = await Doctor.findByIdAndUpdate(id, {name, email, image, about, qualifications, specialization, experience, fees, availability}, {new: true});
+    if(!doctor){
+        throw new CustomError("Doctor not found, Try Again")
+    }
+    return {
+        doctor
+    }
+}
+
 //Total users count
 const TotalUsers = async () => {
       const totalUsers = await User.countDocuments(); 
@@ -126,4 +138,4 @@ const BlockUser = async (userId) => {
 
   
 
-module.exports = { AddDoctor, TotalUsers, TotalDoctors, TotalAppointments, GetAllUsers, GetAllDoctors, GetAllAppointments, BlockUser, UnblockUser }
+module.exports = { AddDoctor, EditDoctor, TotalUsers, TotalDoctors, TotalAppointments, GetAllUsers, GetAllDoctors, GetAllAppointments, BlockUser, UnblockUser }
