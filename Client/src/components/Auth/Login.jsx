@@ -2,7 +2,6 @@ import Logo from "../../assets/Doctime.png";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { MailIcon, LockClosedIcon } from "@heroicons/react/outline";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import { useFormik } from "formik";
@@ -114,7 +113,7 @@ const Login = () => {
                 onClick={togglePasswordView}
                 className="h-6 w-6 text-gray-700 mr-2"
               >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                {showPassword ? "🙈" : "👁️"}
               </button>
             </div>
             <p>

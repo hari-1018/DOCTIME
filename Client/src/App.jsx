@@ -4,7 +4,8 @@ import Landing from './pages/Landing';
 import Register from './components/Auth/Register';
 import Login from './components/Auth/Login';
 import DoctorLogin from './components/Auth/DoctorLogin';
-import ForgotPassword from './components/Auth/ForgotPassword';
+import ForgotPassword from './components/Doctors/ForgotPassword';
+import ResetPassword from './components/Doctors/ResetPassword';
 import Home from './pages/Home';
 import DoctorsListing from "./components/Doctors/DoctorsListing";
 import DoctorDetails from './components/Doctors/DoctorDetails';
@@ -15,7 +16,7 @@ import Dashboard from './components/Admin/Dashboard';
 import AllDoctors from './components/Admin/Doctors';
 import Patients from './components/Admin/Patients';
 import AllAppointments from './components/Admin/Appointments';
-import AdminRoutes from './routes/AdminRoutes';
+// import AdminRoutes from './routes/AdminRoutes';
 import UserRoutes from './routes/UserRoutes';
 import Selection from './components/Auth/Selection';
 import DoctorSidebar from './components/Doctors/DoctorSidebar';
@@ -34,6 +35,7 @@ function App() {
   <Route path="/login" element={<Login />} />
   <Route path='/doctor-login' element={<DoctorLogin/>}/>
   <Route path='/forgot-password' element={<ForgotPassword/>}/>
+  <Route path='/reset-password/:token' element={<ResetPassword/>}/>
 
 
   {/* User Routes */}

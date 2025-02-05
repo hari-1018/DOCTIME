@@ -19,8 +19,8 @@ function AllPatients() {
     }
   };
 
-  const handleBlockUnblock = (customerId, isBlocked) => {
-    setSelectedPatient(customerId);
+  const handleBlockUnblock = (userId, isBlocked) => {
+    setSelectedPatient(userId);
     setActionType(isBlocked ? "unblock" : "block");
     setShowConfirmModal(true);
   };
@@ -30,8 +30,8 @@ function AllPatients() {
       try {
         const endpoint =
           actionType === "block"
-            ? endPoints.ADMIN.BLOCK_USER(selectedPatient)
-            : endPoints.ADMIN.UNBLOCK_USER(selectedPatient);
+            ? adminEndPoints.ADMIN.BLOCK_USER(selectedPatient)
+            : adminEndPoints.ADMIN.UNBLOCK_USER(selectedPatient);
         await axiosInstance.patch(endpoint);
         fetchPatients();
         setShowConfirmModal(false);
