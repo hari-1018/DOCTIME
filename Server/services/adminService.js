@@ -4,18 +4,19 @@ const Appointment = require("../models/appointmentModel");
 const bcrypt = require("bcryptjs");
 const CustomError = require("../utils/customError");
 
-
+//Add Doctor
 const AddDoctor = async(data) =>{
     const {name, email, image, qualifications, specialization, experience, fees, availability} = data;
     const existingDoctor = await Doctor.findOne({email});
     if(existingDoctor){
-        throw new Error("Doctor Already Existing, Try Again")
+        throw new CustomError("Doctor Already Existing, Try Again")
     }
     const salt = await bcrypt.genSalt(10);
     const password = await bcrypt.hash('password', salt);
 
     const newDoctor = new Doctor({
-        name, email, password, image, qualifications, specialization, experience, fees, availability});
+        name, email, password, image, qualifications, specialization, experience, fees, availability
+    });
     await newDoctor.save();
     return { 
         message: "Doctor Added Successfully",         
@@ -30,11 +31,11 @@ const AddDoctor = async(data) =>{
         fees: newDoctor.fees,
         availability: newDoctor.availability,
         password: newDoctor.password
-
     }
 }
 };
 
+//Total users count
 const TotalUsers = async () => {
       const totalUsers = await User.countDocuments(); 
       return { 
@@ -43,6 +44,7 @@ const TotalUsers = async () => {
       };
     };
 
+//Total doctors count    
 const TotalDoctors = async () => {
         const totalDoctors = await Doctor.countDocuments(); 
         return { 
@@ -51,14 +53,16 @@ const TotalDoctors = async () => {
         };
     };
 
-    const TotalAppointments = async () => {
-        return await Appointment.countDocuments(); 
-        // return { 
-        //   message: "Total appointments fetched successfully", 
-        //   totalAppointments
-        // };
-    };
+//Total appointments count    
+const TotalAppointments = async () => {
+    return await Appointment.countDocuments(); 
+    // return { 
+    //   message: "Total appointments fetched successfully", 
+    //   totalAppointments
+    // };
+};
 
+//Fetch all users
 const GetAllUsers = async () => {
         const users = await User.find(); 
         return {
@@ -67,6 +71,7 @@ const GetAllUsers = async () => {
         };
     };
 
+//Fetch all doctors    
 const GetAllDoctors = async () => {
     const doctors = await Doctor.find(); 
     return {
@@ -75,6 +80,7 @@ const GetAllDoctors = async () => {
     };
 };
 
+//Fetch all appointments
 const GetAllAppointments = async () => {
     const appointments = await Appointment.find()
         .populate("doctorId", "name specialization")
@@ -85,22 +91,39 @@ const GetAllAppointments = async () => {
     };
 };
 
-// const BlockUser = async () => {
-//     const user = await User.findById(userID);
-//     if(!user){
-//         throw new CustomError(`No User Found with ID: ${userID}`, 404);
-//     }
+//Block User
+const BlockUser = async (userId) => {
+    const user = await User.findById(userId);
+    if(!user){
+        throw new CustomError(`No User Found with ID: ${userId}`, 404);
+    }
 
-//     if(user.isBlocked){
-//         throw new CustomError("User is already blocked", 400);
-//     }
+    if(user.isBlocked){
+        throw new CustomError("User is already blocked", 400);
+    }
 
-//    user.isBlocked = true;
-//    await user.save();
-//    return { message: `User with ID ${userID} has been successfully blocked.` };
-//  }
+   user.isBlocked = true;
+   await user.save();
+   return { user };
+ }
+
+//Unblock User
+ const UnblockUser = async (userId) => {
+    const user = await User.findById(userId);
+    if(!user){
+        throw new CustomError(`No User Found with ID: ${userId}`, 404);
+    }
+
+    if(!user.isBlocked){
+        throw new CustomError("User is not blocked", 400);
+    }
+
+   user.isBlocked = false;
+   await user.save();
+   return { user };
+ }
 
 
   
 
-module.exports = { AddDoctor, TotalUsers, TotalDoctors, TotalAppointments, GetAllUsers, GetAllDoctors, GetAllAppointments }
+module.exports = { AddDoctor, TotalUsers, TotalDoctors, TotalAppointments, GetAllUsers, GetAllDoctors, GetAllAppointments, BlockUser, UnblockUser }
