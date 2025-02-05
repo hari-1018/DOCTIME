@@ -1,5 +1,5 @@
 const asyncErrorResolver = require("../utils/asyncErrorResolver");
-const { FetchDoctors, FetchDoctorById, ChangeAppointmentStatus, DoctorForgotPassword } = require("../services/doctorService")
+const { FetchDoctors, FetchDoctorById, ChangeAppointmentStatus, DoctorForgotPassword, DoctorResetPassword } = require("../services/doctorService")
 
 //Fetch Doctors
 const fetchDoctors = asyncErrorResolver(async (req, res) => {

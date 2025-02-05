@@ -89,9 +89,9 @@ const DoctorForgotPassword = async (data) => {
 //Reset Password
 const DoctorResetPassword = async (data, params) => {
     const { password } = data;
-    const { resetToken } = params;
+    const { token } = params;
 
-    const resetTokenHash = crypto.createHash("sha256").update(resetToken).digest("hex");
+    const resetTokenHash = crypto.createHash("sha256").update(token).digest("hex");
 
     const doctor = await Doctor.findOne({ resetTokenPassword: resetTokenHash, resetTokenExpiration: { $gt: Date.now() } });
 
@@ -99,8 +99,8 @@ const DoctorResetPassword = async (data, params) => {
         throw new CustomError("Invalid or expired reset token", 401);
     }
     const salt = await bcrypt.genSalt(10);
-
     doctor.password = await bcrypt.hash(password, salt);
+    
     doctor.resetTokenPassword = null;
     doctor.resetTokenExpiration = null;
 
