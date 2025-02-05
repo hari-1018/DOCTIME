@@ -10,9 +10,9 @@ import {
     LineElement,
     PointElement,
   } from "chart.js";
-  import { Bar, Pie, Line } from "react-chartjs-2";
+  import { Bar, Pie, } from "react-chartjs-2";
   import { MdGroups, MdOutlineDoneOutline } from "react-icons/md";
-  import { FaCalendarDays, FaUserDoctor } from "react-icons/fa6";
+  import { FaCalendarDays } from "react-icons/fa6";
   import { useState, useEffect } from "react";
   import { useNavigate } from "react-router-dom";
   import axiosInstance from "../../config/axiosInstance";
