@@ -2,7 +2,6 @@ const Doctor = require("../models/doctorModel");
 const Appointment = require("../models/appointmentModel");
 const CustomError = require("../utils/customError");
 
-//Book an Appointment
 const BookAppointment = async ({ patientId, doctorId, slotDate, slotTime }) => {
     const doctorData = await Doctor.findById(doctorId).select('-password');
     if (!doctorData || !doctorData.availability) {
@@ -10,16 +9,20 @@ const BookAppointment = async ({ patientId, doctorId, slotDate, slotTime }) => {
     }
     console.log("doctorData", doctorData);
 
-    const slotsBooked = doctorData.slotsBooked || new Map();
-    const dateSlots = slotsBooked.get(slotDate) || [];
+    // Initialize slotsBooked as an object if it's undefined
+    const slotsBooked = doctorData.slotsBooked || {};
+
+    // Get the booked slots for the date
+    const dateSlots = slotsBooked[slotDate] || [];
 
     // Check if the slot is already booked
     if (dateSlots.includes(slotTime)) {
         throw new CustomError("Slot already booked", 400);
     }
+
     // Book the slot by adding it to the doctor's slotsBooked
     dateSlots.push(slotTime);
-    slotsBooked.set(slotDate, dateSlots);
+    slotsBooked[slotDate] = dateSlots;  // Assign instead of using .set()
 
     const appointmentData = {
         patientId,
@@ -33,7 +36,7 @@ const BookAppointment = async ({ patientId, doctorId, slotDate, slotTime }) => {
     const newAppointment = new Appointment(appointmentData);
     await newAppointment.save();
 
-    // Update Doctor's slotsBooked
+    // Update Doctor's slotsBooked (now correctly treated as an object)
     await Doctor.findByIdAndUpdate(doctorId, { slotsBooked });
 
     const appointmentDetails = await Appointment.findById(newAppointment._id)
@@ -50,6 +53,7 @@ const BookAppointment = async ({ patientId, doctorId, slotDate, slotTime }) => {
         doctorImage: appointmentDetails.doctorId.image,
     };
 };
+
 
 //User view their appointments 
 const UserViewAppointments = async(patientId) =>{

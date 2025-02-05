@@ -31,9 +31,17 @@ const changeAppointmentStatus = asyncErrorResolver(async (req, res) => {
 const doctorForgotPassword = asyncErrorResolver(async (req, res) =>{
     console.log("forgot password", req.body);
     const data =  await DoctorForgotPassword(req.body);
+    // console.log("data",data)
     res.status(200).json({ status: "success", data: data})
   })
 
+//Reset Password
+const doctorResetPassword = asyncErrorResolver(async (req,res) =>{
+    const data =  await DoctorResetPassword(req.body, req.params);
+    res.status(200).json({ status: "success", data: data})
+  
+})
 
 
-module.exports = { fetchDoctors, fetchDoctorById, changeAppointmentStatus, doctorForgotPassword };
+
+module.exports = { fetchDoctors, fetchDoctorById, changeAppointmentStatus, doctorForgotPassword, doctorResetPassword };

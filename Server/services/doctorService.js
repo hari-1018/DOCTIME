@@ -1,6 +1,9 @@
 const Doctor = require("../models/doctorModel");
 const Appointment = require("../models/appointmentModel");
 const CustomError = require("../utils/customError");
+const nodemailer = require("nodemailer");
+const crypto = require("crypto");
+const bcrypt = require("bcryptjs");
 
 //Fetch all doctors
 const FetchDoctors = async () => {
@@ -55,21 +58,22 @@ const DoctorForgotPassword = async (data) => {
     // Save the reset token and expiry date
     doctor.resetTokenPassword = resetTokenHash;
     doctor.resetTokenExpiration = Date.now() + 3600000; // 1 hour
+    console.log("test",doctor);
 
     await doctor.save();
 
     const urlReset = `${process.env.CLIENT_URL}/reset-password/${resetToken}`
 
-    const sender = nodemailer.createTransport({
-        service: 'gmail',
+    const transporter = nodemailer.createTransport({
+        service: 'Gmail',
         auth: {
-            doctor: process.env.EMAIL_ADDRESS,
-            pass: process.env.EMAIL_PASSWORD,
+            user: process.env.EMAIL,
+            pass: process.env.PASSWORD,
         },
     });
 
-    await sender.sendMail({
-        from: process.env.EMAIL_ADDRESS,
+    await transporter.sendMail({
+        from: process.env.EMAIL,
         to: doctor.email,
         subject: 'Request for Reset Password',
         html: `
@@ -82,4 +86,27 @@ const DoctorForgotPassword = async (data) => {
     return { message: 'Reset password email sent successfully.' };
 };
 
-module.exports = { FetchDoctors, FetchDoctorById, ChangeAppointmentStatus, DoctorForgotPassword };
+//Reset Password
+const DoctorResetPassword = async (data, params) => {
+    const { password } = data;
+    const { resetToken } = params;
+
+    const resetTokenHash = crypto.createHash("sha256").update(resetToken).digest("hex");
+
+    const doctor = await Doctor.findOne({ resetTokenPassword: resetTokenHash, resetTokenExpiration: { $gt: Date.now() } });
+
+    if (!doctor) {
+        throw new CustomError("Invalid or expired reset token", 401);
+    }
+    const salt = await bcrypt.genSalt(10);
+
+    doctor.password = await bcrypt.hash(password, salt);
+    doctor.resetTokenPassword = null;
+    doctor.resetTokenExpiration = null;
+
+    await doctor.save();
+
+    return { message: 'Password reset successfully.' };
+};
+
+module.exports = { FetchDoctors, FetchDoctorById, ChangeAppointmentStatus, DoctorForgotPassword, DoctorResetPassword };

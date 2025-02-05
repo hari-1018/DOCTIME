@@ -19,7 +19,7 @@ const doctorModel = new mongoose.Schema({
     },
     about:{
         type: String,
-        required: true,
+        required: false,
     },
     qualifications: {
         type: [String],
@@ -40,11 +40,15 @@ const doctorModel = new mongoose.Schema({
     fees: {
         type: Number,
     },
+    // slotsBooked: {
+    //     type: Map,
+    //     of: [String], 
+    //     default: {},
+    // },
     slotsBooked: {
-        type: Map,
-        of: [String], 
-        default: {},
-    },
+        type: Object,
+        default: {}
+    },      
     resetTokenPassword: {
         type: String
     },
