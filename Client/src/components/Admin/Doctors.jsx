@@ -32,7 +32,7 @@ function AllDoctors() {
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
-    }, 300); // 300ms delay
+    }, 500); // 300ms delay
 
     return () => clearTimeout(debounceTimer); // Cleanup the timer on unmount or new input
   }, [searchTerm]);

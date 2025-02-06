@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.jsx';
-import { BrowserRouter } from 'react-router-dom';
+// import { BrowserRouter } from 'react-router-dom';
 import {GoogleOAuthProvider} from '@react-oauth/google';
 import { ToastContainer } from 'react-toastify';
 import { Provider } from 'react-redux';
@@ -16,7 +16,7 @@ const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    {/* <BrowserRouter> */}
     <QueryClientProvider client={queryClient}>
     <Provider store={store}>
     <GoogleOAuthProvider clientId={CLIENTID}>
@@ -41,6 +41,6 @@ createRoot(document.getElementById('root')).render(
     </GoogleOAuthProvider>
     </Provider>
     </QueryClientProvider>
-    </BrowserRouter>
+    {/* </BrowserRouter> */}
   </StrictMode>,
 )

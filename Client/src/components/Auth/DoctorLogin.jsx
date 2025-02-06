@@ -13,7 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import { SignIn } from "../../redux/authSlice";
 
-const Login = () => {
+const LoginDoctor = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
@@ -170,4 +170,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginDoctor;

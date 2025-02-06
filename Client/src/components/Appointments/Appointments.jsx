@@ -1,6 +1,6 @@
 import Navbar from "../Navbar/Navbar";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../../config/axiosInstance";
 import userEndPoints from "../../config/users/userApi";
 
@@ -12,8 +12,9 @@ const fetchUserAppointments = async(id) =>{
 }
 
 const Appointments = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
-  const { data: appointments=[], isLoading, isError, error } = useQuery({
+  const { data: appointments=[], isLoading } = useQuery({
     queryKey: ["appointments", id],
     queryFn:()=> fetchUserAppointments(id),
     enabled: !!id,
@@ -27,14 +28,18 @@ const Appointments = () => {
     );
   }
 
+  // if (isError) {
+  //   return (
+  //     <div className="text-center text-red-500 min-h-screen flex items-center justify-center">
+  //       Failed to fetch appointments: {error.message}
+  //     </div>
+  //   );
+  // }
 
-  if (isError) {
-    return (
-      <div className="text-center text-red-500 min-h-screen flex items-center justify-center">
-        Failed to fetch appointments: {error.message}
-      </div>
-    );
+  const handleFeedback = ()=>{
+    navigate("/feedback");
   }
+
 
   return (
     <>
@@ -81,22 +86,25 @@ const Appointments = () => {
                   {/* Action Buttons or Status */}
                   {appointment.cancelled === true ? (
                     <div className="flex">
-                      <button className="border border-red-500 text-red-500 px-4 py-2 rounded-lg md:mt-11">
+                      <button className="border border-red-500 text-red-500 px-4 py-2 rounded-lg md:mt-10">
                         Appointment Cancelled
                       </button>
                     </div>
                   ) : appointment.isCompleted === true ? (
-                    <div className="flex">
-                      <button className="border border-green-500 text-green-500 px-4 py-2 rounded-lg md:mt-11">
-                        Appointment Completed
+                    <div className="flex flex-col space-y-3">
+                      <button className="border border-green-500 text-green-500 px-4 py-2 rounded-lg md:mt-5">
+                        Appointment Completed ✅
                       </button>
+                      {/* <Link to="/feedback"> */}
+                      <button onClick={handleFeedback} className="border border-green-500 text-green-500 px-4 py-2 rounded-lg md:mt-2">
+                        Feedback ✍️
+                      </button>
+                      {/* </Link> */}
                     </div>
+                    
                   ) : (
-                    <div className="flex flex-col space-y-2">
-                      <button className="py-2 px-4 rounded-lg bg-green-500 text-white font-semibold border">
-                        Pay Online
-                      </button>
-                      <button className="py-2 px-4 rounded-lg bg-blue-default text-white font-semibold border">
+                    <div className="flex flex-col space-y-3">
+                      <button className="py-2 px-4 rounded-lg bg-blue-default text-white font-semibold border md:mt-4">
                         Reschedule
                       </button>
                       <button className="py-2 px-4 rounded-lg bg-red-400 text-white font-semibold border">
