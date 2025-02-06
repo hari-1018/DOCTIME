@@ -5,6 +5,7 @@ const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const doctorRoutes = require('./routes/doctorRoutes');
 const appointmentRoutes = require("./routes/appointmentRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
 const errorHandler = require('./middlewares/errorHandler');
 
 app.use(cors({
@@ -17,6 +18,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/doctors", doctorRoutes);
 app.use("/api/appointments", appointmentRoutes);
+app.use("/api/reviews", reviewRoutes);
 
 app.all("*", (req,res,next)=>{
     const error = new CustomError("Error Not Found", 404);
