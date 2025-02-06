@@ -8,7 +8,7 @@ const FeedbackForm = () => {
     <div className="min-h-screen w-full bg-blue-regBg flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6 md:p-8">
         <h1 className="text-2xl md:text-2xl font-semibold text-blue-default mb-2 text-center">
-          
+            Share Your Experience
         </h1>
         <p className='text-sm font-normal text-gray-700 mb-4 text-center'>Your insights helps us to improve and provide better services.</p>
         
