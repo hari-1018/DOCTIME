@@ -1,6 +1,6 @@
 import Navbar from "../Navbar/Navbar";
 import { useQuery } from "@tanstack/react-query";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../../config/axiosInstance";
 import userEndPoints from "../../config/users/userApi";
 
@@ -8,8 +8,10 @@ const fetchUserAppointments = async(id) =>{
   const response = await axiosInstance.get(
     userEndPoints.USER.VIEW_USER_APPOINTMENT.replace(":id", id)
   )
+  console.log("appointment details", response)
   return response.data.appointments;
 }
+// console.log("appointment details", response)
 
 const Appointments = () => {
   const navigate = useNavigate();
@@ -36,10 +38,10 @@ const Appointments = () => {
   //   );
   // }
 
-  const handleFeedback = ()=>{
-    navigate("/feedback");
+  const handleFeedback = (doctorId)=>{
+    navigate(`/feedback/${doctorId}`);
+    console.log("dddd",doctorId);
   }
-
 
   return (
     <>
@@ -96,7 +98,7 @@ const Appointments = () => {
                         Appointment Completed ✅
                       </button>
                       {/* <Link to="/feedback"> */}
-                      <button onClick={handleFeedback} className="border border-green-500 text-green-500 px-4 py-2 rounded-lg md:mt-2">
+                      <button onClick={() => handleFeedback(appointment.doctorId._id)} className="border border-green-500 text-green-500 px-4 py-2 rounded-lg md:mt-2">
                         Feedback ✍️
                       </button>
                       {/* </Link> */}

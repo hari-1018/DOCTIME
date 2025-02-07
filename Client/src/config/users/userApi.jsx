@@ -4,7 +4,8 @@ const userEndPoints =  {
         REGISTER: "/auth/register",
         GOOGLE_AUTH: "/auth/google",
         BOOK_APPOINTMENT: "/appointments/book-appointment",
-        VIEW_USER_APPOINTMENT: "/appointments/:id"
+        VIEW_USER_APPOINTMENT: "/appointments/:id",
+        POST_REVIEW: "/reviews/post-review",
       },
 }
 

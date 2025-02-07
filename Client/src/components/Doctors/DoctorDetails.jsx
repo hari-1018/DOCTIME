@@ -132,7 +132,7 @@ const DoctorDetails = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 mt-6 md:gap-72 max-w-7xl w-full">
 
                 {/* Booking */}
-                <div className="bg-white rounded-lg shadow-lg p-4 gap-6 md:w-[710px]">
+                <div className="bg-white rounded-lg shadow-lg p-4 gap-6 md:w-[715px]">
                     <h3 className="text-lg font-bold text-blue-default">Book Appointment</h3>
                     <div className="mt-3">
                         <h4 className="text-md font-semibold text-gray-700">Day 📅</h4>

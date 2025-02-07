@@ -66,6 +66,7 @@ const userSlice = createSlice({
       state.role = user.role;
       localStorage.setItem('token', token); 
       localStorage.setItem('user', JSON.stringify(user)); 
+      localStorage.setItem('patientId', user.id);
       localStorage.setItem('role', user.role); 
     },
     SignOut: (state) => {
