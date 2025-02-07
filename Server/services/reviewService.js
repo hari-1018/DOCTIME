@@ -24,4 +24,11 @@ const reviewService = async ({ doctorId, patientId, rating, comments}) => {
     return populatedReview;
 };
 
-module.exports = { reviewService }
+//Get reviews of a doctor
+const getDoctorReviews = async (doctorId) => {
+    const reviews = await Review.find({ doctorId }).populate("patientId", "name");
+    return reviews;
+    }
+
+//Get reviews of a patient
+module.exports = { reviewService, getDoctorReviews }
