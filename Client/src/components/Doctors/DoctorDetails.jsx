@@ -1,4 +1,3 @@
-import Doctor1 from "../../assets/Doctor1.jpg";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
 import { useEffect, useState } from "react";
@@ -10,6 +9,7 @@ import { format, addDays, isToday, parse } from "date-fns";
 
 const DoctorDetails = () => {
     const [doctor, setDoctor] = useState(null);
+    const [reviews, setReviews] = useState([]);
     const { id } = useParams();
     const [selectedDay, setSelectedDay] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
@@ -68,9 +68,20 @@ const DoctorDetails = () => {
         }
     };
 
+    const fetchDoctorReviews = async () => {
+        try {
+            const response = await axiosInstance.get(userEndPoints.USER.GET_REVIEWS_OF_DOCTOR.replace(":id", id));
+            console.log("doctor reviews", response.data.data);
+            setReviews(response.data.data);
+        } catch (error) {
+            console.error("Error in fetching doctor reviews:", error);
+        }
+    }
+
     useEffect(() => {
         if (id) {
             fetchDoctorDetails();
+            fetchDoctorReviews();
         }
     }, [id]);
 
@@ -163,26 +174,20 @@ const DoctorDetails = () => {
                     {/* Reviews Section */}
                     <div className="bg-white rounded-lg shadow-lg max-w-[34rem] p-4 mt-6 md:mt-0">
                         <h3 className="text-lg font-bold text-blue-default">Reviews</h3>
-                        <div className="mt-3 space-y-3">
+                        <div className="space-y-1" >
                             {/* Review Card */}
-                            {[
-                                { name: "Mathews", date: "12/12/2023", stars: 5 },
-                                { name: "Sam Curran", date: "12/11/2024", stars: 5 },
-                                { name: "Tom Rogers", date: "12/02/2024", stars: 4 },
-                            ].map((review, index) => (
+                            {reviews.map((review, index) => (
                                 <div key={index} className="flex space-x-4">
-                                    <img
+                                    {/* <img
                                         src={Doctor1}
                                         alt="User"
                                         className="w-12 h-12 rounded-full object-cover"
-                                    />
+                                    /> */}
                                     <div>
-                                        <h4 className="font-bold text-gray-800">{review.name}</h4>
-                                        <p className="text-sm text-gray-500">{review.date}</p>
-                                        <p className="text-yellow-500">{"⭐".repeat(review.stars)}</p>
-                                        <p className="text-gray-600 text-sm mt-1">
-                                            Lorem Ipsum Odor Amet, Consectetur Adipiscing Elit.
-                                        </p>
+                                        <h4 className="font-bold text-gray-800">{review.patientId.name}</h4>
+                                        <p className="text-sm text-gray-500">{format(new Date(review.createdAt), "dd/MM/yyyy")}</p>
+                                        <p className="text-yellow-500">{"⭐".repeat(review.rating)}</p>
+                                        <p className="text-gray-600 text-sm ">{review.comments}</p>
                                     </div>
                                 </div>
                             ))}

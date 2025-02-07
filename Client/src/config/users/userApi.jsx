@@ -6,6 +6,7 @@ const userEndPoints =  {
         BOOK_APPOINTMENT: "/appointments/book-appointment",
         VIEW_USER_APPOINTMENT: "/appointments/:id",
         POST_REVIEW: "/reviews/post-review",
+        GET_REVIEWS_OF_DOCTOR: "/reviews/:id",
       },
 }
 
