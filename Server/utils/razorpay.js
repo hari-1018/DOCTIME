@@ -1,8 +1,4 @@
-// const express = require('express');
 const Razorpay = require('razorpay');
-// const crypto = require('crypto');
-
-// const router = express.Router();
 
 // Initialize Razorpay
 const razorpay = new Razorpay({

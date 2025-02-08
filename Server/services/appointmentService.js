@@ -70,6 +70,21 @@ const UserViewAppointments = async(patientId) =>{
     return appointments;
 }
 
+//View details of a appointment
+const ViewAppointmentDetails = async (appointmentId) => {
+    if(!appointmentId){
+        throw new CustomError("Invalid appointment ID", 400);
+    }
+    const appointment = await Appointment.findById(appointmentId)
+       .populate("patientId", "name")
+       .populate("doctorId", "name image specialization");
+
+    if(!appointment){
+        throw new CustomError("Appointment not found", 404);
+    }
+    return appointment;
+}
+
 //Fetch appointments of a doctor
 const DoctorViewAppointments = async (doctorId) => {
     if(!doctorId){
@@ -85,4 +100,4 @@ const DoctorViewAppointments = async (doctorId) => {
     return appointments;
 }
 
-module.exports = { BookAppointment, UserViewAppointments, DoctorViewAppointments };
+module.exports = { BookAppointment, UserViewAppointments, ViewAppointmentDetails, DoctorViewAppointments };
