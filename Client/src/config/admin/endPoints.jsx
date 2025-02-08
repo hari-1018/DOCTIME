@@ -1,5 +1,6 @@
 const adminEndPoints = {
     ADMIN:{
+      LOGIN:"/auth/admin-login",
       GET_ALL_USERS: "/admin/patients",
       GET_ALL_DOCTORS: "/admin/doctors",
       GET_ALL_APPOINTMENTS: "/admin/appointments",

@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 
 const DoctorSidebar = () => {
   const navigate = useNavigate();
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [doctorId, setDoctorId] = useState(null);
 

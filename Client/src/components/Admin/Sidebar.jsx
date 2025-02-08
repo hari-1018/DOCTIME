@@ -2,10 +2,23 @@ import { FaUsers } from "react-icons/fa";
 import { MdSpaceDashboard, MdCalendarToday } from "react-icons/md";
 import { RiStethoscopeFill } from "react-icons/ri";
 import { AiOutlineHistory } from "react-icons/ai";
-import { FiHelpCircle } from "react-icons/fi";
 import { Link, Outlet } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleSignOut = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("patientId");
+    setIsLoggedIn(false);
+    navigate("/login");
+  };
+
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
@@ -69,13 +82,9 @@ const Sidebar = () => {
 
         {/* Footer Section */}
         <div className="mt-auto">
-          <Link
-            to="/help"
-            className="flex items-center space-x-3 text-white font-bold hover:bg-blue-500 p-3 rounded-md"
-          >
-            <FiHelpCircle className="text-2xl" />
-            <span>Help</span>
-          </Link>
+          <button onClick={handleSignOut} className="bg-white ml-12 rounded-full px-5 py-2 text-blue-default font-bold">
+            Sign Out
+          </button>
         </div>
       </aside>
 

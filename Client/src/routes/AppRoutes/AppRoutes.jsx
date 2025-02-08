@@ -24,6 +24,7 @@ import FeedbackForm from '../../components/Appointments/Feedback';
 
 //Admin Routes
 // import AdminRoutes from '../ProtectedRoutes/AdminRoutes';
+import LoginAdmin from '../../components/Auth/AdminLogin';
 import Sidebar from '../../components/Admin/Sidebar';
 import Dashboard from '../../components/Admin/Dashboard';
 import AllPatients from '../../components/Admin/Patients';
@@ -60,6 +61,7 @@ const AppRoutes = () => {
         </Route>
 
         {/* Admin Routes */}
+        <Route path='/admin/login' element={<LoginAdmin/>} />
         {/* <Route element={<AdminRoutes/>}> */}
             <Route path="/admin" element={<Sidebar/>} >
             <Route index element={<Dashboard/>} />

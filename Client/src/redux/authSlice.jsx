@@ -75,6 +75,7 @@ const userSlice = createSlice({
       state.role = null;
       localStorage.removeItem("token");
       localStorage.removeItem('user'); 
+      localStorage.removeItem('patientId');
       localStorage.removeItem('role');
     },
   },

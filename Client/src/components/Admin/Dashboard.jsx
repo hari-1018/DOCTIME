@@ -63,14 +63,6 @@ const Dashboard = () => {
     fetchTotalAppointments();
   }, []);
 
-  const handleSignOut = () => {
-    localStorage.removeItem("loggedInUser");
-    localStorage.removeItem("secretToken");
-    localStorage.removeItem("role");
-    setIsLoggedIn(false);
-    navigate("/login");
-  };
-
 
   const barChartData = {
     labels: [
@@ -139,9 +131,6 @@ const Dashboard = () => {
         <div className="bg-white px-6 py-2 rounded-full shadow-md border border-gray-100 ml-[450px]">
           <h2 className="text-xl font-bold text-blue-default">Welcome Mr.Admin</h2>
         </div>
-        <button onClick={handleSignOut} className="bg-blue-default rounded-full px-4 py-2 text-white font-bold">
-          Sign Out
-        </button>
       </header>
 
       <div className="grid grid-cols-5 gap-4 mb-6">
