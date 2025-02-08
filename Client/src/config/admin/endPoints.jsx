@@ -3,6 +3,7 @@ const adminEndPoints = {
       LOGIN:"/auth/admin-login",
       GET_ALL_USERS: "/admin/patients",
       GET_ALL_DOCTORS: "/admin/doctors",
+      ADD_DOCTOR: "/admin/add-doctors",
       GET_ALL_APPOINTMENTS: "/admin/appointments",
       BLOCK_USER: (userId) => `/admin/block/${userId}`,
       UNBLOCK_USER: (userId) => `/admin/unblock/${userId}`,

@@ -30,6 +30,7 @@ import Sidebar from '../../components/Admin/Sidebar';
 import Dashboard from '../../components/Admin/Dashboard';
 import AllPatients from '../../components/Admin/Patients';
 import AllDoctors from '../../components/Admin/Doctors';
+import AddDoctor from '../../components/Admin/AddDoctor';
 import AllAppointments from '../../components/Admin/Appointments';
 
 
@@ -70,6 +71,7 @@ const AppRoutes = () => {
             <Route path="dashboard" element={<Dashboard/>} />
             <Route path="all-patients" element={<AllPatients/>} />
             <Route path="all-doctors" element={<AllDoctors/>} />
+            <Route path="add-doctor" element={<AddDoctor/>} />
             <Route path="all-appointments" element={<AllAppointments/>} />    
             </Route>   
         {/* </Route>  */}

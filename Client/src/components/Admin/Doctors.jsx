@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../config/axiosInstance";
 import adminEndPoints from "../../config/admin/endPoints";
 function AllDoctors() {
+  const navigate = useNavigate();
   const [doctors, setDoctors] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -66,6 +68,10 @@ function AllDoctors() {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
+  const handleAdd = () => {
+    navigate('/admin/add-doctor');
+  };
+
   return (
     <div className="p-2">
       <h1 className="text-3xl font-bold text-center text-blue-default mt-1 mb-4">
@@ -80,6 +86,12 @@ function AllDoctors() {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-bar text-gray-800 w-full sm:w-64 mb-4 sm:mb-0 border-2 border-blue-400 rounded-full px-3 py-1 focus:outline-blue-400"
         />
+      </div>
+
+      <div className="flex justify-center mb-4 mt-2">
+        <button onClick={handleAdd} className="bg-blue-default text-white font-bold rounded-full py-2 px-4 flex items-center">
+          Add New Doctor
+        </button>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-300">
