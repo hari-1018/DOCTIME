@@ -1,11 +1,12 @@
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../../config/axiosInstance";
 import doctorEndPoints from "../../config/doctors/doctorApi";
 import userEndPoints from "../../config/users/userApi";
 import { format, addDays, isToday, parse } from "date-fns";
+import { toast } from "react-toastify";
 
 const DoctorDetails = () => {
     const [doctor, setDoctor] = useState(null);
@@ -13,6 +14,7 @@ const DoctorDetails = () => {
     const { id } = useParams();
     const [selectedDay, setSelectedDay] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
+    const navigate = useNavigate();
 
     const handleSelectDay = (day) => {
         setSelectedDay(day);
@@ -99,7 +101,7 @@ const DoctorDetails = () => {
         }
 
         try {
-            await axiosInstance.post(
+            const response = await axiosInstance.post(
                 userEndPoints.USER.BOOK_APPOINTMENT,
                 {
                     patientId: userId,
@@ -108,8 +110,11 @@ const DoctorDetails = () => {
                     slotTime: selectedTime.label,
                 }
             );
+            const appointmentId = response.data.result.appointmentId;
+            console.log("appointmentId", appointmentId);
+            toast.success("Appointment Scheduled! Complete payment to confirm.");
+            navigate(`/appointment-details/${appointmentId}`);
 
-            alert("Appointment booked successfully!");
         } catch (error) {
             console.error("Error booking appointment:", error);
             alert("Failed to book appointment. Please try again.");
@@ -143,7 +148,7 @@ const DoctorDetails = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 mt-6 md:gap-72 max-w-7xl w-full">
 
                 {/* Booking */}
-                <div className="bg-white rounded-lg shadow-lg p-4 gap-6 md:w-[715px]">
+                <div className="bg-white rounded-lg shadow-lg p-4 gap-6 md:w-[720px]">
                     <h3 className="text-lg font-bold text-blue-default">Book Appointment</h3>
                     <div className="mt-3">
                         <h4 className="text-md font-semibold text-gray-700">Day 📅</h4>

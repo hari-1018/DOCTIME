@@ -20,6 +20,7 @@ import Home from '../../pages/Home';
 import DoctorListing from '../../components/Doctors/DoctorsListing';
 import DoctorDetails from '../../components/Doctors/DoctorDetails';
 import Appointments from '../../components/Appointments/Appointments';
+import AppointmentDetails from '../../components/Appointments/AppointmentDetails';
 import FeedbackForm from '../../components/Appointments/Feedback';
 
 //Admin Routes
@@ -50,6 +51,7 @@ const AppRoutes = () => {
             <Route path="/doctors" element={<DoctorListing/>} />
             <Route path="/doctors/:id" element={<DoctorDetails/>} />
             <Route path="/appointments/:id" element={<Appointments/>} />
+            <Route path="/appointment-details/:appointmentId" element={<AppointmentDetails/>} />
             <Route path="/feedback/:doctorId" element={<FeedbackForm/>} />
         </Route>
 
