@@ -1,5 +1,5 @@
 const {validateRegister, validateLogin} = require("../validations/authValidation");
-const {Register, Login, DoctorLogin, GoogleAuth } = require("../services/authService");
+const {Register, Login, DoctorLogin, GoogleAuth, AdminLogin } = require("../services/authService");
 const CustomError = require("../utils/customError");
 const asyncErrorResolver = require("../utils/asyncErrorResolver");
 const { OAuth2Client } = require("google-auth-library");
@@ -13,7 +13,7 @@ const register = asyncErrorResolver(async(req,res)=>{
     res.status(200).json({status: "success", response});
 });
 
-//Login
+//User Login
 const login = asyncErrorResolver(async(req,res)=>{
     const {error} = validateLogin(req.body);
     if(error) throw new CustomError(error.message, 400);
@@ -33,6 +33,16 @@ const doctorLogin = asyncErrorResolver(async(req,res)=>{
     res.status(200).json({status: "success", message: "Doctor Logged In Successfully", data: response});
 });
 
+//Admin Login
+const adminLogin = asyncErrorResolver(async(req,res)=>{
+    const {error} = validateLogin(req.body);
+    if(error) throw new CustomError(error.message, 400);
+    console.log("admin login response", req.body)
+    const response = await AdminLogin(req.body);
+    console.log("admin login response", response)
+    res.status(200).json({status: "success", message: "Admin Logged In Successfully", data: response});
+})
+
 //Google Authenticaton
 const googleAuth = asyncErrorResolver(async (req, res) => {
     const response = await GoogleAuth(req.body);
@@ -41,4 +51,4 @@ const googleAuth = asyncErrorResolver(async (req, res) => {
 });
 
 
-module.exports = { register, login, doctorLogin, googleAuth };
+module.exports = { register, login, doctorLogin, adminLogin, googleAuth };

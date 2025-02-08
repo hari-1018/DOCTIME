@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const Doctor = require("../models/doctorModel");
+const Admin = require("../models/adminModel")
 const bcrypt = require("bcryptjs");
 const {generateToken} = require("../utils/jwt");
 const CustomError = require("../utils/customError");
@@ -92,6 +93,35 @@ const DoctorLogin = async(data) =>{
     }
 };
 
+//Login Admin
+const AdminLogin = async(data) =>{
+    const {email, password} = data;
+    let admin = await Admin.findOne({email});
+    let role = "admin";
+
+    if(!admin){
+        throw new CustomError("Admin Not Found", 404)
+    }
+    console.log("Password", password);
+    console.log("Hashed password", admin.password);
+
+    const isMatch = await bcrypt.compare(password, admin.password);
+    console.log("Password match", isMatch);
+
+    if(!isMatch) throw new CustomError("Incorrect Email or Password", 401)
+
+    const token = generateToken(admin._id, role);
+    return {
+        user: {
+            id: admin._id,
+            name: admin.name,
+            email: admin.email,
+            role
+        },
+        token,
+    }
+};
+
 //By Google
 const GoogleAuth = async (data) => {
     const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -143,4 +173,4 @@ const GoogleAuth = async (data) => {
 
 
 
-module.exports = {Register, Login, GoogleAuth, DoctorLogin };
+module.exports = {Register, Login, GoogleAuth, DoctorLogin, AdminLogin };
