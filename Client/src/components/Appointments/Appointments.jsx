@@ -43,6 +43,11 @@ const Appointments = () => {
     console.log("dddd",doctorId);
   }
 
+  const handleReschedule = (doctorId, appointmentId) => {
+    navigate(`/doctors/${doctorId}?reschedule=true&appointmentId=${appointmentId}`);
+  };
+  
+
   return (
     <>
       <Navbar />
@@ -106,7 +111,9 @@ const Appointments = () => {
                     
                   ) : (
                     <div className="flex flex-col space-y-3">
-                      <button className="py-2 px-4 rounded-lg bg-blue-default text-white font-semibold border md:mt-4">
+                      <button
+                      onClick={()=> handleReschedule(appointment.doctorId._id, appointment._id)} 
+                      className="py-2 px-4 rounded-lg bg-blue-default text-white font-semibold border md:mt-4">
                         Reschedule
                       </button>
                       <button className="py-2 px-4 rounded-lg bg-red-400 text-white font-semibold border">
