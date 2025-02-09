@@ -31,6 +31,8 @@ import Dashboard from '../../components/Admin/Dashboard';
 import AllPatients from '../../components/Admin/Patients';
 import AllDoctors from '../../components/Admin/Doctors';
 import AddDoctor from '../../components/Admin/AddDoctor';
+import EditDoctor from '../../components/Admin/EditDoctor';
+import AdminDoctorDetails from '../../components/Admin/DoctorDetails';
 import AllAppointments from '../../components/Admin/Appointments';
 
 
@@ -72,6 +74,8 @@ const AppRoutes = () => {
             <Route path="all-patients" element={<AllPatients/>} />
             <Route path="all-doctors" element={<AllDoctors/>} />
             <Route path="add-doctor" element={<AddDoctor/>} />
+            <Route path="edit-doctor/:id" element={<EditDoctor/>} />
+            <Route path="view-doctor/:id" element={<AdminDoctorDetails/>} />
             <Route path="all-appointments" element={<AllAppointments/>} />    
             </Route>   
         {/* </Route>  */}

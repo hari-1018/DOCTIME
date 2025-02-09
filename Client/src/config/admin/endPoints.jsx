@@ -4,6 +4,8 @@ const adminEndPoints = {
       GET_ALL_USERS: "/admin/patients",
       GET_ALL_DOCTORS: "/admin/doctors",
       ADD_DOCTOR: "/admin/add-doctors",
+      EDIT_DOCTOR: "/admin/edit-doctor/:id",
+      DOCTOR_DETAILS: "/admin/view-doctor/:id",
       GET_ALL_APPOINTMENTS: "/admin/appointments",
       BLOCK_USER: (userId) => `/admin/block/${userId}`,
       UNBLOCK_USER: (userId) => `/admin/unblock/${userId}`,

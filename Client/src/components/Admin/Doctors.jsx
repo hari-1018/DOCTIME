@@ -72,6 +72,11 @@ function AllDoctors() {
     navigate('/admin/add-doctor');
   };
 
+  const handleDoctorClick = (doctorId) => {
+    navigate(`/admin/view-doctor/${doctorId}`);
+  };
+
+
   return (
     <div className="p-2">
       <h1 className="text-3xl font-bold text-center text-blue-default mt-1 mb-4">
@@ -81,7 +86,7 @@ function AllDoctors() {
       <div className="flex flex-col sm:flex-row sm:justify-center mb-4">
         <input
           type="text"
-          placeholder="Search Doctors..."
+          placeholder="Search Doctors...                          🔍"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-bar text-gray-800 w-full sm:w-64 mb-4 sm:mb-0 border-2 border-blue-400 rounded-full px-3 py-1 focus:outline-blue-400"
@@ -108,7 +113,7 @@ function AllDoctors() {
           <tbody>
             {currentDoctors.length > 0 ? (
               currentDoctors.map((doctor) => (
-                <tr key={doctor._id} className="hover:bg-blue-200 text-center">
+                <tr key={doctor._id} className="hover:bg-blue-200 text-center cursor-pointer" onClick={()=> handleDoctorClick(doctor._id)}>
                   <td className="py-2 px-2 border text-gray-600">
                     {doctor.name}
                   </td>
