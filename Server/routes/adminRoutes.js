@@ -2,11 +2,13 @@ const express = require('express');
 // const auth = require('../middlewares/auth');
 // const authorize = require('../middlewares/authorize')
 const adminRouter = express.Router();
-const {addNewDoctor, editDoctor, fetchTotalUsers, fetchTotalDoctors, fetchTotalAppointments, fetchAllUsers, fetchAllDoctors, fetchAllAppointments, blockUser, unblockUser } = require("../controllers/adminController");
+const { viewDoctorDetails, addNewDoctor, editDoctor, fetchTotalUsers, fetchTotalDoctors, fetchTotalAppointments, fetchAllUsers, fetchAllDoctors, fetchAllAppointments, blockUser, unblockUser } = require("../controllers/adminController");
 
-adminRouter.route("/add-doctors")
-    .post(addNewDoctor);
-    
+// adminRouter.route("/add-doctors")
+//     .post(addNewDoctor);
+
+adminRouter.get("/view-doctor/:id", viewDoctorDetails); 
+adminRouter.post("/add-doctors", addNewDoctor)    
 adminRouter.put("/edit-doctor/:id", editDoctor);
 adminRouter.get("/patients", fetchAllUsers );
 adminRouter.get("/doctors", fetchAllDoctors);

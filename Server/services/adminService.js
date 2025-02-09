@@ -4,6 +4,17 @@ const Appointment = require("../models/appointmentModel");
 const bcrypt = require("bcryptjs");
 const CustomError = require("../utils/customError");
 
+//View Details of a doctor
+const ViewDoctor = async(id) =>{
+    const doctor = await Doctor.findById(id);
+    if(!doctor){
+        throw new CustomError("Doctor not found, Try Again")
+    }
+    return {
+        doctor
+    }
+}
+
 //Add Doctor
 const AddDoctor = async(data) =>{
     const {name, email, image, qualifications, specialization, experience, fees, availability} = data;
@@ -138,4 +149,4 @@ const BlockUser = async (userId) => {
 
   
 
-module.exports = { AddDoctor, EditDoctor, TotalUsers, TotalDoctors, TotalAppointments, GetAllUsers, GetAllDoctors, GetAllAppointments, BlockUser, UnblockUser }
+module.exports = { ViewDoctor, AddDoctor, EditDoctor, TotalUsers, TotalDoctors, TotalAppointments, GetAllUsers, GetAllDoctors, GetAllAppointments, BlockUser, UnblockUser }
