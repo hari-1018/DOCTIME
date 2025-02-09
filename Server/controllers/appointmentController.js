@@ -1,5 +1,5 @@
 const asyncErrorResolver = require("../utils/asyncErrorResolver");
-const { BookAppointment, UserViewAppointments, ViewAppointmentDetails, DoctorViewAppointments } = require("../services/appointmentService");
+const { BookAppointment, RescheduleAppointment, UserViewAppointments, ViewAppointmentDetails, DoctorViewAppointments } = require("../services/appointmentService");
 const crypto = require("crypto");
 const razorpay = require("../utils/razorpay");
 const Payment = require("../models/paymentModel");
@@ -10,6 +10,26 @@ const bookAppointment = asyncErrorResolver(async (req, res) => {
     const result = await BookAppointment({ patientId, doctorId, slotDate, slotTime });
     console.log("book appointment", result);
     res.status(200).json({status: "success", message: "Appointment booked successfully", result });
+});
+
+//Reschedule appointment
+const rescheduleAppointment = asyncErrorResolver(async (req, res) => {
+    const { appointmentId, newSlotDate, newSlotTime } = req.body;
+
+    // Validate required fields
+    if (!appointmentId || !newSlotDate || !newSlotTime) {
+        throw new CustomError("Please provide all required fields: appointmentId, newSlotDate, newSlotTime", 400);
+    }
+
+    // Call the reschedule service
+    const result = await RescheduleAppointment({ appointmentId, newSlotDate, newSlotTime });
+
+    // Return the response
+    res.status(200).json({
+        status: "success",
+        message: "Appointment rescheduled successfully",
+        result,
+    });
 });
 
 //User view their appointments 
@@ -82,4 +102,4 @@ const verifyPayment = asyncErrorResolver(async(req,res)=>{
 });
 
 
-module.exports = { bookAppointment, userViewAppointments, getAppointmentDetails, doctorViewAppointments, createPayment, verifyPayment };
+module.exports = { bookAppointment, rescheduleAppointment, userViewAppointments, getAppointmentDetails, doctorViewAppointments, createPayment, verifyPayment };

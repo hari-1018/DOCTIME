@@ -2,6 +2,7 @@ const Doctor = require("../models/doctorModel");
 const Appointment = require("../models/appointmentModel");
 const CustomError = require("../utils/customError");
 
+//Book appointment
 const BookAppointment = async ({ patientId, doctorId, slotDate, slotTime }) => {
     const doctorData = await Doctor.findById(doctorId).select('-password');
     if (!doctorData || !doctorData.availability) {
@@ -54,6 +55,69 @@ const BookAppointment = async ({ patientId, doctorId, slotDate, slotTime }) => {
     };
 };
 
+//Reschedule Appointment
+const RescheduleAppointment = async ({ appointmentId, newSlotDate, newSlotTime }) => {
+    const existingAppointment = await Appointment.findById(appointmentId);
+    if (!existingAppointment) {
+        throw new CustomError("Appointment not found", 404);
+    }
+
+    const { doctorId, slotDate: oldSlotDate, slotTime: oldSlotTime } = existingAppointment;
+    //Fetch the doctor's data
+    const doctorData = await Doctor.findById(doctorId).select('-password');
+    if (!doctorData || !doctorData.availability) {
+        throw new CustomError("Doctor is not available at this time", 400);
+    }
+
+    //Initialize slotsBooked if it doesn't exist
+    const slotsBooked = { ...doctorData.slotsBooked } || {};
+
+    //Check if the new slot is already booked
+    const newDateSlots = slotsBooked[newSlotDate] || [];
+    if (newDateSlots.includes(newSlotTime)) {
+        throw new CustomError("New slot is already booked", 400);
+    }
+
+    //Remove the old slot from the doctor's slotsBooked
+    if (slotsBooked[oldSlotDate]) {
+        slotsBooked[oldSlotDate] = slotsBooked[oldSlotDate].filter(slot => slot !== oldSlotTime);
+        
+        // If the date has no more slots, remove the date entry completely
+        if (slotsBooked[oldSlotDate].length === 0) {
+            delete slotsBooked[oldSlotDate];
+        }
+    }
+
+    //Add the new slot to the doctor's slotsBooked
+    if (!slotsBooked[newSlotDate]) {
+        slotsBooked[newSlotDate] = [];
+    }
+    slotsBooked[newSlotDate].push(newSlotTime);
+
+    //Update the appointment with the new slot details
+    existingAppointment.slotDate = newSlotDate;
+    existingAppointment.slotTime = newSlotTime;
+    await existingAppointment.save();
+
+    //Update the doctor's slotsBooked in the database
+    await Doctor.findByIdAndUpdate(doctorId, { slotsBooked }, { new: true });
+
+    //Fetch the updated appointment details
+    const updatedAppointment = await Appointment.findById(appointmentId)
+        .populate("patientId", "name")
+        .populate("doctorId", "name image");
+
+    return {
+        appointmentId: updatedAppointment._id,
+        slotDate: newSlotDate,
+        slotTime: newSlotTime,
+        fees: updatedAppointment.fees,
+        patientName: updatedAppointment.patientId.name,
+        doctorName: updatedAppointment.doctorId.name,
+        doctorImage: updatedAppointment.doctorId.image,
+    };
+};
+
 
 //User view their appointments 
 const UserViewAppointments = async(patientId) =>{
@@ -100,4 +164,4 @@ const DoctorViewAppointments = async (doctorId) => {
     return appointments;
 }
 
-module.exports = { BookAppointment, UserViewAppointments, ViewAppointmentDetails, DoctorViewAppointments };
+module.exports = { BookAppointment, RescheduleAppointment, UserViewAppointments, ViewAppointmentDetails, DoctorViewAppointments };
