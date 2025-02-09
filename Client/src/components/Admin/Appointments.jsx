@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query"
 import axiosInstance from "../../config/axiosInstance";
 import adminEndPoints from "../../config/admin/endPoints";
+import useDebounce from "../../hooks/useDebounce";
 
 
   // Fetch all appointments
@@ -15,6 +16,9 @@ function AllAppointments() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const APPOINTMENTS_PER_PAGE = 15;
+
+  // State to store the debounced search term
+  const debouncedSearchTerm = useDebounce(searchTerm, 5000);
 
   const { data: appointments=[], isLoading, isError } = useQuery({
     queryKey: ["appointments"],
@@ -38,7 +42,7 @@ function AllAppointments() {
 
   // Filter appointments based on search term
   const filteredAppointments = sortedAppointments.filter((appointment) => {
-    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+    const lowerCaseSearchTerm = debouncedSearchTerm.toLowerCase();
     return (
       (appointment.patientId?.name?.toLowerCase().includes(lowerCaseSearchTerm) || false) ||
       (appointment.doctorId?.name?.toLowerCase().includes(lowerCaseSearchTerm) || false) ||
@@ -75,10 +79,10 @@ function AllAppointments() {
       <div className="flex flex-col sm:flex-row sm:justify-center mb-4">
         <input
           type="text"
-          placeholder="Search Appointments...              🔍"
+          placeholder="Search Appointments... 🔍"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="search-bar text-gray-800 w-full sm:w-64 mb-4 sm:mb-0 border-2 border-blue-400 rounded-full px-3 py-1 focus:outline-blue-400"
+          className="search-bar text-gray-800 w-full sm:w-52 mb-4 sm:mb-0 border-2 border-blue-400 rounded-full px-3 py-1 focus:outline-blue-400"
         />
       </div>
 
