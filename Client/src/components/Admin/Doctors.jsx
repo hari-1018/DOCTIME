@@ -1,58 +1,43 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "../../config/axiosInstance";
 import adminEndPoints from "../../config/admin/endPoints";
+import useDebounce from "../../hooks/useDebounce";
+
+// Fetch all doctors
+const fetchDoctors = async () => {
+  const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_ALL_DOCTORS);
+  return response.data.result.doctors;
+};
 function AllDoctors() {
   const navigate = useNavigate();
-  const [doctors, setDoctors] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const DOCTORS_PER_PAGE = 10;
 
   // State to store the debounced search term
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  // Fetch all doctors
-  const fetchDoctors = async () => {
-    try {
-      const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_ALL_DOCTORS);
-      console.log("fetchalldoctors", response.data.result.doctors);
-      const sortedDoctors = response.data.result.doctors.sort(
-        (a, b) => b.experience - a.experience
-      );
-      setDoctors(sortedDoctors);
-    } catch (error) {
-      console.error("Error fetching doctors:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchDoctors();
-  }, []);
-
-  // Debounce logic: Update debouncedSearchTerm after a delay
-  useEffect(() => {
-    const debounceTimer = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, 500); // 300ms delay
-
-    return () => clearTimeout(debounceTimer); // Cleanup the timer on unmount or new input
-  }, [searchTerm]);
+  //React Query to fetch doctors
+  const { data: doctors, isLoading, error } = useQuery({
+    queryKey: ["doctors"],
+    queryFn: fetchDoctors,
+  });
 
   // Filter doctors based on debounced search term
-  const filteredDoctors = doctors.filter((doctor) => {
+  const filteredDoctors = doctors?.filter((doctor) => {
     const lowerCaseSearchTerm = debouncedSearchTerm.toLowerCase();
     return (
       (doctor.name?.toLowerCase().includes(lowerCaseSearchTerm) || false) ||
-      (doctor.email?.toLowerCase().includes(lowerCaseSearchTerm) || false) ||
-      (doctor.mobile?.toString().includes(lowerCaseSearchTerm) || false)
+      (doctor.email?.toLowerCase().includes(lowerCaseSearchTerm) || false)
     );
   });
 
   // Calculate paginated data
   const indexOfLastDoctor = currentPage * DOCTORS_PER_PAGE;
   const indexOfFirstDoctor = indexOfLastDoctor - DOCTORS_PER_PAGE;
-  const currentDoctors = filteredDoctors.slice(
+  const currentDoctors = filteredDoctors?.slice(
     indexOfFirstDoctor,
     indexOfLastDoctor
   );
@@ -76,6 +61,13 @@ function AllDoctors() {
     navigate(`/admin/view-doctor/${doctorId}`);
   };
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading doctors: {error.message}</div>;
+  }
 
   return (
     <div className="p-2">

@@ -1,23 +1,25 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "../../config/axiosInstance";
 import adminEndPoints from "../../config/admin/endPoints";
 
+// Fetch all patients
+const fetchPatients = async () => {
+  const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_ALL_USERS);
+  return response.data.result.users;
+};
+
 function AllPatients() {
-  const [patients, setPatients] = useState([]);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [actionType, setActionType] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const fetchPatients = async () => {
-    try {
-      const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_ALL_USERS);
-      console.log("fetchallusers", response.data.result.users);
-      setPatients(response.data.result.users);
-    } catch (error) {
-      console.error("Error fetching Patients:", error);
-    }
-  };
+  // React Query to fetch patients
+  const { data: patients, isLoading, error, refetch } = useQuery({
+    queryKey:["patients"],
+    queryFn: fetchPatients,
+  });
 
   const handleBlockUnblock = (userId, isBlocked) => {
     setSelectedPatient(userId);
@@ -33,7 +35,7 @@ function AllPatients() {
             ? adminEndPoints.ADMIN.BLOCK_USER(selectedPatient)
             : adminEndPoints.ADMIN.UNBLOCK_USER(selectedPatient);
         await axiosInstance.patch(endpoint);
-        fetchPatients();
+        refetch(); // Refetch the data after the update
         setShowConfirmModal(false);
       } catch (error) {
         console.error("Error updating Patient status:", error);
@@ -41,11 +43,7 @@ function AllPatients() {
     }
   };
 
-  useEffect(() => {
-    fetchPatients();
-  }, []);
-
-  const filteredPatients = patients.filter((patient) => {
+  const filteredPatients = patients?.filter((patient) => {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
     return (
       (patient.name?.toLowerCase().includes(lowerCaseSearchTerm) || false) ||
@@ -53,6 +51,14 @@ function AllPatients() {
       (patient.mobile?.toString().includes(lowerCaseSearchTerm) || false)
     );
   });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error fetching patients: {error.message}</div>;
+  }
 
   return (
     <div className="p-2">
@@ -84,7 +90,7 @@ function AllPatients() {
             </tr>
           </thead>
           <tbody>
-            {filteredPatients.length > 0 ? (
+            {filteredPatients?.length > 0 ? (
               filteredPatients.map((patient) => (
                 <tr key={patient._id} className="hover:bg-blue-200 text-center">
                   <td className="py-2 px-2 border text-gray-800">
@@ -102,9 +108,7 @@ function AllPatients() {
                   <td className="py-2 px-2 border">
                     <span
                       className={`font-bold ${
-                        patient.isBlocked
-                          ? "text-red-500"
-                          : "text-green-500"
+                        patient.isBlocked ? "text-red-500" : "text-green-500"
                       }`}
                     >
                       {patient.isBlocked ? "Blocked" : "Active"}

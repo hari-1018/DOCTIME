@@ -1,38 +1,43 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query"
 import axiosInstance from "../../config/axiosInstance";
 import adminEndPoints from "../../config/admin/endPoints";
 
+
+  // Fetch all appointments
+  const fetchAppointments = async () => {
+      const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_ALL_APPOINTMENTS);
+      console.log("fetchallappointments", response.data.result.appointments);
+      return response.data.result.appointments;
+  }
+
 function AllAppointments() {
-  const [appointments, setAppointments] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const APPOINTMENTS_PER_PAGE = 15;
 
-  // Fetch all appointments
-  const fetchAppointments = async () => {
-    try {
-      const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_ALL_APPOINTMENTS);
-      console.log("fetchallappointments", response.data.result.appointments);
+  const { data: appointments=[], isLoading, isError } = useQuery({
+    queryKey: ["appointments"],
+    queryFn: fetchAppointments,
+  });
 
-      // Sort appointments by slotDate (most recent first)
-      const sortedAppointments = response.data.result.appointments.sort((a, b) => {
-        const dateA = new Date(a.slotDate);
-        const dateB = new Date(b.slotDate);
-        return dateB - dateA; // Descending order (recent first)
-      });
+  if (isLoading) {
+    return <div>Loading appointments...</div>;
+  }
 
-      setAppointments(sortedAppointments);
-    } catch (error) {
-      console.error("Error fetching appointments:", error);
-    }
-  };
+  if (isError) {
+    return <div>Error fetching appointments!</div>;
+  }
 
-  useEffect(() => {
-    fetchAppointments();
-  }, []);
+  // Sort appointments by slotDate (most recent first)
+  const sortedAppointments = appointments.sort((a, b) => {
+    const dateA = new Date(a.slotDate);
+    const dateB = new Date(b.slotDate);
+    return dateB - dateA; // Descending order (recent first)
+  });
 
   // Filter appointments based on search term
-  const filteredAppointments = appointments.filter((appointment) => {
+  const filteredAppointments = sortedAppointments.filter((appointment) => {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
     return (
       (appointment.patientId?.name?.toLowerCase().includes(lowerCaseSearchTerm) || false) ||
@@ -70,7 +75,7 @@ function AllAppointments() {
       <div className="flex flex-col sm:flex-row sm:justify-center mb-4">
         <input
           type="text"
-          placeholder="Search Appointments..."
+          placeholder="Search Appointments...              🔍"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-bar text-gray-800 w-full sm:w-64 mb-4 sm:mb-0 border-2 border-blue-400 rounded-full px-3 py-1 focus:outline-blue-400"
