@@ -41,7 +41,11 @@ const Navbar = () => {
     };
 
   const handleProfileClick = () => {
-    navigate("/user/dashboard");
+    if(userId){
+    navigate(`/user/${userId}`);
+    }else {
+      console.error("User ID not found");
+    }
   }
 
   return (

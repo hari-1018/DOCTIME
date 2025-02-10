@@ -3,6 +3,8 @@ const userEndPoints =  {
         LOGIN: "/auth/login",
         REGISTER: "/auth/register",
         GOOGLE_AUTH: "/auth/google",
+        PROFILE:"/user/:id",
+        EDIT_PROFILE: "/user/edit-user/:id",
         BOOK_APPOINTMENT: "/appointments/book-appointment",
         RESCHEDULE_APPOINTMENT: "/appointments/reschedule-appointment",
         VIEW_USER_APPOINTMENT: "/appointments/:id",
