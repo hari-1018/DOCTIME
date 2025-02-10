@@ -32,10 +32,12 @@ const DoctorAppointments = () => {
 
   const handleStatusChange = async (appointmentId, newStatus) => {
     try {
-      const response = await axiosInstance.patch(
-        doctorEndPoints.DOCTOR.UPDATE_APPOINTMENT_STATUS.replace(":id", appointmentId),
+      const response = await axiosInstance.put(
+        doctorEndPoints.DOCTOR.UPDATE_APPOINTMENT_STATUS.replace(":appointmentId", appointmentId),
         { isCompleted: newStatus === "Completed" } // Convert to boolean
       );
+      console.log("API Endpoint:", doctorEndPoints.DOCTOR.UPDATE_APPOINTMENT_STATUS);
+      console.log("Updated appointment status", response.data);
 
       setAppointments((prevAppointments) =>
         prevAppointments.map((appointment) =>
@@ -64,10 +66,10 @@ const DoctorAppointments = () => {
         <div className="flex flex-col sm:flex-row sm:justify-center mb-4">
           <input
             type="text"
-            placeholder="Search Appointments..."
+            placeholder="Search Appointments...🔍"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-bar text-gray-800 w-full sm:w-64 mb-4 sm:mb-0 border-2 border-blue-400 rounded-full px-3 py-1 focus:outline-blue-400"
+            className="search-bar text-gray-800 w-full sm:w-52 mb-4 sm:mb-0 border-2 border-blue-400 rounded-full px-3 py-1 focus:outline-blue-400"
           />
         </div>
         <div className="overflow-x-auto">
