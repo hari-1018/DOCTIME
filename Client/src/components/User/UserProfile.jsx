@@ -12,6 +12,15 @@ const fetchUserDetails = async(id) =>{
     return response.data.data;
   }
 
+const fetchTotalAppointments = async(userId) => {
+    const response = await axiosInstance.get(
+      userEndPoints.USER.TOTAL_APPOINTMENTS_COUNT.replace(":userId", userId)
+    );
+    console.log("user total appo", response.data.data)
+    return response.data.data;
+};
+
+
 const UserProfile = () => {
       const navigate = useNavigate();
       const { id } = useParams();
@@ -20,6 +29,12 @@ const UserProfile = () => {
         queryFn:()=> fetchUserDetails(id),
         enabled: !!id,
       });
+
+      const { data: totalAppointments } = useQuery({
+        queryKey: ["totalAppointments", id],
+        queryFn: () => fetchTotalAppointments(id),
+        enabled: !!id,
+    });
     
       if (isLoading) {
         return (
@@ -58,16 +73,16 @@ const UserProfile = () => {
           {/* Stats Section */}
           <div className="flex justify-around mt-6 text-gray-700 font-semibold">
             <div className="text-center">
-              <p className="text-lg text-black">205</p>
-              <p className="text-sm text-gray-500">Followers</p>
-            </div>
-            <div className="text-center">
               <p className="text-lg text-black">{user?.height}</p>
               <p className="text-sm text-gray-500">Height(cm)</p>
             </div>
             <div className="text-center">
               <p className="text-lg text-black">{user?.weight}</p>
               <p className="text-sm text-gray-500">Weight(kg)</p>
+            </div>
+                        <div className="text-center">
+              <p className="text-lg text-black">{totalAppointments}</p>
+              <p className="text-sm text-gray-500">Appointments</p>
             </div>
           </div>
   

@@ -9,6 +9,7 @@ const userEndPoints =  {
         RESCHEDULE_APPOINTMENT: "/appointments/reschedule-appointment",
         VIEW_USER_APPOINTMENT: "/appointments/:id",
         VIEW_APPOINTMENT_DETAILS: "/appointments/details/:appointmentId",
+        TOTAL_APPOINTMENTS_COUNT: "/user/total-appointments/:userId",
         POST_REVIEW: "/reviews/post-review",
         GET_REVIEWS_OF_DOCTOR: "/reviews/:id",
         MAKE_PAYMENT: "/appointments/create-payment",
