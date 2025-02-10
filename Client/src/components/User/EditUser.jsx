@@ -167,15 +167,23 @@ const EditUser = () => {
         </div>
 
         {/* Submit Button */}
-        <div className="flex justify-center">
+        <div className="flex justify-center space-x-4">
           <button
             type="submit"
-            className="bg-blue-default font-semibold text-white px-6 py-2 rounded hover:bg-blue-600 transition-colors"
+            className="bg-blue-default font-semibold text-white px-4 py-2 rounded hover:bg-[#13D4F6] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#13D4F6]"
           >
             Update Profile
           </button>
         </div>
       </form>
+      <div className="flex justify-center"> 
+      <button
+            onClick={() => window.history.back()}
+            className="bg-blue-default font-semibold mx-auto text-white px-6 py-2 rounded hover:bg-[#13D4F6] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#13D4F6] mt-4"
+          >
+            Go Back
+      </button>
+      </div>
     </div>
   );
 };

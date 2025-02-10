@@ -43,6 +43,9 @@ const UserProfile = () => {
             </div>
         );
     }
+    const handleBack = () =>{
+      navigate("/home");
+    }
 
     if (isError) {
         return (
@@ -88,12 +91,12 @@ const UserProfile = () => {
   
           {/* Buttons */}
           <div className="flex gap-3 mt-6">
-            <button onClick={()=> navigate(`/edit-user/${id}`)} className="bg-blue-default text-white font-semibold py-2 px-4 rounded-lg w-1/2 hover:bg-red-600 transition">
+            <button onClick={()=> navigate(`/edit-user/${id}`)} className="bg-blue-default text-white font-semibold py-2 px-4 rounded-lg w-1/2 hover:bg-[#13D4F6] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#13D4F6]">
               Edit Profile
             </button>
             <button 
-                onClick={() => window.history.back()}
-                className="bg-blue-default text-white font-semibold py-2 px-4 rounded-lg w-1/2 hover:bg-red-600 transition">
+                onClick={handleBack}
+                className="bg-blue-default text-white font-semibold py-2 px-4 rounded-lg w-1/2 hover:bg-[#13D4F6] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#13D4F6]">
               Go Back
             </button>
           </div>
