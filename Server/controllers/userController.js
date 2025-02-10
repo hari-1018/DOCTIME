@@ -1,6 +1,6 @@
 const CustomError = require("../utils/customError");
 const asyncErrorResolver = require("../utils/asyncErrorResolver");
-const { userDetailsService, userEditService } = require("../services/userService");
+const { userDetailsService, userEditService, totalAppointmentsService } = require("../services/userService");
 
 
 //Fetch User By ID
@@ -21,8 +21,16 @@ const editUserController = asyncErrorResolver(async (req, res) => {
     res.status(201).json({status: "success", message: "User updated successfully",  data:response});
 });
 
+//Total appointments of a user
+const totalAppointmentsController = asyncErrorResolver(async (req, res) => {
+    const userId = req.params.userId;
+    const totalAppointments = await totalAppointmentsService(userId);
+    res.status(200).json({ status: "success", message: "Total appointments fetched successfully", data: totalAppointments });
+});
+
 
 module.exports = {
     userDetailsController, 
     editUserController,
+    totalAppointmentsController,
 };

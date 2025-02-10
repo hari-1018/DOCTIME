@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const Appointment = require("../models/appointmentModel");
 const CustomError = require("../utils/customError");
 
 
@@ -24,5 +25,11 @@ const userEditService = async(id, data) =>{
     }
 }
 
+//Total Appointments of a user
+ const totalAppointmentsService = async (userId) => {
+    const appointments = await Appointment.find({patientId: userId});
+    return appointments.length;
+}
 
-module.exports = { userDetailsService, userEditService }
+
+module.exports = { userDetailsService, userEditService, totalAppointmentsService}
