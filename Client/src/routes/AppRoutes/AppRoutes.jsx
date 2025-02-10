@@ -22,6 +22,8 @@ import DoctorDetails from '../../components/Doctors/DoctorDetails';
 import Appointments from '../../components/Appointments/Appointments';
 import AppointmentDetails from '../../components/Appointments/AppointmentDetails';
 import FeedbackForm from '../../components/Appointments/Feedback';
+import UserSidebar from '../../components/User/UserSidebar';
+import UserDashboard from '../../components/User/UserDashboard';
 
 //Admin Routes
 // import AdminRoutes from '../ProtectedRoutes/AdminRoutes';
@@ -56,6 +58,11 @@ const AppRoutes = () => {
             <Route path="/appointments/:id" element={<Appointments/>} />
             <Route path="/appointment-details/:appointmentId" element={<AppointmentDetails/>} />
             <Route path="/feedback/:doctorId" element={<FeedbackForm/>} />
+
+            <Route path="/user" element={<UserSidebar/>}>
+            <Route index element={<UserDashboard/>} />
+            <Route path="dashboard" element={<UserDashboard/>} />
+            </Route>
         </Route>
 
         {/* Doctor Routes */}
@@ -63,6 +70,7 @@ const AppRoutes = () => {
             <Route index element={<DoctorDashboard/>} />
             <Route path="dashboard" element={<DoctorDashboard/>} />
             <Route path=":id/my-appointments" element={<DoctorAppointments/>} />
+
         </Route>
 
         {/* Admin Routes */}

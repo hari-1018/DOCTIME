@@ -1,5 +1,5 @@
 import NavLogo from "../../assets/Doctime_Logo.png";
-import { RxDashboard } from "react-icons/rx";
+import { FaCircleUser } from "react-icons/fa6";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -39,6 +39,10 @@ const Navbar = () => {
         homeSection.scrollIntoView({ behavior: "smooth" });
       }
     };
+
+  const handleProfileClick = () => {
+    navigate("/user/dashboard");
+  }
 
   return (
     <>
@@ -112,8 +116,8 @@ const Navbar = () => {
 
         {/* Dashboard Button */}
         {isLoggedIn && (
-          <button className="hidden md:block w-10 h-10 text-blue-default text-2xl -mr-64">
-            <RxDashboard />
+          <button onClick={handleProfileClick} className="hidden md:block w-10 h-10 text-blue-default text-3xl -mr-64">
+            <FaCircleUser />
           </button>
         )}
 
