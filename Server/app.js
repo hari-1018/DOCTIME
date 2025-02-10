@@ -4,6 +4,7 @@ const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const doctorRoutes = require('./routes/doctorRoutes');
+const userRoutes = require('./routes/userRoutes');
 const appointmentRoutes = require("./routes/appointmentRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const errorHandler = require('./middlewares/errorHandler');
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/doctors", doctorRoutes);
+app.use("/api/user", userRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/reviews", reviewRoutes);
 

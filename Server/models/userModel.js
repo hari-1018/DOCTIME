@@ -18,13 +18,16 @@ const userModel = new mongoose.Schema({
         type: String,
     },
     image: {
-        type: [
-            {
-                profileImageUrl: { type: String },
-                profileThumbnailUrl: { type: String },
-            },
-        ],
-        default: [],
+        type: String,
+    },
+    age: {
+        type: Number,
+    },
+    height: {
+        type: Number,
+    },
+    weight: {
+        type: Number,
     },
     isBlocked: {
         type: Boolean,
