@@ -24,6 +24,9 @@ const changeAppointmentStatus = asyncErrorResolver(async (req, res) => {
     if (!appointmentId) return res.status(400).json({ status: "error", message: "Invalid request" });
     const updatedAppointment = await ChangeAppointmentStatus(appointmentId);
     console.log("change appointment status", updatedAppointment);
+    if (!updatedAppointment) {
+        return res.status(404).json({ status: "error", message: "Appointment not found" });
+    }
     res.status(200).json({ status: "success", message: 'Appointment marked as completed successfully', data: updatedAppointment });
 });
 
