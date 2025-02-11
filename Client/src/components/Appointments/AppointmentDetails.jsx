@@ -38,8 +38,9 @@ const AppointmentDetails = () => {
       const response = await axiosInstance.post(userEndPoints.USER.MAKE_PAYMENT, {
         amount: appointmentDetails.fees, // Convert to paise
         currency: "INR",
+        appointmentId: appointmentId
+        
       });
-
       const { id: orderId, amount, currency } = response.data;
 
       // Step 2: Open Razorpay checkout
@@ -59,6 +60,7 @@ const AppointmentDetails = () => {
               razorpay_payment_id,
               razorpay_order_id,
               razorpay_signature,
+              paymentMethod: response.method
             });
 
             if (verifyResponse.data.status === "success") {
@@ -72,8 +74,8 @@ const AppointmentDetails = () => {
           }
         },
         prefill: {
-          name: "Customer Name",
-          email: "customer@example.com",
+          name: appointmentDetails?.patientId?.name || "Customer Name",
+          email: appointmentDetails?.patientId?.email || "customer@example.com",
           contact: "9999999999",
         },
         theme: { color: "#3399cc" },

@@ -172,7 +172,7 @@ const DoctorDetails = () => {
                 {/* Booking and Reviews Section */}
                 <div className="grid grid-cols-1 md:grid-cols-2 mt-6 md:gap-72 max-w-7xl w-full">
                     {/* Booking */}
-                    <div className="bg-white rounded-lg shadow-lg p-4 gap-6 md:w-[730px]">
+                    <div className="bg-white rounded-lg shadow-lg p-4 gap-6 md:w-[750px]">
                         <h3 className="text-lg font-bold text-blue-default">
                             {isRescheduling ? "Reschedule Appointment" : "Book Appointment"}
                         </h3>

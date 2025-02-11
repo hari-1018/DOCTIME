@@ -34,6 +34,12 @@ function AllDoctors() {
     );
   });
 
+  //Sort the doctors according to their experience
+  // eslint-disable-next-line no-unused-vars
+  const sortedDoctors = filteredDoctors?.sort((a, b) =>
+    b.experience - a.experience
+  );
+
   // Calculate paginated data
   const indexOfLastDoctor = currentPage * DOCTORS_PER_PAGE;
   const indexOfFirstDoctor = indexOfLastDoctor - DOCTORS_PER_PAGE;
