@@ -25,8 +25,6 @@ import {
     const [totalUsers, setTotalUsers] = useState(0);
     const [totalDoctors, setTotalDoctors] = useState(0);
     const [totalAppointments, setTotalAppointments] = useState(0);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const navigate = useNavigate();
   
     const fetchTotalUsers = async () => {
       try {
@@ -51,8 +49,8 @@ import {
     const fetchTotalAppointments = async () => {
       try {
         const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_TOTAL_APPOINTMENTS);
-        console.log('dashappo', response.data.result.totalAppointments);
-        setTotalAppointments(response.data.result.totalAppointments);
+        console.log('dashappo', response.data.result);
+        setTotalAppointments(response.data.result);
       } catch (error) {
         console.error('Error fetching doctors:', error);
       }
@@ -63,14 +61,6 @@ import {
       fetchTotalDoctors();
       fetchTotalAppointments();
     }, []);
-  
-    const handleSignOut = () => {
-      localStorage.removeItem("loggedInUser");
-      localStorage.removeItem("secretToken");
-      localStorage.removeItem("role");
-      setIsLoggedIn(false);
-      navigate("/login");
-    };
   
   
     const barChartData = {
@@ -126,16 +116,16 @@ import {
       <div className="p-2">
         <header className="flex justify-between items-center mb-4">
           <div className="bg-white px-6 py-2 rounded-full shadow-md border border-gray-100 ml-[450px]">
-            <h2 className="text-xl font-bold text-blue-default">Welcome Mr. Doctor Name</h2>
+            <h2 className="text-xl font-bold text-blue-default">Welcome Mr.Doctor</h2>
           </div>
         </header>
   
         <div className="grid grid-cols-4 gap-12 mb-6">
           {[
             { title: "Total Patients", value: totalUsers, icon: <MdGroups /> },
-            { title: "Appointments", value: 25, icon: <FaCalendarDays/> },
-            { title: "Completed", value: totalDoctors, icon: <MdOutlineDoneOutline /> },
-            { title: "Pending", value: 25, icon: <FaRegClock/> },
+            { title: "Appointments", value: totalAppointments, icon: <FaCalendarDays/> },
+            { title: "Completed", value: 2, icon: <MdOutlineDoneOutline /> },
+            { title: "Pending", value: 1, icon: <FaRegClock/> },
           ].map((item, index) => (
             <div
               key={index}

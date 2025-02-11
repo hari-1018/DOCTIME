@@ -69,7 +69,7 @@ const Sidebar = () => {
               <span>Appointments</span>
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link
               to="/admin/payment-history"
               className="flex items-center space-x-3 text-white font-bold hover:bg-blue-500 p-3 rounded-md"
@@ -77,7 +77,7 @@ const Sidebar = () => {
               <AiOutlineHistory className="text-2xl" />
               <span>Payment History</span>
             </Link>
-          </li>
+          </li> */}
         </ul>
 
         {/* Footer Section */}

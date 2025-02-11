@@ -12,7 +12,8 @@ import {
 } from "chart.js";
 import { Bar, Pie, Line } from "react-chartjs-2";
 import { MdGroups } from "react-icons/md";
-import { FaCalendarDays, FaUserDoctor } from "react-icons/fa6";
+import { FaCalendarDays, FaClock, FaUserDoctor } from "react-icons/fa6";
+import { GiCash } from "react-icons/gi";
 import { useState, useEffect } from "react";
 import axiosInstance from "../../config/axiosInstance";
 import adminEndPoints from "../../config/admin/endPoints";
@@ -23,6 +24,9 @@ const Dashboard = () => {
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalDoctors, setTotalDoctors] = useState(0);
   const [totalAppointments, setTotalAppointments] = useState(0);
+  const [totalRevenue, setTotalRevenue] = useState(0);
+  const [pending, setPending] = useState();
+  const [specializationCounts, setSpecializationCounts] = useState([]);
 
   const fetchTotalUsers = async () => {
     try {
@@ -54,50 +58,63 @@ const Dashboard = () => {
     }
   };
 
+  const fetchTotalRevenue = async () => {
+    try {
+      const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_TOTAL_REVENUE);
+      console.log('dashrev', response.data.data.totalRevenue);
+      setTotalRevenue(response.data.data.totalRevenue);
+    } catch (error) {
+      console.error('Error fetching revenue:', error);
+    }
+  }
+
+  const fetchPendingAppointments = async () => {
+    try {
+      const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_PENDING_APPOINTMENTS);
+      console.log('pending', response.data.data);
+      setPending(response.data.data);
+    } catch (error) {
+      console.error('Error fetching pending appointments:', error);
+    }
+  }
+
+  const fetchSpecializationCount = async () => {
+    try{
+    const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_COUNT_SPECIALIZATION);
+    console.log("dsh specialization", response.data.data.doctorCount);
+    setSpecializationCounts(response.data.data.doctorCount);
+    } catch (error) {
+      console.error('Error fetching doctors:', error);
+  }
+};
+
   useEffect(() => {
     fetchTotalUsers();
     fetchTotalDoctors();
     fetchTotalAppointments();
+    fetchTotalRevenue();
+    fetchPendingAppointments();
+    fetchSpecializationCount();
   }, []);
 
 
   const barChartData = {
-    labels: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
+    labels: ["Total Users", "Total Doctors", "Appointments", "Pending"],
     datasets: [
       {
-        label: "Series 3",
-        data: [20, 60, 80, 40, 60, 80, 100, 80, 60, 100, 120, 60],
-        backgroundColor: "#2BA3ED",
+        label: "Counts",
+        data: [totalUsers, totalDoctors, totalAppointments, pending],
+        backgroundColor: ["#2BA3ED", "#3b82f6", "#6366f1", "#facc15"],
       },
     ],
   };
 
   const pieChartData = {
-    labels: [
-      "Cardiology",
-      "Neurology",
-      "Dermatology",
-      "Pediatrics",
-      "General Medicine",
-      "Orthopedics",
-    ],
+    labels: specializationCounts.map((item)=>item._id),
     datasets: [
       {
         label: "Specializations",
-        data: [15, 13, 9, 19, 22, 8],
+        data: specializationCounts.map((item)=>item.count),
         backgroundColor: [
           "#3b82f6",
           "#6366f1",
@@ -105,6 +122,12 @@ const Dashboard = () => {
           "#ec4899",
           "#22c55e",
           "#facc15",
+          "#f97316",
+          "#10b981",
+          "#9333ea",
+          "#fffb00",
+          "#e11d48",
+          "#a3e635",
         ],
       },
     ],
@@ -135,8 +158,8 @@ const Dashboard = () => {
           { title: "Total Patients", value: totalUsers, icon: <MdGroups /> },
           { title: "Total Doctors", value: totalDoctors, icon: <FaUserDoctor /> },
           { title: "Appointments", value: totalAppointments, icon: <FaCalendarDays/> },
-          { title: "Pending", value: 25 },
-          { title: "Total Revenue", value: 10000 },
+          { title: "Pending", value: pending, icon: <FaClock/> },
+          { title: "Revenue", value: totalRevenue.toFixed(2), icon: <GiCash /> },
         ].map((item, index) => (
           <div
             key={index}
@@ -160,7 +183,7 @@ const Dashboard = () => {
         </div>
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <h3 className="text-xl font-bold text-blue-600 mb-4">
-            Specialization Stats
+            Specialization Wise Doctors
           </h3>
           <Pie data={pieChartData} />
         </div>

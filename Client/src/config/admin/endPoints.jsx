@@ -11,7 +11,10 @@ const adminEndPoints = {
       UNBLOCK_USER: (userId) => `/admin/unblock/${userId}`,
       GET_TOTAL_USERS: "/admin/dashboard/total-users",
       GET_TOTAL_DOCTORS: "/admin/dashboard/total-doctors",
+      GET_COUNT_SPECIALIZATION: "/admin/dashboard/count-specialization",
       GET_TOTAL_APPOINTMENTS: "/admin/dashboard/total-appointments",
+      GET_PENDING_APPOINTMENTS: "/admin/dashboard/pending",
+      GET_TOTAL_REVENUE: "/admin/dashboard/total-revenue",
     },
 }
 
