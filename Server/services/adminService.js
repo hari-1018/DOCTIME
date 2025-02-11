@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const Doctor = require("../models/doctorModel");
 const Appointment = require("../models/appointmentModel");
+const Payment = require("../models/paymentModel");
 const bcrypt = require("bcryptjs");
 const CustomError = require("../utils/customError");
 
@@ -12,6 +13,17 @@ const ViewDoctor = async(id) =>{
     }
     return {
         doctor
+    }
+}
+
+//View Details of a user
+const ViewUser = async(id) =>{
+    const user = await User.findById(id);
+    if(!user){
+        throw new CustomError("User not found, Try Again")
+    }
+    return {
+        user
     }
 }
 
@@ -85,6 +97,11 @@ const TotalAppointments = async () => {
     // };
 };
 
+//Total Pending Appointments Count
+const TotalPendingAppointments = async () => {
+    return await Appointment.countDocuments({isCompleted: false});
+};
+
 //Fetch all users
 const GetAllUsers = async () => {
         const users = await User.find(); 
@@ -103,6 +120,16 @@ const GetAllDoctors = async () => {
     };
 };
 
+//Fetch Count of doctors in each specialization
+ const CountDoctorsBySpecialization = async () => {
+    const doctorCount = await Doctor.aggregate([
+        { $group: { _id: "$specialization", count: { $sum: 1 } } }
+    ]);
+    return {
+        doctorCount,
+    };
+};
+
 //Fetch all appointments
 const GetAllAppointments = async () => {
     const appointments = await Appointment.find()
@@ -113,6 +140,25 @@ const GetAllAppointments = async () => {
         appointments,
     };
 };
+
+//Total Revenue
+ const TotalRevenue = async () => {
+    const totalRevenue = await Payment.aggregate([
+        { 
+            $match: {status:'successfull'}
+        },
+        {
+            $group: {
+                _id: null,
+                totalRevenue: { $sum: "$amount" }
+            }
+        }
+    ]);
+    return {
+        totalRevenue: totalRevenue[0].totalRevenue
+    };
+};
+
 
 //Block User
 const BlockUser = async (userId) => {
@@ -149,4 +195,4 @@ const BlockUser = async (userId) => {
 
   
 
-module.exports = { ViewDoctor, AddDoctor, EditDoctor, TotalUsers, TotalDoctors, TotalAppointments, GetAllUsers, GetAllDoctors, GetAllAppointments, BlockUser, UnblockUser }
+module.exports = { ViewUser, ViewDoctor, AddDoctor, EditDoctor, TotalUsers, TotalDoctors, TotalAppointments, TotalPendingAppointments, TotalRevenue, GetAllUsers, GetAllDoctors, CountDoctorsBySpecialization, GetAllAppointments, BlockUser, UnblockUser }
