@@ -1,6 +1,6 @@
-import { FaUsers } from "react-icons/fa";
+// import { FaUsers } from "react-icons/fa";
 import { MdSpaceDashboard, MdCalendarToday } from "react-icons/md";
-import { AiOutlineHistory } from "react-icons/ai";
+// import { AiOutlineHistory } from "react-icons/ai";
 import { Link, Outlet } from "react-router-dom";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { useState, useEffect } from "react";
@@ -52,7 +52,7 @@ const DoctorSidebar = () => {
               <span>Overview</span>
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link
               to="/doctor/my-patients"
               className="flex items-center space-x-3 text-white font-bold hover:bg-blue-500 p-3 rounded-md"
@@ -60,7 +60,7 @@ const DoctorSidebar = () => {
               <FaUsers className="text-2xl" />
               <span>My Patients</span>
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link
               to={isLoggedIn ? `/doctor/${doctorId}/my-appointments` : "#"}
@@ -72,7 +72,7 @@ const DoctorSidebar = () => {
               <span>My Appointments</span>
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link
               to="/doctor/payment-history"
               className="flex items-center space-x-3 text-white font-bold hover:bg-blue-500 p-3 rounded-md"
@@ -80,7 +80,7 @@ const DoctorSidebar = () => {
               <AiOutlineHistory className="text-2xl" />
               <span>Payment History</span>
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link
               to="/doctor/reviews"
