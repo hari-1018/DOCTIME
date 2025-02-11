@@ -7,6 +7,7 @@ const userEndPoints =  {
         EDIT_PROFILE: "/user/edit-user/:id",
         BOOK_APPOINTMENT: "/appointments/book-appointment",
         RESCHEDULE_APPOINTMENT: "/appointments/reschedule-appointment",
+        CANCEL_APPOINTMENT: "/appointments/cancel-appointment/:appointmentId",
         VIEW_USER_APPOINTMENT: "/appointments/:id",
         VIEW_APPOINTMENT_DETAILS: "/appointments/details/:appointmentId",
         TOTAL_APPOINTMENTS_COUNT: "/user/total-appointments/:userId",

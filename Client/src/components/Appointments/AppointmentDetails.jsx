@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../../config/axiosInstance";
 import userEndPoints from "../../config/users/userApi";
 import { format } from "date-fns";
+import { toast } from "react-toastify";
 
 const AppointmentDetails = () => {
   const navigate = useNavigate();
@@ -64,9 +65,11 @@ const AppointmentDetails = () => {
             });
 
             if (verifyResponse.data.status === "success") {
-              alert("Payment successful!");
+              toast.success("Payment successful!",{
+                onClose: () => navigate("/doctors"),
+              });
             } else {
-              alert("Payment verification failed.");
+              toast.error("Payment verification failed.");
             }
           } catch (error) {
             console.error("Error verifying payment:", error);
@@ -161,7 +164,7 @@ const AppointmentDetails = () => {
             {loading ? "Processing..." : "Pay Now"}
           </button>
           <button onClick={handleCancel} className="bg-red-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-red-600 transition">
-            Cancel
+            Pay Later
           </button>
         </div>
       </div>
