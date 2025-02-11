@@ -1,5 +1,5 @@
 const asyncErrorResolver = require("../utils/asyncErrorResolver");
-const { BookAppointment, RescheduleAppointment, UserViewAppointments, ViewAppointmentDetails, DoctorViewAppointments } = require("../services/appointmentService");
+const { BookAppointment, RescheduleAppointment, CancelAppointment, UserViewAppointments, ViewAppointmentDetails, DoctorViewAppointments } = require("../services/appointmentService");
 const crypto = require("crypto");
 const razorpay = require("../utils/razorpay");
 const Payment = require("../models/paymentModel");
@@ -32,6 +32,18 @@ const rescheduleAppointment = asyncErrorResolver(async (req, res) => {
         message: "Appointment rescheduled successfully",
         result,
     });
+});
+
+//Cancel Appointment
+const cancelAppointment = asyncErrorResolver(async (req, res) => {
+    const { appointmentId } = req.params;
+    console.log("cancel appointment", appointmentId);
+    const appointment = await CancelAppointment(appointmentId);
+    console.log("cancelled appointment", appointment);
+    if (!appointment) {
+        return res.status(404).json({ status: "error", message: "Appointment not found" });
+    }
+    res.status(200).json({ status: "success", message: "Appointment cancelled successfully", data: appointment });
 });
 
 //User view their appointments 
@@ -136,4 +148,4 @@ const verifyPayment = asyncErrorResolver(async (req, res) => {
 
 
 
-module.exports = { bookAppointment, rescheduleAppointment, userViewAppointments, getAppointmentDetails, doctorViewAppointments, createPayment, verifyPayment };
+module.exports = { bookAppointment, rescheduleAppointment, cancelAppointment, userViewAppointments, getAppointmentDetails, doctorViewAppointments, createPayment, verifyPayment };

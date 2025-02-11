@@ -118,6 +118,25 @@ const RescheduleAppointment = async ({ appointmentId, newSlotDate, newSlotTime }
     };
 };
 
+//Cancel Appointment
+const CancelAppointment = async (appointmentId) => {
+    if (!appointmentId) {
+        throw new Error("Invalid appointment ID");
+    }
+
+    const appointment = await Appointment.findByIdAndUpdate(
+        appointmentId,
+        { cancelled: true },
+        { new: true }
+    );
+
+    if (!appointment) {
+        throw new Error("Appointment not found");
+    }
+
+    return appointment;
+};
+
 
 //User view their appointments 
 const UserViewAppointments = async(patientId) =>{
@@ -164,4 +183,4 @@ const DoctorViewAppointments = async (doctorId) => {
     return appointments;
 }
 
-module.exports = { BookAppointment, RescheduleAppointment, UserViewAppointments, ViewAppointmentDetails, DoctorViewAppointments };
+module.exports = { BookAppointment, RescheduleAppointment, CancelAppointment, UserViewAppointments, ViewAppointmentDetails, DoctorViewAppointments };
