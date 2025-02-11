@@ -56,6 +56,10 @@ const Appointments = () => {
     navigate(`/appointment-details/${appointmentId}`);
   };
 
+  const handleReschedule = (doctorId, appointmentId) => {
+    navigate(`/doctors/${doctorId}?reschedule=true&appointmentId=${appointmentId}`);
+  };
+
   if (isLoading) {
     return (
       <div className="text-center text-gray-500 min-h-screen flex items-center justify-center">
@@ -103,7 +107,7 @@ const Appointments = () => {
                   </div>
                   {appointment.cancelled ? (
                     <button className="border border-red-500 text-red-500 px-4 py-2 rounded-lg md:mt-10">
-                      Appointment Cancelled
+                      Appointment Cancelled ❌
                     </button>
                   ) : appointment.isCompleted ? (
                     <div className="flex flex-col space-y-3">
@@ -126,6 +130,13 @@ const Appointments = () => {
                         className="py-1 px-4 rounded-lg bg-green-500 text-white font-semibold border">
                         Pay Now
                       </button>
+
+                      <button
+                      onClick={()=> handleReschedule(appointment.doctorId._id, appointment._id)} 
+                      className="py-1 px-4 rounded-lg bg-blue-default text-white font-semibold border md:mt-4">
+                        Reschedule
+                      </button>
+
                       <button
                         onClick={() => handleCancel(appointment._id)}
                         disabled={isCancelling}
