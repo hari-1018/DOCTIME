@@ -14,7 +14,6 @@ import { Bar, Pie, Line } from "react-chartjs-2";
 import { MdGroups } from "react-icons/md";
 import { FaCalendarDays, FaUserDoctor } from "react-icons/fa6";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../config/axiosInstance";
 import adminEndPoints from "../../config/admin/endPoints";
 
@@ -24,8 +23,6 @@ const Dashboard = () => {
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalDoctors, setTotalDoctors] = useState(0);
   const [totalAppointments, setTotalAppointments] = useState(0);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate();
 
   const fetchTotalUsers = async () => {
     try {
@@ -50,8 +47,8 @@ const Dashboard = () => {
   const fetchTotalAppointments = async () => {
     try {
       const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_TOTAL_APPOINTMENTS);
-      console.log('dashappo', response.data.result.totalAppointments);
-      setTotalAppointments(response.data.result.totalAppointments);
+      console.log('dashappo', response.data.result);
+      setTotalAppointments(response.data.result);
     } catch (error) {
       console.error('Error fetching doctors:', error);
     }
