@@ -8,54 +8,30 @@ const paymentModel = new mongoose.Schema({
     required: true
   },
 
-  patientId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Patients',
-    required: true
-  },
-
-  doctorId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Doctors',
-    required: true
-  },
-
   razorpayOrderId: {
     type: String,
-    required: true,
-    unique: true
   },
   
   razorpayPaymentId: {
     type: String,
-    unique: true,
-    sparse: true  // Allows null values
   },
-
-//   razorpaySignature: {
-//     type: String,
-//     sparse: true
-//   },
+  razorpaySignature: {
+    type: String,
+  },
   amount: {
     type: Number,
-    required: true
+    required: true,
   },
-
-//   currency: {
-//     type: String,
-//     default: 'INR'
-//   },
+  currency: {
+    type: String,
+    required: true,
+    default: 'INR',
+  },
 
   status: {
     type: String,
-    enum: ['pending', 'successful', 'failed'],
+    enum: ['pending', 'successfull', 'failed'],
     default: 'pending'
-  },
-
-  paymentMethod: {
-    type: String,
-    enum: ['card', 'netbanking', 'upi', 'wallet'],
-    required: true
   },
   
   paymentDate:{
