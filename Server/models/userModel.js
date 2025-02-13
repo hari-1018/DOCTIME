@@ -33,6 +33,10 @@ const userModel = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    isDeleted:{
+        type: Boolean,
+        default: false,
+    },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Patients', userModel);

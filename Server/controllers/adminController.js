@@ -1,4 +1,21 @@
-const { ViewUser, ViewDoctor, AddDoctor, EditDoctor, TotalUsers, TotalRevenue, TotalDoctors, CountDoctorsBySpecialization, TotalAppointments, TotalPendingAppointments, GetAllUsers, GetAllDoctors, GetAllAppointments, BlockUser, UnblockUser } = require("../services/adminService");
+const { 
+        ViewUser, 
+        ViewDoctor, 
+        AddDoctor, 
+        EditDoctor, 
+        TotalUsers, 
+        TotalRevenue, 
+        TotalDoctors, 
+        CountDoctorsBySpecialization, 
+        TotalAppointments, 
+        TotalPendingAppointments, 
+        fetchAllUsersService, 
+        fetchAllDoctorsService, 
+        GetAllAppointments, 
+        BlockUser, 
+        UnblockUser 
+    } = require("../services/adminService");
+
 const CustomError = require("../utils/customError");
 const asyncErrorResolver = require("../utils/asyncErrorResolver");
 
@@ -17,8 +34,6 @@ const viewUserDetails = asyncErrorResolver(async (req, res) => {
     if (!response) throw new CustomError("User not found", 404);
     res.status(200).json({ status: "success", message:"User details fetched successfully", data: response });
 });
-
-
 
 // Add Doctor
 const addNewDoctor = asyncErrorResolver(async (req, res) => {
@@ -77,17 +92,20 @@ const fetchTotalRevenue = asyncErrorResolver(async (req,res) => {
 
 
 //Fetch all users
-const fetchAllUsers = asyncErrorResolver(async (req, res) => {
-    const result = await GetAllUsers();
+const fetchAllUsersController = asyncErrorResolver(async (req, res) => {
+    const result = await fetchAllUsersService();
     console.log("get all users", result);
     res.status(200).json({ status: "success", result });
 });
 
 //Fetch all doctors
-const fetchAllDoctors = asyncErrorResolver(async (req, res) => {
-    const result = await GetAllDoctors();
+const fetchAllDoctorsController = asyncErrorResolver(async (req, res) => {
+    let {page, limit} = req.query;
+    page = parseInt(page) || 1;
+    limit = parseInt(limit) || 10;
+    const result = await fetchAllDoctorsService(page, limit);
     console.log("get all doctors", result);
-    res.status(200).json({ status: "success", result });
+    res.status(200).json({ status: "success", message: "All doctors fetched successfully", data: result });
 });
 
 
@@ -124,8 +142,9 @@ module.exports = {
     fetchTotalAppointments, 
     fetchPendingAppointments,
     fetchTotalRevenue, 
-    fetchAllUsers, 
-    fetchAllDoctors, 
+    fetchAllUsersController, 
+    fetchAllDoctorsController, 
     fetchAllAppointments, 
     blockUser, 
-    unblockUser };
+    unblockUser 
+};

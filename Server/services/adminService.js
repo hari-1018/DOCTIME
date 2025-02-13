@@ -102,8 +102,8 @@ const TotalPendingAppointments = async () => {
     return await Appointment.countDocuments({isCompleted: false});
 };
 
-//Fetch all users
-const GetAllUsers = async () => {
+//Fetching all users
+const fetchAllUsersService = async () => {
         const users = await User.find(); 
         return {
             message: "All users fetched successfully",
@@ -112,11 +112,16 @@ const GetAllUsers = async () => {
     };
 
 //Fetch all doctors    
-const GetAllDoctors = async () => {
-    const doctors = await Doctor.find(); 
+const fetchAllDoctorsService = async (page=1, limit=10) => {
+    const skip = (page - 1) * limit;
+    const doctors = await Doctor.find().skip(skip).limit(limit); 
+    const totalDoctors = await Doctor.countDocuments();
+
     return {
-        message: "All doctors fetched successfully",
         doctors,
+        totalPages: Math.ceil(totalDoctors / limit),
+        currentPage: page,
+        totalDoctors,
     };
 };
 
@@ -195,4 +200,20 @@ const BlockUser = async (userId) => {
 
   
 
-module.exports = { ViewUser, ViewDoctor, AddDoctor, EditDoctor, TotalUsers, TotalDoctors, TotalAppointments, TotalPendingAppointments, TotalRevenue, GetAllUsers, GetAllDoctors, CountDoctorsBySpecialization, GetAllAppointments, BlockUser, UnblockUser }
+module.exports = { 
+                    ViewUser, 
+                    ViewDoctor, 
+                    AddDoctor, 
+                    EditDoctor, 
+                    TotalUsers, 
+                    TotalDoctors, 
+                    TotalAppointments, 
+                    TotalPendingAppointments, 
+                    TotalRevenue, 
+                    fetchAllUsersService, 
+                    fetchAllDoctorsService, 
+                    CountDoctorsBySpecialization, 
+                    GetAllAppointments, 
+                    BlockUser, 
+                    UnblockUser 
+                }
