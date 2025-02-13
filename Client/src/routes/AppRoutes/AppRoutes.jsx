@@ -35,6 +35,7 @@ import AllDoctors from '../../components/Admin/Doctors';
 import AddDoctor from '../../components/Admin/AddDoctor';
 import EditDoctor from '../../components/Admin/EditDoctor';
 import AdminDoctorDetails from '../../components/Admin/DoctorDetails';
+import UserDetails from '../../components/Admin/UserDetails';
 import AllAppointments from '../../components/Admin/Appointments';
 
 
@@ -82,6 +83,7 @@ const AppRoutes = () => {
             <Route path="add-doctor" element={<AddDoctor/>} />
             <Route path="edit-doctor/:id" element={<EditDoctor/>} />
             <Route path="view-doctor/:id" element={<AdminDoctorDetails/>} />
+            <Route path="view-user/:id" element={<UserDetails/>} />
             <Route path="all-appointments" element={<AllAppointments/>} />    
             </Route>   
         {/* </Route>  */}

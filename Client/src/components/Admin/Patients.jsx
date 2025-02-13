@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../config/axiosInstance";
 import adminEndPoints from "../../config/admin/endPoints";
 import useDebounce from "../../hooks/useDebounce";
@@ -11,6 +12,7 @@ const fetchPatients = async () => {
 };
 
 function AllPatients() {
+  const navigate = useNavigate();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [actionType, setActionType] = useState("");
@@ -64,6 +66,10 @@ function AllPatients() {
     return <div>Error fetching patients: {error.message}</div>;
   }
 
+  const handleDoctorClick = (patientId) => {
+    navigate(`/admin/view-user/${patientId}`);
+  };
+
   return (
     <div className="p-2">
       <h1 className="text-3xl font-bold text-center text-blue-default mt-1 mb-4">
@@ -96,7 +102,7 @@ function AllPatients() {
           <tbody>
             {filteredPatients?.length > 0 ? (
               filteredPatients.map((patient) => (
-                <tr key={patient._id} className="hover:bg-blue-200 text-center">
+                <tr key={patient._id} className="hover:bg-blue-200 text-center" onClick={()=> handleDoctorClick(patient._id)}>
                   <td className="py-2 px-2 border text-gray-800">
                     {patient._id}
                   </td>

@@ -9,6 +9,7 @@ const AppointmentDetails = () => {
   const navigate = useNavigate();
   const [appointmentDetails, setAppointmentDetails] = useState(null);
   const { appointmentId } = useParams();
+  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -35,18 +36,16 @@ const AppointmentDetails = () => {
     setLoading(true);
     
     try {
-      // Step 1: Create an order on the backend
       const response = await axiosInstance.post(userEndPoints.USER.MAKE_PAYMENT, {
-        amount: appointmentDetails.fees, // Convert to paise
+        amount: appointmentDetails.fees, 
         currency: "INR",
         appointmentId: appointmentId
         
       });
       const { id: orderId, amount, currency } = response.data;
 
-      // Step 2: Open Razorpay checkout
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID, // Razorpay Key ID
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID, 
         amount: amount, 
         currency: currency,
         name: "DOCTIME",
@@ -55,7 +54,6 @@ const AppointmentDetails = () => {
         handler: async function (response) {
           const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = response;
 
-          // Step 3: Verify the payment on the backend
           try {
             const verifyResponse = await axiosInstance.post(userEndPoints.USER.VERIFY_PAYMENT, {
               razorpay_payment_id,
