@@ -23,7 +23,7 @@ createRoot(document.getElementById('root')).render(
       <App />
       <ReactQueryDevtools initialIsOpen={false}/>
       <ToastContainer
-        autoClose={3000}
+        autoClose={2000}
         hideProgressBar={false}
         closeOnClick
         pauseOnHover
