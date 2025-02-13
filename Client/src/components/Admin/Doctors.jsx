@@ -6,10 +6,14 @@ import adminEndPoints from "../../config/admin/endPoints";
 import useDebounce from "../../hooks/useDebounce";
 
 // Fetch all doctors
-const fetchDoctors = async () => {
-  const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_ALL_DOCTORS);
-  return response.data.result.doctors;
+const fetchDoctors = async ({page=1, limit=10}) => {
+  const response = await axiosInstance.get(
+    `${adminEndPoints.ADMIN.GET_ALL_DOCTORS}?page=${page}&limit=${limit}`
+  );
+  console.log("alldoctorsinadmin", response.data.data)
+  return response.data.data;
 };
+
 function AllDoctors() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,13 +24,16 @@ function AllDoctors() {
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   //React Query to fetch doctors
-  const { data: doctors, isLoading, error } = useQuery({
-    queryKey: ["doctors"],
-    queryFn: fetchDoctors,
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["doctors", currentPage],
+    queryFn: () => fetchDoctors({ 
+      page: currentPage, limit: DOCTORS_PER_PAGE
+    }),
+    keepPreviousData: true,
   });
 
   // Filter doctors based on debounced search term
-  const filteredDoctors = doctors?.filter((doctor) => {
+  const filteredDoctors = data?.doctors?.filter((doctor) => {
     const lowerCaseSearchTerm = debouncedSearchTerm.toLowerCase();
     return (
       (doctor.name?.toLowerCase().includes(lowerCaseSearchTerm) || false) ||
@@ -40,23 +47,17 @@ function AllDoctors() {
     b.experience - a.experience
   );
 
-  // Calculate paginated data
-  const indexOfLastDoctor = currentPage * DOCTORS_PER_PAGE;
-  const indexOfFirstDoctor = indexOfLastDoctor - DOCTORS_PER_PAGE;
-  const currentDoctors = filteredDoctors?.slice(
-    indexOfFirstDoctor,
-    indexOfLastDoctor
-  );
-
   // Handle page change
   const handleNextPage = () => {
-    setCurrentPage((prevPage) =>
-      Math.min(prevPage + 1, Math.ceil(filteredDoctors.length / DOCTORS_PER_PAGE))
-    );
+    if(currentPage < data.totalPages){
+    setCurrentPage(prev => prev + 1);
   };
+};
 
   const handlePrevPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+    if(currentPage > 1){
+    setCurrentPage(prev => prev - 1);
+  };
   };
 
   const handleAdd = () => {
@@ -109,8 +110,8 @@ function AllDoctors() {
             </tr>
           </thead>
           <tbody>
-            {currentDoctors.length > 0 ? (
-              currentDoctors.map((doctor) => (
+            {filteredDoctors.length > 0 ? (
+              filteredDoctors.map((doctor) => (
                 <tr key={doctor._id} className="hover:bg-blue-200 text-center cursor-pointer" onClick={()=> handleDoctorClick(doctor._id)}>
                   <td className="py-2 px-2 border text-gray-600">
                     {doctor.name}
@@ -142,6 +143,7 @@ function AllDoctors() {
           </tbody>
         </table>
       </div>
+
       {/* Pagination Controls */}
       <div className="flex justify-center mt-4 space-x-4">
         <button
@@ -156,16 +158,13 @@ function AllDoctors() {
           Previous
         </button>
         <span className="text-gray-600 mt-2">
-          Page {currentPage} of{" "}
-          {Math.ceil(filteredDoctors.length / DOCTORS_PER_PAGE)}
+          Page {currentPage} of {data.totalPages} pages
         </span>
         <button
           onClick={handleNextPage}
-          disabled={
-            currentPage === Math.ceil(filteredDoctors.length / DOCTORS_PER_PAGE)
-          }
+          disabled={ currentPage === data.totalPages }
           className={`px-4 py-2 rounded ${
-            currentPage === Math.ceil(filteredDoctors.length / DOCTORS_PER_PAGE)
+            currentPage === data.totalPages
               ? "bg-gray-300 cursor-not-allowed"
               : "bg-blue-default text-white hover:bg-blue-600"
           }`}
