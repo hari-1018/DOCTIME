@@ -19,7 +19,7 @@ import UserRoutes from '../ProtectedRoutes/UserRoutes';
 import Home from '../../pages/Home';
 import DoctorListing from '../../components/Doctors/DoctorsListing';
 import DoctorDetails from '../../components/Doctors/DoctorDetails';
-import Appointments from '../../components/Appointments/Appointments';
+import UserAppointments from '../../components/Appointments/UserAppointments';
 import AppointmentDetails from '../../components/Appointments/AppointmentDetails';
 import FeedbackForm from '../../components/Appointments/Feedback';
 import UserProfile from '../../components/User/UserProfile';
@@ -56,7 +56,7 @@ const AppRoutes = () => {
             <Route path="/home" element={<Home/>} />
             <Route path="/doctors" element={<DoctorListing/>} />
             <Route path="/doctors/:id" element={<DoctorDetails/>} />
-            <Route path="/appointments/:id" element={<Appointments/>} />
+            <Route path="/appointments/:id" element={<UserAppointments/>} />
             <Route path="/appointment-details/:appointmentId" element={<AppointmentDetails/>} />
             <Route path="/feedback/:doctorId" element={<FeedbackForm/>} />
             <Route path="/user/:id" element={<UserProfile/>} />

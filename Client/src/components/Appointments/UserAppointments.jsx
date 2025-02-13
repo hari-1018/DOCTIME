@@ -5,6 +5,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../../config/axiosInstance";
 import userEndPoints from "../../config/users/userApi";
 import { toast } from "react-toastify";
+import { format } from "date-fns";
+
 
 const fetchUserAppointments = async (id) => {
   const response = await axiosInstance.get(
@@ -20,7 +22,7 @@ const cancelAppointment = async (appointmentId) => {
   return response.data;
 };
 
-const Appointments = () => {
+const UserAppointments = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const queryClient = useQueryClient();
@@ -72,10 +74,12 @@ const Appointments = () => {
     <>
       <Navbar />
       <section className="bg-blue-regBg min-h-screen py-24">
-        <div className="max-w-6xl mx-auto px-5 py-4">
+        {/* Appointments Listing */}
+        <div className="max-w-6xl mx-auto px-4 py-4">
           <h2 className="text-2xl font-bold text-blue-700 text-center mb-4">
             My Appointments
           </h2>
+          {/* Each appointments */}
           <div className="space-y-4">
             {appointments.length > 0 ? (
               appointments.map((appointment) => (
@@ -96,7 +100,7 @@ const Appointments = () => {
                       {appointment.doctorId.specialization}
                     </p>
                     <p className="text-sm text-red-500 mt-3">
-                      <span className="font-semibold">Date:</span> {appointment.slotDate}
+                      <span className="font-semibold">Date:</span> {appointment?.slotDate? format(new Date(appointment.slotDate), "dd/MM/yyyy") : "Loading..."}
                     </p>
                     <p className="text-sm text-red-500 mt-1">
                       <span className="font-semibold">Time:</span> {appointment.slotTime}
@@ -153,10 +157,13 @@ const Appointments = () => {
               </div>
             )}
           </div>
+          {/* Each appointments */}
+
         </div>
+        {/* Appointment Listing */}
       </section>
     </>
   );
 };
 
-export default Appointments;
+export default UserAppointments;
