@@ -5,6 +5,36 @@ const Payment = require("../models/paymentModel");
 const bcrypt = require("bcryptjs");
 const CustomError = require("../utils/customError");
 
+//Add Doctor
+const addDoctorService = async(data) =>{
+    const {name, email, image, qualifications, specialization, experience, fees, availability} = data;
+    const existingDoctor = await Doctor.findOne({email});
+    if(existingDoctor){
+        throw new CustomError("Doctor Already Existing, Try Again")
+    }
+    const salt = await bcrypt.genSalt(10);
+    const password = await bcrypt.hash('password', salt);
+
+    const newDoctor = new Doctor({
+        name, email, password, image, qualifications, specialization, experience, fees, availability
+    });
+    await newDoctor.save();
+    return {       
+        doctor: {
+        id: newDoctor._id,
+        name: newDoctor.name,
+        email: newDoctor.email,
+        image: newDoctor.image,
+        qualification: newDoctor.qualifications,
+        specialization: newDoctor.specialization,
+        experience: newDoctor.experience,
+        fees: newDoctor.fees,
+        availability: newDoctor.availability,
+        password: newDoctor.password
+    }
+}
+};
+
 //View Details of a doctor
 const ViewDoctor = async(id) =>{
     const doctor = await Doctor.findById(id);
@@ -27,36 +57,6 @@ const ViewUser = async(id) =>{
     }
 }
 
-//Add Doctor
-const AddDoctor = async(data) =>{
-    const {name, email, image, qualifications, specialization, experience, fees, availability} = data;
-    const existingDoctor = await Doctor.findOne({email});
-    if(existingDoctor){
-        throw new CustomError("Doctor Already Existing, Try Again")
-    }
-    const salt = await bcrypt.genSalt(10);
-    const password = await bcrypt.hash('password', salt);
-
-    const newDoctor = new Doctor({
-        name, email, password, image, qualifications, specialization, experience, fees, availability
-    });
-    await newDoctor.save();
-    return { 
-        message: "Doctor Added Successfully",         
-        doctor: {
-        id: newDoctor._id,
-        name: newDoctor.name,
-        email: newDoctor.email,
-        image: newDoctor.image,
-        qualification: newDoctor.qualifications,
-        specialization: newDoctor.specialization,
-        experience: newDoctor.experience,
-        fees: newDoctor.fees,
-        availability: newDoctor.availability,
-        password: newDoctor.password
-    }
-}
-};
 
 //Edit Doctor
 const EditDoctor = async(id, data) =>{
@@ -201,9 +201,9 @@ const BlockUser = async (userId) => {
   
 
 module.exports = { 
+                    addDoctorService,
                     ViewUser, 
-                    ViewDoctor, 
-                    AddDoctor, 
+                    ViewDoctor,  
                     EditDoctor, 
                     TotalUsers, 
                     TotalDoctors, 

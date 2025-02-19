@@ -1,7 +1,7 @@
 const { 
+        addDoctorService,
         ViewUser, 
         ViewDoctor, 
-        AddDoctor, 
         EditDoctor, 
         TotalUsers, 
         TotalRevenue, 
@@ -19,6 +19,15 @@ const {
 const CustomError = require("../utils/customError");
 const asyncErrorResolver = require("../utils/asyncErrorResolver");
 
+// Add Doctor
+const addDoctorController = asyncErrorResolver(async (req, res) => {
+    const response = await addDoctorService(req.body);
+    console.log("dr", response)
+    console.log("req.body", req.body);
+    res.status(201).json({ status: "success", message: "Doctor Added Successfully",  response});
+});
+
+
 //View details of a doctor
 const viewDoctorDetails = asyncErrorResolver(async (req, res) => {
     const { id } = req.params;
@@ -33,14 +42,6 @@ const viewUserDetails = asyncErrorResolver(async (req, res) => {
     const response = await ViewUser(id);
     if (!response) throw new CustomError("User not found", 404);
     res.status(200).json({ status: "success", message:"User details fetched successfully", data: response });
-});
-
-// Add Doctor
-const addNewDoctor = asyncErrorResolver(async (req, res) => {
-    const response = await AddDoctor(req.body);
-    console.log("dr", response)
-    console.log("req.body", req.body)
-    res.status(201).json({status: "success", response});
 });
 
 //Edit Doctor
@@ -132,19 +133,19 @@ const unblockUser = asyncErrorResolver(async (req, res) => {
 });
 
 module.exports = { 
-    viewDoctorDetails, 
-    viewUserDetails,
-    addNewDoctor, 
-    editDoctor, 
-    fetchTotalUsers, 
-    fetchTotalDoctors, 
-    fetchDoctorsBySpecialization,
-    fetchTotalAppointments, 
-    fetchPendingAppointments,
-    fetchTotalRevenue, 
-    fetchAllUsersController, 
-    fetchAllDoctorsController, 
-    fetchAllAppointments, 
-    blockUser, 
-    unblockUser 
-};
+                    addDoctorController,
+                    viewDoctorDetails, 
+                    viewUserDetails,
+                    editDoctor, 
+                    fetchTotalUsers, 
+                    fetchTotalDoctors, 
+                    fetchDoctorsBySpecialization,
+                    fetchTotalAppointments, 
+                    fetchPendingAppointments,
+                    fetchTotalRevenue, 
+                    fetchAllUsersController, 
+                    fetchAllDoctorsController, 
+                    fetchAllAppointments, 
+                    blockUser, 
+                    unblockUser 
+                };
