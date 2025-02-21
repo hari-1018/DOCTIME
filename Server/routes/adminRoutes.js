@@ -5,7 +5,7 @@ const adminRouter = express.Router();
 const { 
         addDoctorController,
         viewUserDetails, 
-        viewDoctorDetails, 
+        viewDoctorController, 
         editDoctor, 
         fetchTotalUsers, 
         fetchTotalDoctors, 
@@ -23,8 +23,10 @@ const {
 // adminRouter.route("/add-doctors")
 //     .post(addNewDoctor);
 
+//doctor related routes
 adminRouter.post("/add-doctors", addDoctorController);    
-adminRouter.get("/view-doctor/:id", viewDoctorDetails); 
+adminRouter.get("/view-doctor/:id", viewDoctorController);
+ 
 adminRouter.get("/view-user/:id", viewUserDetails); 
 adminRouter.put("/edit-doctor/:id", editDoctor);
 adminRouter.get("/patients", fetchAllUsersController );

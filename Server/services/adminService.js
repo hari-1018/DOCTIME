@@ -36,7 +36,7 @@ const addDoctorService = async(data) =>{
 };
 
 //View Details of a doctor
-const ViewDoctor = async(id) =>{
+const viewDoctorService = async(id) =>{
     const doctor = await Doctor.findById(id);
     if(!doctor){
         throw new CustomError("Doctor not found, Try Again")
@@ -202,8 +202,8 @@ const BlockUser = async (userId) => {
 
 module.exports = { 
                     addDoctorService,
+                    viewDoctorService,
                     ViewUser, 
-                    ViewDoctor,  
                     EditDoctor, 
                     TotalUsers, 
                     TotalDoctors, 

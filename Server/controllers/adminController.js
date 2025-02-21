@@ -1,7 +1,7 @@
 const { 
         addDoctorService,
+        viewDoctorService,
         ViewUser, 
-        ViewDoctor, 
         EditDoctor, 
         TotalUsers, 
         TotalRevenue, 
@@ -29,9 +29,9 @@ const addDoctorController = asyncErrorResolver(async (req, res) => {
 
 
 //View details of a doctor
-const viewDoctorDetails = asyncErrorResolver(async (req, res) => {
+const viewDoctorController = asyncErrorResolver(async (req, res) => {
     const { id } = req.params;
-    const response = await ViewDoctor(id);
+    const response = await viewDoctorService(id);
     if (!response) throw new CustomError("Doctor not found", 404);
     res.status(200).json({ status: "success", message:"Doctor details fetched successfully", data: response });
 });
@@ -134,7 +134,7 @@ const unblockUser = asyncErrorResolver(async (req, res) => {
 
 module.exports = { 
                     addDoctorController,
-                    viewDoctorDetails, 
+                    viewDoctorController, 
                     viewUserDetails,
                     editDoctor, 
                     fetchTotalUsers, 
