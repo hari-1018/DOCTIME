@@ -15,6 +15,7 @@ const adminEndPoints = {
       GET_COUNT_SPECIALIZATION: "/admin/dashboard/count-specialization",
       GET_TOTAL_APPOINTMENTS: "/admin/dashboard/total-appointments",
       GET_PENDING_APPOINTMENTS: "/admin/dashboard/pending",
+      GET_COMPLETED_APPOINTMENTS: "/admin/dashboard/completed",
       GET_TOTAL_REVENUE: "/admin/dashboard/total-revenue",
     },
 }

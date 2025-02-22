@@ -26,6 +26,7 @@ const Dashboard = () => {
   const [totalAppointments, setTotalAppointments] = useState(0);
   const [totalRevenue, setTotalRevenue] = useState(0);
   const [pending, setPending] = useState();
+  const [completed, setCompleted] = useState();
   const [specializationCounts, setSpecializationCounts] = useState([]);
 
   const fetchTotalUsers = async () => {
@@ -41,8 +42,7 @@ const Dashboard = () => {
   const fetchTotalDoctors = async () => {
     try {
       const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_TOTAL_DOCTORS);
-      console.log('dashdoc', response.data.result.totalDoctors);
-      setTotalDoctors(response.data.result.totalDoctors);
+      setTotalDoctors(response.data.data.totalDoctors);
     } catch (error) {
       console.error('Error fetching doctors:', error);
     }
@@ -51,8 +51,8 @@ const Dashboard = () => {
   const fetchTotalAppointments = async () => {
     try {
       const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_TOTAL_APPOINTMENTS);
-      console.log('dashappo', response.data.result);
-      setTotalAppointments(response.data.result);
+      console.log('dashappo', response.data.data.totalAppointments);
+      setTotalAppointments(response.data.data.totalAppointments);
     } catch (error) {
       console.error('Error fetching doctors:', error);
     }
@@ -71,10 +71,20 @@ const Dashboard = () => {
   const fetchPendingAppointments = async () => {
     try {
       const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_PENDING_APPOINTMENTS);
-      console.log('pending', response.data.data);
-      setPending(response.data.data);
+      console.log('pending', response.data.data.pendingAppointments);
+      setPending(response.data.data.pendingAppointments);
     } catch (error) {
       console.error('Error fetching pending appointments:', error);
+    }
+  }
+
+  const fetchCompletedAppointments = async() => {
+    try {
+      const response = await axiosInstance.get(adminEndPoints.ADMIN.GET_COMPLETED_APPOINTMENTS);
+      console.log('completed', response.data.data.completedAppointments);
+      setCompleted(response.data.data.completedAppointments);
+    } catch (error) {
+      console.error('Error fetching completed appointments:', error);
     }
   }
 
@@ -94,20 +104,24 @@ const Dashboard = () => {
     fetchTotalAppointments();
     fetchTotalRevenue();
     fetchPendingAppointments();
+    fetchCompletedAppointments();
     fetchSpecializationCount();
   }, []);
 
 
   const barChartData = {
-    labels: ["Total Users", "Total Doctors", "Appointments", "Pending"],
+    labels: ["Total Users", "Total Doctors", "Appointments", "Completed", "Pending"],
     datasets: [
       {
         label: "Counts",
-        data: [totalUsers, totalDoctors, totalAppointments, pending],
-        backgroundColor: ["#2BA3ED", "#3b82f6", "#6366f1", "#facc15"],
+        data: [totalUsers, totalDoctors, totalAppointments, completed, pending,],
+        backgroundColor: ["#2BA3ED", "#3b82f6", "#0AA5FF", "#4C87E6", "#336DFF"],
+        barThickness: 60,
+        maxBarThickness: 100,
       },
     ],
   };
+
 
   const pieChartData = {
     labels: specializationCounts.map((item)=>item._id),
@@ -116,18 +130,18 @@ const Dashboard = () => {
         label: "Specializations",
         data: specializationCounts.map((item)=>item.count),
         backgroundColor: [
-          "#3b82f6",
-          "#6366f1",
-          "#8b5cf6",
-          "#ec4899",
-          "#22c55e",
-          "#facc15",
-          "#f97316",
-          "#10b981",
-          "#9333ea",
-          "#fffb00",
-          "#e11d48",
-          "#a3e635",
+          "#4B96D2",
+          "#F85E00",
+          "#1EA896",
+          "#F433AB",
+          "#134074",
+          "#47A025",
+          "#FFFB00",
+          "#214E34",
+          "#724CF9",
+          "#F71735",
+          "#FEB95F",
+          "#F694C1",
         ],
       },
     ],
@@ -174,22 +188,26 @@ const Dashboard = () => {
         ))}
       </div>
 
-      <div className="grid grid-cols-3 gap-6 mb-6">
-        <div className="bg-white p-6 rounded-lg shadow-lg">
-          <h3 className="text-xl font-bold text-blue-600 mb-4">
-            Month Wise Patients
-          </h3>
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full mb-6">
+          <h3 className="text-xl font-bold text-blue-600 mb-4">Month Wise Patients</h3>
+          <div className="h-[400px] flex justify-center">
           <Bar data={barChartData} />
-        </div>
+          </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-6 mb-6">
         <div className="bg-white p-6 rounded-lg shadow-lg">
-          <h3 className="text-xl font-bold text-blue-600 mb-4">
-            Specialization Wise Doctors
-          </h3>
+          <h3 className="text-xl font-bold text-blue-600 mb-4">Specialization Wise Doctors</h3>
+          <div className="h-[400px] w-full flex justify-center">
           <Pie data={pieChartData} />
+          </div>
         </div>
+
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <h3 className="text-xl font-bold text-blue-600 mb-4">Appointments</h3>
+          <div className="h-[350px] flex items-center">
           <Line data={lineChartData} />
+          </div>
         </div>
       </div>
 
