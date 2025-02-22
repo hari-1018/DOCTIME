@@ -1,14 +1,15 @@
 const { 
         addDoctorService,
         viewDoctorService,
+        editDoctorService,
+        totalDoctorsService,
         ViewUser, 
-        EditDoctor, 
         TotalUsers, 
         TotalRevenue, 
-        TotalDoctors, 
         CountDoctorsBySpecialization, 
-        TotalAppointments, 
-        TotalPendingAppointments, 
+        totalAppointmentsService,
+        pendingAppointmentsService,
+        completedAppointmentsService,
         fetchAllUsersService, 
         fetchAllDoctorsService, 
         GetAllAppointments, 
@@ -24,7 +25,7 @@ const addDoctorController = asyncErrorResolver(async (req, res) => {
     const response = await addDoctorService(req.body);
     console.log("dr", response)
     console.log("req.body", req.body);
-    res.status(201).json({ status: "success", message: "Doctor Added Successfully",  response});
+    res.status(201).json({ status: "success", message: "Doctor Added Successfully", data: response});
 });
 
 
@@ -33,8 +34,27 @@ const viewDoctorController = asyncErrorResolver(async (req, res) => {
     const { id } = req.params;
     const response = await viewDoctorService(id);
     if (!response) throw new CustomError("Doctor not found", 404);
-    res.status(200).json({ status: "success", message:"Doctor details fetched successfully", data: response });
+    res.status(200).json({ status: "success", message: "Doctor details fetched successfully", data: response });
 });
+
+
+//Edit Doctor
+const editDoctorController = asyncErrorResolver(async (req, res) => {
+    const {id} = req.params;
+    console.log("testing id", id)
+    const response = await editDoctorService(id, req.body);
+    console.log("req.body", req.body)
+    console.log("editdr", response)
+    res.status(201).json({status: "success", message: "Doctor updated successfully", data: response});
+});
+
+
+//Fetch total doctors count
+const totalDoctorsController = asyncErrorResolver(async (req, res) => {
+    const result = await totalDoctorsService();
+    res.status(200).json({status: "success", message: "Total doctors count fetched successfully", data: result});
+});
+
 
 //View details of a user
 const viewUserDetails = asyncErrorResolver(async (req, res) => {
@@ -44,15 +64,6 @@ const viewUserDetails = asyncErrorResolver(async (req, res) => {
     res.status(200).json({ status: "success", message:"User details fetched successfully", data: response });
 });
 
-//Edit Doctor
-const editDoctor = asyncErrorResolver(async (req, res) => {
-    const {id} = req.params;
-    console.log("testing id", id)
-    const response = await EditDoctor(id, req.body);
-    console.log("req.body", req.body)
-    console.log("editdr", response)
-    res.status(201).json({status: "success", message: "Doctor updated successfully",  data:response});
-});
 
 //Fetch total users count
 const fetchTotalUsers = asyncErrorResolver(async (req, res) => {
@@ -60,11 +71,6 @@ const fetchTotalUsers = asyncErrorResolver(async (req, res) => {
     res.status(200).json({status: "success", result});
   });
 
-//Fetch total doctors count
-const fetchTotalDoctors = asyncErrorResolver(async (req, res) => {
-    const result = await TotalDoctors();
-    res.status(200).json({status: "success", result});
-});
 
 //Fetch doctor based on the specialization
   const fetchDoctorsBySpecialization = asyncErrorResolver(async (req, res) => {
@@ -73,17 +79,27 @@ const fetchTotalDoctors = asyncErrorResolver(async (req, res) => {
     res.status(200).json({ status: "success", message: "Count of doctors in each specialization fetched successfully", data: doctorCount });
   });
 
+
 //Fetch total appointments count
-const fetchTotalAppointments = asyncErrorResolver(async (req, res) => {
-    const result = await TotalAppointments();
-    res.status(200).json({status: "success", result});
+const totalAppointmentsController = asyncErrorResolver(async (req, res) => {
+    const result = await totalAppointmentsService();
+    res.status(200).json({status: "success", message: "Total appointments count fetched successfully", data: result});
 });
 
+
 //Fetch pending appointments count
-const fetchPendingAppointments = asyncErrorResolver(async (req,res) =>{
-    const pendingAppointments = await TotalPendingAppointments();
-    res.status(200).json({status: "success", message: "Total pending appointments fetched successfully", data: pendingAppointments});
+const pendingAppointmentsController = asyncErrorResolver(async (req,res) =>{
+    const pendingAppointments = await pendingAppointmentsService();
+    res.status(200).json({status: "success", message: "Total pending appointments count fetched successfully", data: pendingAppointments});
 })
+
+
+//Fetch completed appointments count
+  const completedAppointmentsController = asyncErrorResolver(async (req, res) => {
+    const completedAppointments = await completedAppointmentsService();
+    res.status(200).json({status: "success", message: "Total completed appointments count fetched successfully", data: completedAppointments});
+})
+
 
 //Total Revenue
 const fetchTotalRevenue = asyncErrorResolver(async (req,res) => {
@@ -98,6 +114,7 @@ const fetchAllUsersController = asyncErrorResolver(async (req, res) => {
     console.log("get all users", result);
     res.status(200).json({ status: "success", result });
 });
+
 
 //Fetch all doctors
 const fetchAllDoctorsController = asyncErrorResolver(async (req, res) => {
@@ -117,6 +134,7 @@ const fetchAllAppointments = asyncErrorResolver(async (req, res) => {
     res.status(200).json({ status: "success", result });
 });
 
+
 //Block User
 const blockUser = asyncErrorResolver(async (req, res) => {
         const userId = req.params.id; 
@@ -125,6 +143,7 @@ const blockUser = asyncErrorResolver(async (req, res) => {
 
 });
 
+
 //Unblock User
 const unblockUser = asyncErrorResolver(async (req, res) => {
         const userId = req.params.id; 
@@ -132,16 +151,18 @@ const unblockUser = asyncErrorResolver(async (req, res) => {
         res.status(200).json({ success: "success", message: "User has been successfully unblocked", data: result });
 });
 
+
 module.exports = { 
                     addDoctorController,
                     viewDoctorController, 
+                    editDoctorController,
+                    totalDoctorsController,
                     viewUserDetails,
-                    editDoctor, 
                     fetchTotalUsers, 
-                    fetchTotalDoctors, 
                     fetchDoctorsBySpecialization,
-                    fetchTotalAppointments, 
-                    fetchPendingAppointments,
+                    totalAppointmentsController,
+                    pendingAppointmentsController,
+                    completedAppointmentsController, 
                     fetchTotalRevenue, 
                     fetchAllUsersController, 
                     fetchAllDoctorsController, 

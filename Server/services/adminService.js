@@ -46,6 +46,26 @@ const viewDoctorService = async(id) =>{
     }
 }
 
+//Edit Doctor
+const editDoctorService = async(id, data) =>{
+    const {name, email, image, about, qualifications, specialization, experience, fees, availability} = data;
+    const doctor = await Doctor.findByIdAndUpdate(id, {name, email, image, about, qualifications, specialization, experience, fees, availability}, {new: true});
+    if(!doctor){
+        throw new CustomError("Doctor not found, Try Again")
+    }
+    return {
+        doctor
+    }
+}
+
+//Fetch total doctors count    
+const totalDoctorsService = async () => {
+    const totalDoctors = await Doctor.countDocuments(); 
+    return { 
+      totalDoctors 
+    };
+};
+
 //View Details of a user
 const ViewUser = async(id) =>{
     const user = await User.findById(id);
@@ -54,19 +74,6 @@ const ViewUser = async(id) =>{
     }
     return {
         user
-    }
-}
-
-
-//Edit Doctor
-const EditDoctor = async(id, data) =>{
-    const {name, email, image, about, qualifications, specialization, experience, fees, availability} = data;
-    const doctor = await Doctor.findByIdAndUpdate(id, {name, email, image, about, qualifications, specialization, experience, fees, availability}, {new: true});
-    if(!doctor){
-        throw new CustomError("Doctor not found, Try Again")
-    }
-    return {
-        doctor
     }
 }
 
@@ -79,27 +86,31 @@ const TotalUsers = async () => {
       };
     };
 
-//Total doctors count    
-const TotalDoctors = async () => {
-        const totalDoctors = await Doctor.countDocuments(); 
-        return { 
-          message: "Total users fetched successfully", 
-          totalDoctors 
-        };
-    };
+
 
 //Total appointments count    
-const TotalAppointments = async () => {
-    return await Appointment.countDocuments(); 
-    // return { 
-    //   message: "Total appointments fetched successfully", 
-    //   totalAppointments
-    // };
+const totalAppointmentsService = async () => {
+    const totalAppointments = await Appointment.countDocuments();
+    return { 
+      totalAppointments
+    };
 };
 
 //Total Pending Appointments Count
-const TotalPendingAppointments = async () => {
-    return await Appointment.countDocuments({isCompleted: false});
+const pendingAppointmentsService = async () => {
+    const pendingAppointments = await Appointment.countDocuments({isCompleted: false});
+    return { 
+      pendingAppointments
+    };
+};
+
+
+//Total Completed Appointments count
+ const completedAppointmentsService = async () => {
+    const completedAppointments = await Appointment.countDocuments({isCompleted: true});
+    return { 
+      completedAppointments
+    };
 };
 
 //Fetching all users
@@ -164,7 +175,6 @@ const GetAllAppointments = async () => {
     };
 };
 
-
 //Block User
 const BlockUser = async (userId) => {
     const user = await User.findById(userId);
@@ -198,17 +208,16 @@ const BlockUser = async (userId) => {
  }
 
 
-  
-
 module.exports = { 
                     addDoctorService,
                     viewDoctorService,
+                    editDoctorService,
+                    totalDoctorsService,
                     ViewUser, 
-                    EditDoctor, 
                     TotalUsers, 
-                    TotalDoctors, 
-                    TotalAppointments, 
-                    TotalPendingAppointments, 
+                    totalAppointmentsService, 
+                    pendingAppointmentsService, 
+                    completedAppointmentsService,
                     TotalRevenue, 
                     fetchAllUsersService, 
                     fetchAllDoctorsService, 
