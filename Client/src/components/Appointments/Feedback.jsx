@@ -17,10 +17,6 @@ const FeedbackForm = () => {
 
   // Define the validation schema using Yup
   const validationSchema = Yup.object({
-    name: Yup.string().required('Name is required'),
-    email: Yup.string()
-      .email('Invalid email address')
-      .required('Email is required'),
     rating: Yup.number()
       .max(5, 'Rating cannot exceed 5')
       .required('Rating is required'),
@@ -30,8 +26,6 @@ const FeedbackForm = () => {
   // Initialize Formik
   const formik = useFormik({
     initialValues: {
-      name: '',
-      email: '',
       rating: 0,
       comments: '',
     },
@@ -81,40 +75,6 @@ const FeedbackForm = () => {
 
         {/* Formik Form */}
         <form className="space-y-6" onSubmit={formik.handleSubmit}>
-          {/* Name Field */}
-          <div>
-            <label htmlFor="name" className="block text-sm font-semibold text-blue-default mb-2">
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              placeholder="Enter your name"
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-              {...formik.getFieldProps('name')}
-            />
-            {formik.touched.name && formik.errors.name ? (
-              <div className="text-red-500 text-sm mt-1">{formik.errors.name}</div>
-            ) : null}
-          </div>
-
-          {/* Email Field */}
-          <div>
-            <label htmlFor="email" className="block text-sm font-semibold text-blue-default mb-2">
-              Email Address
-            </label>
-            <input
-              type="email"
-              id="email"
-              placeholder="Enter your email"
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-              {...formik.getFieldProps('email')}
-            />
-            {formik.touched.email && formik.errors.email ? (
-              <div className="text-red-500 text-sm mt-1">{formik.errors.email}</div>
-            ) : null}
-          </div>
-
           {/* Rating Field */}
           <div>
             <label className="block text-sm font-semibold text-blue-default mb-2">

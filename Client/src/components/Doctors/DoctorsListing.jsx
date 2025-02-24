@@ -117,22 +117,12 @@ const DoctorListing = () => {
                         alt={doctor.name}
                         className="w-48 h-32 mx-auto bg-slate-500 mb-3"
                       />
-                      <h3 className="text-center text-lg font-bold text-blue-default mb-2">{doctor.name}</h3>
+                      <h3 className="text-center text-lg font-bold text-blue-default">{doctor.name}</h3>
+                      <p className="text-center text-base text-gray-800 font-semibold mb-2">{doctor.averageRating.toFixed(1)}⭐</p>
+
                       <p className="text-center text-sm text-blue-600">{doctor.specialization}</p>
-                      {/* <div className="text-center mb-2">
-                        <p className="text-gray-700 font-medium">Qualifications:</p>
-                        <ul className="text-sm text-gray-700">
-                          {doctor.qualifications.map((qualification, index) => (
-                            <li key={index}>{qualification}</li>
-                          ))}
-                        </ul>
-                      </div> */}
-                      <p className="text-center text-sm text-black font-semibold mb-2">
-                        Experience: {doctor.experience}+ years
-                      </p>
-                      <p className="text-center text-sm text-red-400">
-                        Consulting Fee: ₹ {doctor.fees}/-
-                      </p>
+                      <p className="text-center text-sm text-black font-semibold">Experience: {doctor.experience}+ years</p>
+                      <p className="text-center text-sm text-red-400">Consulting Fee: ₹ {doctor.fees}</p>
                       <p
                         className={`text-center font-bold ${
                           doctor.availability ? "text-green-600" : "text-red-600"

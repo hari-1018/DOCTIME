@@ -67,6 +67,7 @@ const DoctorDetails = () => {
     const fetchDoctorDetails = async () => {
         try {
             const response = await axiosInstance.get(doctorEndPoints.DOCTOR.GET_DOCTOR_BY_ID.replace(":id", id));
+            console.log("doctor details", response)
             setDoctor(response.data.result.doctor);
         } catch (error) {
             console.error("Error in fetching doctor details:", error);
@@ -77,6 +78,7 @@ const DoctorDetails = () => {
     const fetchDoctorReviews = async () => {
         try {
             const response = await axiosInstance.get(userEndPoints.USER.GET_REVIEWS_OF_DOCTOR.replace(":id", id));
+            console.log("review details", response);
             setReviews(response.data.data);
         } catch (error) {
             console.error("Error in fetching doctor reviews:", error);
@@ -160,6 +162,7 @@ const DoctorDetails = () => {
                         <h2 className="text-xl font-bold text-blue-default">{doctor.name}</h2>
                         <p className="text-base text-gray-700 font-semibold">{doctor.qualifications.join(", ")}</p>
                         <p className="text-md text-gray-600 font-medium mt-1">{doctor.specialization} - {doctor.experience}+ years</p>
+                        <p className="text-md font-semibold">{doctor.averageRating.toFixed(1)} ⭐</p>
                         <div className="mt-3">
                             <p className="text-gray-700"><strong>About</strong> ℹ️ <br />{doctor.about}</p>
                         </div>
