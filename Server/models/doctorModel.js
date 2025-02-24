@@ -40,6 +40,10 @@ const doctorModel = new mongoose.Schema({
     fees: {
         type: Number,
     },
+    averageRating:{
+        type: Number,
+        default: 0
+    },
     slotsBooked: {
         type: Object,
         default: {}
