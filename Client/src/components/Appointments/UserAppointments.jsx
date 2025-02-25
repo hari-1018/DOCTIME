@@ -50,8 +50,8 @@ const UserAppointments = () => {
     }
   };
 
-  const handleFeedback = (doctorId) => {
-    navigate(`/feedback/${doctorId}`);
+  const handleFeedback = (doctorId, appointmentId) => {
+    navigate(`/feedback/${doctorId}/${appointmentId}`);
   };
 
   const handlePayment = (appointmentId) => {
@@ -118,7 +118,7 @@ const UserAppointments = () => {
                       <button className="border border-green-500 text-green-500 px-4 py-2 rounded-lg md:mt-5">
                         Appointment Completed ✅
                       </button>
-                      <button onClick={() => handleFeedback(appointment.doctorId._id)}
+                      <button onClick={() => handleFeedback(appointment.doctorId._id, appointment._id)}
                         className="border border-green-500 text-green-500 px-4 py-2 rounded-lg md:mt-2">
                         Feedback ✍️
                       </button>

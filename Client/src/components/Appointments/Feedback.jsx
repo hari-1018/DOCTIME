@@ -9,8 +9,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 const FeedbackForm = () => {
   const navigate = useNavigate();
   const [rating, setRating] = useState(0);
-  const { doctorId } = useParams();
+  const { doctorId, appointmentId } = useParams();
   console.log("dID", doctorId);
+  console.log("aID", appointmentId);
 
   const patientId = localStorage.getItem("patientId"); 
   console.log("pID", patientId);
@@ -31,7 +32,7 @@ const FeedbackForm = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      if(!doctorId || !patientId){
+      if(!doctorId || !patientId || !appointmentId){
         toast.error("Invalid Information");
         return;
       }
@@ -39,6 +40,7 @@ const FeedbackForm = () => {
         const response = await axiosInstance.post(
           userEndPoints.USER.POST_REVIEW, 
           {
+            appointmentId,
             patientId,
             doctorId,
             rating: values.rating,
@@ -126,7 +128,7 @@ const FeedbackForm = () => {
             <button
               type="button"
               className="px-4 py-2 text-blue-500 hover:text-blue-600 font-medium transition"
-              onClick={() => formik.resetForm()} // Reset form on cancel
+              onClick={() => window.history.back()}
             >
               Cancel
             </button>
