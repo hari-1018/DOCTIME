@@ -3,12 +3,18 @@ const Doctor = require("../models/doctorModel")
 const CustomError = require("../utils/customError");
 
 //Post a review
-const reviewService = async ({ doctorId, patientId, rating, comments}) => {
-    if(!doctorId || !patientId || !rating || !comments){
+const reviewService = async ({appointmentId, doctorId, patientId, rating, comments}) => {
+    if(!appointmentId || !doctorId || !patientId || !rating || !comments){
         throw new CustomError("All fields are required", 400);
     }
 
+    const exisitingReview = await Review.findOne({appointmentId})
+    if(exisitingReview){
+        throw new CustomError("Review already exists for this appointment", 400);
+    }
+
     const reviewData = {
+        appointmentId,
         doctorId,
         patientId,
         rating,

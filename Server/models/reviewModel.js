@@ -1,13 +1,19 @@
 const mongoose = require('mongoose');
 
 const reviewModel = new mongoose.Schema({
+    appointmentId: {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Appointments',
+        unique: true
+    },
     doctorId: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Doctors' 
     },
     patientId: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Patients' },
+        ref: 'Patients' 
+    },
     rating: {
         type: Number,
         required: true,
