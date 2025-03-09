@@ -4,6 +4,7 @@ const userEndPoints =  {
         REGISTER: "/auth/register",
         GOOGLE_AUTH: "/auth/google",
         PROFILE:"/user/:id",
+        UPLOAD_PROFILE:"/user/upload-profile",
         EDIT_PROFILE: "/user/edit-user/:id",
         BOOK_APPOINTMENT: "/appointments/book-appointment",
         RESCHEDULE_APPOINTMENT: "/appointments/reschedule-appointment",

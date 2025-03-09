@@ -4,6 +4,9 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axiosInstance from '../../config/axiosInstance';
 import userEndPoints from '../../config/users/userApi';
+import { FaCamera } from "react-icons/fa";
+import Profile from "../../assets/UserProfile.jpg";
+
 
 const EditUser = () => {
   const [user, setUser] = useState({
@@ -15,6 +18,7 @@ const EditUser = () => {
     height: '',
     weight: '',
   });
+  const [isUploading, setIsUploading] = useState(false);
 
   const { id } = useParams();  
   const navigate = useNavigate();
@@ -65,6 +69,41 @@ const EditUser = () => {
     }
   };
 
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    console.log("img",file);
+    const formData = new FormData();
+    formData.append("image", file); 
+    console.log("form",formData);
+
+    try {
+        console.log("userapi",userEndPoints);
+        const uploadUrl = userEndPoints.USER.UPLOAD_PROFILE;
+        const response = await axiosInstance.post(
+            uploadUrl,
+            // userEndPoints.UPLOAD_PROFILE.replace(":id", userId),
+            formData,
+            {
+                headers: { 
+                  "Content-Type": "multipart/form-data",
+                  "Authorization": `Bearer ${localStorage.getItem("token")}` 
+                },
+            }
+        );   
+        console.log("hello image",response.data.data);
+        setUser((prevUser) => ({
+          ...prevUser,
+          image: response.data.data, // ✅ Store updated image URL in state
+      }));
+
+        toast.success("Profile picture uploaded successfully!");
+    } catch (error) {
+        console.error("Upload failed:", error.response?.data || error.message);
+    }
+};
+
   return (
     <div className="p-4 md:p-8 bg-gray-100">
       <form
@@ -74,6 +113,24 @@ const EditUser = () => {
         <h1 className="text-2xl font-bold text-center text-blue-default mb-4">
           Edit Profile
         </h1>
+
+        <div className="w-28 h-28 mx-auto rounded-full overflow-hidden border-4 border-gray-300">
+          <img
+            src={user?.image || Profile} 
+            alt="User Profile"
+            className="w-full h-full object-cover"
+          />
+
+          <label className="absolute ml-16 -mt-6 bg-gray-200 p-2 rounded-full cursor-pointer hover:bg-gray-300">
+            <FaCamera className="text-gray-600 text-sm" />
+            <input 
+              type="file" 
+              accept="image/*" 
+              className="hidden"
+              onChange={handleImageUpload}
+            />
+          </label>
+        </div>
 
         {/* Name */}
         <div className="mb-4">
@@ -115,7 +172,7 @@ const EditUser = () => {
         </div>
 
         {/* Image URL */}
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block mb-2 font-semibold">Profile Image URL:</label>
           <input
             type="text"
@@ -125,7 +182,7 @@ const EditUser = () => {
             className="w-full border rounded px-3 py-2 text-gray-700"
             required
           />
-        </div>
+        </div> */}
 
         {/* Age */}
         <div className="mb-4">

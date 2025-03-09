@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../../config/axiosInstance";
 import userEndPoints from "../../config/users/userApi";
+import { FaCamera } from "react-icons/fa";
 
 const fetchUserDetails = async(id) =>{
     const response = await axiosInstance.get(
@@ -46,6 +47,8 @@ const UserProfile = () => {
     const handleBack = () =>{
       navigate("/home");
     }
+
+  
 
     if (isError) {
         return (
